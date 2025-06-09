@@ -1,8 +1,60 @@
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+// Manually read and parse .env file
+function loadEnvManually(): Record<string, string> {
+  const envPath = resolve(process.cwd(), ".env");
+  const env: Record<string, string> = {};
+
+  try {
+    const envFile = readFileSync(envPath, "utf8");
+    const lines = envFile.split("\n");
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Skip empty lines and comments
+      if (!trimmedLine || trimmedLine.startsWith("#")) {
+        continue;
+      }
+
+      // Parse key=value pairs
+      const equalIndex = trimmedLine.indexOf("=");
+
+      if (equalIndex > 0) {
+        const key = trimmedLine.substring(0, equalIndex).trim();
+        let value = trimmedLine.substring(equalIndex + 1).trim();
+
+        // Remove quotes if present
+        if (
+          (value.startsWith('"') && value.endsWith('"')) ||
+          (value.startsWith("'") && value.endsWith("'"))
+        ) {
+          value = value.slice(1, -1);
+        }
+
+        env[key] = value;
+      }
+    }
+  } catch (error) {
+    console.warn("Could not read .env file:", error);
+  }
+
+  return env;
+}
+
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+export default defineConfig(() => {
+  const env = loadEnvManually();
+
+  console.log("BasePath", env.VITE_BASE_PATH);
+
+  return {
+    base: env.VITE_BASE_PATH || "/",
+    plugins: [react(), tsconfigPaths()],
+  };
 });
