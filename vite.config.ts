@@ -41,6 +41,7 @@ function loadEnvManually(): Record<string, string> {
       }
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.warn("Could not read .env file:", error);
   }
 
