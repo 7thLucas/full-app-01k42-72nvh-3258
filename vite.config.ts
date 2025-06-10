@@ -60,5 +60,18 @@ export default defineConfig(() => {
   return {
     base: BASE_PATH || "/",
     plugins: [react(), tsconfigPaths()],
+    build: {
+      // Don't fail build on warnings, only on errors
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // Skip certain warnings
+          if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+          if (warning.code === 'CIRCULAR_DEPENDENCY') return;
+          
+          // Show warning but don't fail build
+          warn(warning);
+        }
+      }
+    }
   };
 });
