@@ -65,13 +65,13 @@ export default defineConfig(() => {
       rollupOptions: {
         onwarn(warning, warn) {
           // Skip certain warnings
-          if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
-          if (warning.code === 'CIRCULAR_DEPENDENCY') return;
-          
+          if (warning.code === "UNUSED_EXTERNAL_IMPORT") return;
+          if (warning.code === "CIRCULAR_DEPENDENCY") return;
+
           // Show warning but don't fail build
           warn(warning);
-        }
-      }
-    }
+        },
+      },
+    },
   };
 });
