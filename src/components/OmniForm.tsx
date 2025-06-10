@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import {
   Input,
   Textarea,
@@ -11,34 +11,23 @@ import {
   CheckboxGroup,
   Card,
   CardBody,
+  addToast,
 } from "@heroui/react";
+import axios from "axios";
+import { AxiosError } from "axios";
 
-/**
- * Base field configuration shared by all field types
- */
 type BaseField = {
-  /** Unique identifier for the field - used as form data key */
   name: string;
-  /** Display label for the field */
   label?: string;
-  /** Whether the field is required for form submission */
   required?: boolean;
-  /** Default value when form initializes */
   defaultValue?: string | number | boolean;
-  /** Placeholder text shown when field is empty */
   placeholder?: string;
 };
 
-/**
- * Standard input fields: text, email, password, date, textarea
- */
 type RegularField = BaseField & {
   type: "text" | "email" | "password" | "date" | "textarea";
 };
 
-/**
- * Dropdown selection field with predefined options
- */
 type SelectField = BaseField & {
   type: "select";
   options: {
@@ -47,9 +36,6 @@ type SelectField = BaseField & {
   }[];
 };
 
-/**
- * Multiple choice fields: checkboxes (multiple selection) or radio buttons (single selection)
- */
 type OptionField = BaseField & {
   type: "checkbox" | "radio";
   options: {
@@ -58,67 +44,41 @@ type OptionField = BaseField & {
   }[];
 };
 
-/**
- * Numeric input field with optional constraints
- */
 type NumberField = BaseField & {
   type: "number";
-  /** Minimum allowed value */
   min?: number;
-  /** Maximum allowed value */
   max?: number;
-  /** Step increment for number input */
   step?: number;
 };
 
-/**
- * File upload field with optional file type restrictions
- */
 type FileField = BaseField & {
   type: "file";
-  /** Restricts file types that can be uploaded */
   fileType?: "image" | "video" | "audio" | string;
 };
 
-/**
- * Union type of all possible field configurations
- * Use this type when defining form fields array
- */
 type Field = RegularField | SelectField | OptionField | NumberField | FileField;
 
-/**
- * Props for the OmniForm component
- */
 type OmniFormProps = {
-  /** Array of field configurations that define the form structure */
   fields: Field[];
-  /** Text displayed on the submit button (default: "Submit") */
   submitLabel?: string;
-  /** Callback function executed after successful form submission */
   afterSubmitSuccess?: () => void;
 };
 
-/**
- * OmniForm - A universal form component that can render any form structure
- */
 export const OmniForm: React.FC<OmniFormProps> = ({
   fields,
   submitLabel = "Submit",
   afterSubmitSuccess,
 }) => {
-  // Initialize form data based on field configurations
+  const [isLoading, startTransition] = useTransition();
   const [formData, setFormData] = useState<Record<string, any>>(() => {
     const initialData: Record<string, any> = {};
 
     fields.forEach((field) => {
       if (field.defaultValue !== undefined) {
-        // Use provided default value
         initialData[field.name] = field.defaultValue;
       } else if (field.type === "checkbox" || field.type === "radio") {
-        // Checkboxes start with empty array, radios with empty string
         initialData[field.name] = field.type === "checkbox" ? [] : "";
       } else {
-        // All other fields start with empty string
         initialData[field.name] = "";
       }
     });
@@ -126,70 +86,71 @@ export const OmniForm: React.FC<OmniFormProps> = ({
     return initialData;
   });
 
-  // Track validation errors for each field
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  /**
-   * Updates form data for a specific field and clears any existing error
-   */
   const handleInputChange = (name: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
   };
 
-  /**
-   * Validates all required fields before form submission
-   * Returns true if form is valid, false otherwise
-   */
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    fields.forEach((field) => {
-      if (field.required) {
-        const value = formData[field.name];
-
-        // Check if field is empty or (for arrays) has no selections
-        if (!value || (Array.isArray(value) && value.length === 0)) {
-          newErrors[field.name] = `${field.label || field.name} is required`;
-        }
-      }
-    });
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
-  /**
-   * Handles form submission with validation
-   */
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Form is valid - log data and trigger success callback
-      // eslint-disable-next-line no-console
-      console.log(formData);
-      afterSubmitSuccess?.();
-    }
+
+    startTransition(() => {
+      const idUser = "3181";
+      const userToken = "wSOUiuEE0P";
+      const apiKey =
+        "QlgxMGMwWFowUmoxMk5uVUhPeGVyaUV4UDFVWENMRk5IZ2ZXT3FXRTJuOTVsa1ZITURWZlFkQWowbDUxZ0xGc3VjR0lhNW02R1p5Y3JCX3VqejNIT2c";
+      const url = `https://satudesa-service-dashboard.quantumbyte.ai/api/v1/layanan-app/${idUser}/####VAR:FOLDER_ID####/####VAR:FOLDER_ID####/create`;
+
+      axios
+        .post(
+          url,
+          {
+            ...formData,
+            id_user: idUser,
+            key: "####VAR:FOLDER_ID####",
+            form_id: "####VAR:FOLDER_ID####",
+            user_token: userToken,
+          },
+          {
+            headers: {
+              apiKey: apiKey,
+            },
+          },
+        )
+        .then((response) => {
+          addToast({
+            title: "Success",
+            description: response.data.message,
+            color: "success",
+          });
+
+          afterSubmitSuccess?.();
+        })
+        .catch((error) => {
+          // if error is AxiosError, show error message via toast
+          if (error instanceof AxiosError) {
+            addToast({
+              title: "Error",
+              description: error.response?.data.message,
+              color: "danger",
+            });
+          } else {
+            addToast({
+              title: "Error",
+              description: error.message,
+              color: "danger",
+            });
+          }
+        });
+    });
   };
 
   /**
    * Renders appropriate input component based on field type
    */
   const renderField = (field: Field) => {
-    const isInvalid = !!errors[field.name];
-    const errorMessage = errors[field.name];
-
     switch (field.type) {
       // Standard text inputs: text, email, password
       case "text":
@@ -197,8 +158,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
       case "password":
         return (
           <Input
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             placeholder={field.placeholder}
@@ -213,8 +172,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
       case "date":
         return (
           <Input
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             placeholder={field.placeholder}
@@ -229,8 +186,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
       case "textarea":
         return (
           <Textarea
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             minRows={4}
@@ -247,8 +202,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
 
         return (
           <Input
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             max={numberField.max}
@@ -272,8 +225,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
 
         return (
           <Select
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             placeholder={field.placeholder || "Select an option"}
@@ -304,8 +255,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
               </label>
             )}
             <CheckboxGroup
-              errorMessage={errorMessage}
-              isInvalid={isInvalid}
               value={formData[field.name] || []}
               onValueChange={(value) => handleInputChange(field.name, value)}
             >
@@ -324,8 +273,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
 
         return (
           <RadioGroup
-            errorMessage={errorMessage}
-            isInvalid={isInvalid}
             isRequired={field.required}
             label={field.label}
             value={formData[field.name] || ""}
@@ -368,7 +315,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
                 handleInputChange(field.name, e.target.files?.[0] || null)
               }
             />
-            {isInvalid && <p className="text-danger text-sm">{errorMessage}</p>}
           </div>
         );
 
@@ -381,15 +327,14 @@ export const OmniForm: React.FC<OmniFormProps> = ({
     <Card>
       <CardBody>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Render each field based on its configuration */}
           {fields.map((field, index) => (
             <div key={index}>{renderField(field)}</div>
           ))}
 
-          {/* Submit button */}
           <Button
             className="w-full"
             color="primary"
+            isLoading={isLoading}
             size="lg"
             type="submit"
             variant="solid"
