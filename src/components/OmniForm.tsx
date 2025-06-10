@@ -131,11 +131,20 @@ export const OmniForm: React.FC<OmniFormProps> = ({
         .catch((error) => {
           // if error is AxiosError, show error message via toast
           if (error instanceof AxiosError) {
-            addToast({
-              title: "Error",
-              description: error.response?.data.message,
-              color: "danger",
-            });
+            if (error.response?.data.message === "Not Found") {
+              addToast({
+                title: "Error",
+                description:
+                  "Aplikasi perlu di-simpan terlebih dahulu sebelum dapat digunakan",
+                color: "danger",
+              });
+            } else {
+              addToast({
+                title: "Error",
+                description: error.response?.data.message,
+                color: "danger",
+              });
+            }
           } else {
             addToast({
               title: "Error",
