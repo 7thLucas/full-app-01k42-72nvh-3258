@@ -3,8 +3,21 @@
 # Change modifier
 chmod +x build_run.sh
 
-# Generate a new UUID
-NEW_UUID=$(uuidgen)
+# Parse command line arguments
+NEW_UUID=""
+for arg in "$@"; do
+    case $arg in
+        --id=*)
+            NEW_UUID="${arg#*=}"
+            shift
+            ;;
+    esac
+done
+
+# Generate a new UUID if not provided
+if [ -z "$NEW_UUID" ]; then
+    NEW_UUID=$(uuidgen)
+fi
 
 # Create .env file with the UUID
 echo "VITE_BASE_PATH=/${NEW_UUID}" > .env
