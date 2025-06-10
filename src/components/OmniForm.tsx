@@ -111,7 +111,7 @@ type NumberField = BaseField & {
 type FileField = BaseField & {
   type: "file";
   /** Restricts file types that can be uploaded */
-  fileType?: "image" | "video" | "audio" | "document" | "other";
+  fileType?: "image" | "video" | "audio" | string;
 };
 
 /**
@@ -443,13 +443,15 @@ export const OmniForm: React.FC<OmniFormProps> = ({
       // File upload with optional type restrictions
       case "file":
         const fileField = field as FileField;
-        const acceptTypes = {
-          image: "image/*",
-          video: "video/*",
-          audio: "audio/*",
-          document: ".pdf,.doc,.docx,.txt",
-          other: "*",
-        };
+        let selectedAcceptType = "*";
+
+        if (fileField.fileType === "image") {
+          selectedAcceptType = "image/*";
+        } else if (fileField.fileType === "video") {
+          selectedAcceptType = "video/*";
+        } else if (fileField.fileType === "audio") {
+          selectedAcceptType = "audio/*";
+        }
 
         return (
           <div className="flex flex-col gap-2">
@@ -460,9 +462,7 @@ export const OmniForm: React.FC<OmniFormProps> = ({
               </label>
             )}
             <input
-              accept={
-                fileField.fileType ? acceptTypes[fileField.fileType] : "*"
-              }
+              accept={selectedAcceptType}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 border-2 border-divider rounded-lg p-2 focus:border-primary"
               type="file"
               onChange={(e) =>
