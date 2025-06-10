@@ -1,7 +1,3 @@
-/**
- * WARNING: This file should NOT be edited.
- */
-
 import React, { useState } from "react";
 import {
   Input,
@@ -35,7 +31,6 @@ type BaseField = {
 
 /**
  * Standard input fields: text, email, password, date, textarea
- * Example: { name: "email", type: "email", label: "Email Address", required: true }
  */
 type RegularField = BaseField & {
   type: "text" | "email" | "password" | "date" | "textarea";
@@ -43,15 +38,6 @@ type RegularField = BaseField & {
 
 /**
  * Dropdown selection field with predefined options
- * Example: {
- *   name: "country",
- *   type: "select",
- *   label: "Country",
- *   options: [
- *     { label: "United States", value: "us" },
- *     { label: "Canada", value: "ca" }
- *   ]
- * }
  */
 type SelectField = BaseField & {
   type: "select";
@@ -63,24 +49,6 @@ type SelectField = BaseField & {
 
 /**
  * Multiple choice fields: checkboxes (multiple selection) or radio buttons (single selection)
- * Checkbox example: {
- *   name: "interests",
- *   type: "checkbox",
- *   label: "Interests",
- *   options: [
- *     { label: "Sports", value: "sports" },
- *     { label: "Music", value: "music" }
- *   ]
- * }
- * Radio example: {
- *   name: "gender",
- *   type: "radio",
- *   label: "Gender",
- *   options: [
- *     { label: "Male", value: "male" },
- *     { label: "Female", value: "female" }
- *   ]
- * }
  */
 type OptionField = BaseField & {
   type: "checkbox" | "radio";
@@ -92,7 +60,6 @@ type OptionField = BaseField & {
 
 /**
  * Numeric input field with optional constraints
- * Example: { name: "age", type: "number", label: "Age", min: 0, max: 120, step: 1 }
  */
 type NumberField = BaseField & {
   type: "number";
@@ -106,7 +73,6 @@ type NumberField = BaseField & {
 
 /**
  * File upload field with optional file type restrictions
- * Example: { name: "avatar", type: "file", label: "Profile Picture", fileType: "image" }
  */
 type FileField = BaseField & {
   type: "file";
@@ -134,73 +100,6 @@ type OmniFormProps = {
 
 /**
  * OmniForm - A universal form component that can render any form structure
- *
- * USAGE EXAMPLES:
- *
- * 1. Simple Contact Form:
- * const contactFields = [
- *   { name: "name", type: "text", label: "Full Name", required: true },
- *   { name: "email", type: "email", label: "Email", required: true },
- *   { name: "message", type: "textarea", label: "Message", placeholder: "Your message..." }
- * ];
- * <OmniForm fields={contactFields} submitLabel="Send Message" />
- *
- * 2. User Registration Form:
- * const registrationFields = [
- *   { name: "username", type: "text", label: "Username", required: true },
- *   { name: "email", type: "email", label: "Email Address", required: true },
- *   { name: "password", type: "password", label: "Password", required: true },
- *   { name: "age", type: "number", label: "Age", min: 13, max: 120 },
- *   {
- *     name: "interests",
- *     type: "checkbox",
- *     label: "Interests",
- *     options: [
- *       { label: "Technology", value: "tech" },
- *       { label: "Sports", value: "sports" },
- *       { label: "Arts", value: "arts" }
- *     ]
- *   }
- * ];
- * <OmniForm fields={registrationFields} submitLabel="Create Account" />
- *
- * 3. Survey Form:
- * const surveyFields = [
- *   {
- *     name: "satisfaction",
- *     type: "radio",
- *     label: "How satisfied are you?",
- *     options: [
- *       { label: "Very Satisfied", value: "very_satisfied" },
- *       { label: "Satisfied", value: "satisfied" },
- *       { label: "Neutral", value: "neutral" },
- *       { label: "Dissatisfied", value: "dissatisfied" }
- *     ]
- *   },
- *   {
- *     name: "country",
- *     type: "select",
- *     label: "Country",
- *     options: [
- *       { label: "United States", value: "us" },
- *       { label: "Canada", value: "ca" },
- *       { label: "United Kingdom", value: "uk" }
- *     ]
- *   }
- * ];
- * <OmniForm fields={surveyFields} submitLabel="Submit Survey" />
- *
- * FIELD TYPES REFERENCE:
- * - "text": Standard text input
- * - "email": Email input with validation
- * - "password": Password input (hidden text)
- * - "date": Date picker
- * - "textarea": Multi-line text input
- * - "number": Numeric input with optional min/max/step
- * - "select": Dropdown with options
- * - "checkbox": Multiple selection checkboxes
- * - "radio": Single selection radio buttons
- * - "file": File upload with optional type restrictions
  */
 export const OmniForm: React.FC<OmniFormProps> = ({
   fields,
