@@ -8,7 +8,7 @@ import App from "./App.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HeroUIProvider>
-      <ToastProvider />
+      <ToastProvider placement="top-right" toastOffset={10} />
       <App />
     </HeroUIProvider>
   </React.StrictMode>,
