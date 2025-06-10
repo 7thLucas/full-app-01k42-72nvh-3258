@@ -1,3 +1,7 @@
+/**
+ * WARNING: This file should NOT be edited.
+ */
+
 import React, { useState } from "react";
 import {
   Input,
