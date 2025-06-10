@@ -51,10 +51,14 @@ function loadEnvManually(): Record<string, string> {
 export default defineConfig(() => {
   const env = loadEnvManually();
 
-  console.log("BasePath", env.VITE_BASE_PATH);
+  let BASE_PATH = env.VITE_BASE_PATH;
+
+  // Make sure it's prefixed and suffixed with a slash
+  BASE_PATH = BASE_PATH.startsWith("/") ? BASE_PATH : `/${BASE_PATH}`;
+  BASE_PATH = BASE_PATH.endsWith("/") ? BASE_PATH : `${BASE_PATH}/`;
 
   return {
-    base: env.VITE_BASE_PATH || "/",
+    base: BASE_PATH || "/",
     plugins: [react(), tsconfigPaths()],
   };
 });
