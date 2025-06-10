@@ -7,7 +7,7 @@ chmod +x build_run.sh
 NEW_UUID=$(uuidgen)
 
 # Create .env file with the UUID
-echo "VITE_BASE_PATH=/qb-poc-preview/${NEW_UUID}" > .env
+echo "VITE_BASE_PATH=/${NEW_UUID}" > .env
 
 # Write UUID to qbid.txt
 echo "${NEW_UUID}" > qbid.txt
