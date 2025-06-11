@@ -1,3 +1,7 @@
+/**
+ * This file is auto-generated, do not edit!
+ */
+
 import React, { useState, useTransition } from "react";
 import {
   Input,
@@ -11,10 +15,9 @@ import {
   CheckboxGroup,
   Card,
   CardBody,
-  addToast,
 } from "@heroui/react";
-import axios from "axios";
-import { AxiosError } from "axios";
+
+import { submitForm } from "@/utils/submitForm";
 
 type BaseField = {
   name: string;
@@ -91,69 +94,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
       ...prev,
       [name]: value,
     }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    startTransition(() => {
-      const idUser = "3181";
-      const userToken = "wSOUiuEE0P";
-      const apiKey =
-        "QlgxMGMwWFowUmoxMk5uVUhPeGVyaUV4UDFVWENMRk5IZ2ZXT3FXRTJuOTVsa1ZITURWZlFkQWowbDUxZ0xGc3VjR0lhNW02R1p5Y3JCX3VqejNIT2c";
-      const url = `https://satudesa-service-dashboard.quantumbyte.ai/api/v1/layanan-app/${idUser}/####VAR:FOLDER_ID####/####VAR:FOLDER_ID####/create`;
-
-      axios
-        .post(
-          url,
-          {
-            ...formData,
-            id_user: idUser,
-            key: "####VAR:FOLDER_ID####",
-            form_id: "####VAR:FOLDER_ID####",
-            user_token: userToken,
-          },
-          {
-            headers: {
-              apiKey: apiKey,
-            },
-          },
-        )
-        .then((response) => {
-          addToast({
-            title: "Success",
-            description: response.data.message,
-            color: "success",
-          });
-
-          afterSubmitSuccess?.();
-        })
-        .catch((error) => {
-          // if error is AxiosError, show error message via toast
-          if (error instanceof AxiosError) {
-            if (error.response?.data.message === "Not Found") {
-              addToast({
-                title: "Error",
-                description:
-                  "Aplikasi perlu di-simpan terlebih dahulu sebelum dapat digunakan",
-                color: "danger",
-              });
-            } else {
-              addToast({
-                title: "Error",
-                description: error.response?.data.message,
-                color: "danger",
-              });
-            }
-          } else {
-            addToast({
-              title: "Error",
-              description: error.message,
-              color: "danger",
-            });
-          }
-        });
-    });
   };
 
   /**
@@ -335,7 +275,15 @@ export const OmniForm: React.FC<OmniFormProps> = ({
   return (
     <Card>
       <CardBody>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="space-y-6"
+          onSubmit={(e) => {
+            startTransition(() => {
+              e.preventDefault();
+              submitForm(formData, afterSubmitSuccess);
+            });
+          }}
+        >
           {fields.map((field, index) => (
             <div key={index}>{renderField(field)}</div>
           ))}
