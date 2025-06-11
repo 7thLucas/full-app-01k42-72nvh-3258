@@ -17,6 +17,7 @@ import {
   Card,
   CardBody,
 } from "@heroui/react";
+import { CheckCircle } from "lucide-react";
 
 import { submitForm } from "@/utils/submitForm";
 
@@ -69,6 +70,59 @@ type OmniFormProps = {
 };
 
 export const OmniForm: React.FC<OmniFormProps> = ({
+  fields,
+  submitLabel = "Submit",
+  afterSubmitSuccess,
+}) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  if (isSubmitted) {
+    return (
+      <div>
+        <Card>
+          <CardBody className="text-center space-y-4">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-success" />
+              </div>
+            </div>
+            <h1 className="text-2xl font-bold text-success">
+              Form Berhasil Dikirim!
+            </h1>
+            <p className="text-default-600">
+              Form Anda telah berhasil dikirim dan sedang diproses. Terima kasih
+              atas pengajuan Anda.
+            </p>
+            <div className="flex justify-center">
+              <Button
+                className="font-semibold"
+                color="primary"
+                size="lg"
+                variant="solid"
+                onPress={() => setIsSubmitted((prev) => !prev)}
+              >
+                Kirim Form Lain
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <TheForm
+      afterSubmitSuccess={() => {
+        setIsSubmitted(true);
+        afterSubmitSuccess?.();
+      }}
+      fields={fields}
+      submitLabel={submitLabel}
+    />
+  );
+};
+
+export const TheForm: React.FC<OmniFormProps> = ({
   fields,
   submitLabel = "Submit",
   afterSubmitSuccess,
