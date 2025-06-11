@@ -8,27 +8,23 @@ import axios, { AxiosError } from "axios";
 import { getApiKey, getUserId, getUserToken } from "./constants";
 
 export const submitForm = async (
-  formData: any,
+  formData: FormData,
   afterSubmitSuccess?: () => void,
 ) => {
   const SUBMIT_URL = `https://satudesa-service-dashboard.quantumbyte.ai/api/v1/layanan-app/${getUserId()}/####VAR:FOLDER_ID####/####VAR:FOLDER_ID####/create`;
 
+  formData.set("id_user", getUserId());
+  formData.set("key", "####VAR:FOLDER_ID####");
+  formData.set("form_id", "####VAR:FOLDER_ID####");
+  formData.set("user_token", getUserToken());
+
   axios
-    .post(
-      SUBMIT_URL,
-      {
-        ...formData,
-        id_user: getUserId(),
-        key: "####VAR:FOLDER_ID####",
-        form_id: "####VAR:FOLDER_ID####",
-        user_token: getUserToken(),
+    .post(SUBMIT_URL, formData, {
+      headers: {
+        apiKey: getApiKey(),
+        "Content-Type": "multipart/form-data",
       },
-      {
-        headers: {
-          apiKey: getApiKey(),
-        },
-      },
-    )
+    })
     .then((response) => {
       addToast({
         title: "Success",

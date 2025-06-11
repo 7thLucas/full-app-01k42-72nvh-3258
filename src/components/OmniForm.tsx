@@ -1,5 +1,6 @@
 /**
  * This file is auto-generated, do not edit!
+ * @description This is the only form that could exists in the application. Do not create any other form.
  */
 
 import React, { useState, useTransition } from "react";
@@ -56,7 +57,7 @@ type NumberField = BaseField & {
 
 type FileField = BaseField & {
   type: "file";
-  fileType?: "image" | "video" | "audio" | string;
+  fileType?: "image" | string;
 };
 
 type Field = RegularField | SelectField | OptionField | NumberField | FileField;
@@ -242,10 +243,6 @@ export const OmniForm: React.FC<OmniFormProps> = ({
 
         if (fileField.fileType === "image") {
           selectedAcceptType = "image/*";
-        } else if (fileField.fileType === "video") {
-          selectedAcceptType = "video/*";
-        } else if (fileField.fileType === "audio") {
-          selectedAcceptType = "audio/*";
         }
 
         return (
@@ -278,9 +275,33 @@ export const OmniForm: React.FC<OmniFormProps> = ({
         <form
           className="space-y-6"
           onSubmit={(e) => {
+            e.preventDefault();
             startTransition(() => {
-              e.preventDefault();
-              submitForm(formData, afterSubmitSuccess);
+              // Create FormData from component state to properly handle files
+              const submitFormData = new FormData();
+
+              fields.forEach((field) => {
+                const value = formData[field.name];
+
+                if (field.type === "file" && value instanceof File) {
+                  // Handle file uploads
+                  submitFormData.append(field.name, value);
+                } else if (field.type === "checkbox" && Array.isArray(value)) {
+                  // Handle checkbox arrays
+                  value.forEach((item) => {
+                    submitFormData.append(`${field.name}[]`, item);
+                  });
+                } else if (
+                  value !== undefined &&
+                  value !== null &&
+                  value !== ""
+                ) {
+                  // Handle all other field types
+                  submitFormData.append(field.name, String(value));
+                }
+              });
+
+              submitForm(submitFormData, afterSubmitSuccess);
             });
           }}
         >

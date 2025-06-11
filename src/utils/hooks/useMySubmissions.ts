@@ -1,5 +1,9 @@
 /**
  * This file is auto-generated, do not edit!
+ * @description This hook is used to fetch the submissions of the current user. data will be in {[key: string]: string} format.
+ * If key prefixed with "file_", then the value is a url to the file.
+ * If key prefixed with "photo_", then the value is a url to the photo.
+ * Else, all value is a string.
  */
 
 import { addToast } from "@heroui/react";
