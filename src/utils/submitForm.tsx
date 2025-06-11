@@ -5,17 +5,17 @@
 import { addToast } from "@heroui/react";
 import axios, { AxiosError } from "axios";
 
-import { getApiKey, getUserId, getUserToken } from "./constants";
+import { getApiKey, getUserId, getUserToken, MINIAPP_ID } from "./constants";
 
 export const submitForm = async (
   formData: FormData,
   afterSubmitSuccess?: () => void,
 ) => {
-  const SUBMIT_URL = `https://satudesa-service-dashboard.quantumbyte.ai/api/v1/layanan-app/${getUserId()}/####VAR:FOLDER_ID####/####VAR:FOLDER_ID####/create`;
+  const SUBMIT_URL = `https://satudesa-service-dashboard.quantumbyte.ai/api/v1/layanan-app/${getUserId()}/${MINIAPP_ID}/${MINIAPP_ID}/create`;
 
   formData.set("id_user", getUserId());
-  formData.set("key", "####VAR:FOLDER_ID####");
-  formData.set("form_id", "####VAR:FOLDER_ID####");
+  formData.set("key", MINIAPP_ID);
+  formData.set("form_id", MINIAPP_ID);
   formData.set("user_token", getUserToken());
 
   axios
