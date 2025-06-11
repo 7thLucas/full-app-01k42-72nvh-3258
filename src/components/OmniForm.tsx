@@ -3,7 +3,7 @@
  * @description This is the only form that could exists in the application. Do not create any other form.
  */
 
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import {
   Input,
   Textarea,
@@ -73,7 +73,7 @@ export const OmniForm: React.FC<OmniFormProps> = ({
   submitLabel = "Submit",
   afterSubmitSuccess,
 }) => {
-  const [isLoading, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<Record<string, any>>(() => {
     const initialData: Record<string, any> = {};
 
@@ -276,32 +276,34 @@ export const OmniForm: React.FC<OmniFormProps> = ({
           className="space-y-6"
           onSubmit={(e) => {
             e.preventDefault();
-            startTransition(() => {
-              // Create FormData from component state to properly handle files
-              const submitFormData = new FormData();
+            setIsLoading(true);
+            // Create FormData from component state to properly handle files
+            const submitFormData = new FormData();
 
-              fields.forEach((field) => {
-                const value = formData[field.name];
+            fields.forEach((field) => {
+              const value = formData[field.name];
 
-                if (field.type === "file" && value instanceof File) {
-                  // Handle file uploads
-                  submitFormData.append(field.name, value);
-                } else if (field.type === "checkbox" && Array.isArray(value)) {
-                  // Handle checkbox arrays
-                  value.forEach((item) => {
-                    submitFormData.append(`${field.name}[]`, item);
-                  });
-                } else if (
-                  value !== undefined &&
-                  value !== null &&
-                  value !== ""
-                ) {
-                  // Handle all other field types
-                  submitFormData.append(field.name, String(value));
-                }
-              });
+              if (field.type === "file" && value instanceof File) {
+                // Handle file uploads
+                submitFormData.append(field.name, value);
+              } else if (field.type === "checkbox" && Array.isArray(value)) {
+                // Handle checkbox arrays
+                value.forEach((item) => {
+                  submitFormData.append(`${field.name}[]`, item);
+                });
+              } else if (
+                value !== undefined &&
+                value !== null &&
+                value !== ""
+              ) {
+                // Handle all other field types
+                submitFormData.append(field.name, String(value));
+              }
+            });
 
-              submitForm(submitFormData, afterSubmitSuccess);
+            submitForm(submitFormData, () => {
+              setIsLoading(false);
+              afterSubmitSuccess?.();
             });
           }}
         >
