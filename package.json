@@ -11,10 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@heroui/react": "^2.7.9",
-    "@heroui/system": "2.4.16",
-    "@heroui/theme": "2.4.16",
-    "@heroui/use-theme": "2.1.8",
     "@react-aria/visually-hidden": "3.8.23",
     "@react-types/shared": "3.29.1",
     "axios": "^1.9.0",
@@ -23,7 +19,6 @@
     "lucide-react": "^0.513.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "^7.6.2",
     "sweetalert2": "^11.22.0",
     "swr": "^2.3.3",
     "tailwind-variants": "0.3.0",

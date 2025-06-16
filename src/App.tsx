@@ -1,9 +1,3 @@
-import { Routes, Route } from "react-router-dom";
-
 export default function App() {
-  return (
-    <Routes>
-      <Route element={<div>Hello World</div>} path="/" />
-    </Routes>
-  );
+  return <div>Hello World</div>;
 }
