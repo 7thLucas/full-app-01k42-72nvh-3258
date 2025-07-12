@@ -1,17 +1,19 @@
-import axios from 'axios';
+import type { NewsItem } from "@/types";
 
-import type { NewsItem } from '@/types';
-import { createSummary, makeAbsoluteUrl } from '@/utils/htmlUtils';
-import { getApiConfig } from '@/utils/config';
+import axios from "axios";
+
+import { createSummary } from "@/utils/htmlUtils";
+import { getApiConfig } from "@/utils/config";
 
 // Create axios instance factory
 const createApiClient = async () => {
   const config = await getApiConfig();
+
   return axios.create({
     baseURL: config.baseUrl,
     headers: {
-      'Authorization': `Bearer ${config.bearerToken}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.bearerToken}`,
+      "Content-Type": "application/json",
     },
   });
 };
@@ -29,30 +31,34 @@ interface ApiNewsResponse {
 const transformApiDataToNewsItem = async (apiData: any): Promise<NewsItem> => {
   // Extract base URL for images if needed
   let imageUrl: string | undefined;
-  if (apiData.image && apiData.image.trim() !== '') {
+
+  if (apiData.image && apiData.image.trim() !== "") {
     try {
       const config = await getApiConfig();
+
       imageUrl = `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-berita/${apiData.image}`;
     } catch (error) {
       // If config is not available, use a fallback or undefined
-      console.warn('Failed to construct image URL:', error);
+      console.warn("Failed to construct image URL:", error);
       imageUrl = undefined;
     }
   }
 
   // Clean up HTML content for summary
-  const cleanSummary = apiData.subtitle || 
-    (apiData.description ? createSummary(apiData.description, 200) : '') ||
-    apiData.title || '';
+  const cleanSummary =
+    apiData.subtitle ||
+    (apiData.description ? createSummary(apiData.description, 200) : "") ||
+    apiData.title ||
+    "";
 
   return {
-    id: apiData.id?.toString() || apiData._id?.toString() || '',
-    title: apiData.title || 'Untitled',
+    id: apiData.id?.toString() || apiData._id?.toString() || "",
+    title: apiData.title || "Untitled",
     summary: cleanSummary,
-    content: apiData.description || '',
+    content: apiData.description || "",
     publishDate: apiData.createdAt || new Date().toISOString(),
-    author: 'Admin', // API doesn't seem to have author field
-    category: apiData.kategori || 'General',
+    author: "Admin", // API doesn't seem to have author field
+    category: apiData.kategori || "General",
     imageUrl: imageUrl,
     featured: false, // We'll determine this based on recency or other criteria
   };
@@ -61,7 +67,7 @@ const transformApiDataToNewsItem = async (apiData: any): Promise<NewsItem> => {
 // Fetch news list
 export const fetchNews = async (
   startRow: number = 0,
-  endRow: number = 100
+  endRow: number = 100,
 ): Promise<NewsItem[]> => {
   try {
     const config = await getApiConfig();
@@ -71,32 +77,36 @@ export const fetchNews = async (
       data: JSON.stringify({
         startRow,
         endRow,
-        sortModel: [{ colId: 'createdAt', sort: 'desc' }],
+        sortModel: [{ colId: "createdAt", sort: "desc" }],
       }),
     };
 
     const response = await apiClient.get<ApiNewsResponse>(
       `/informasi-umum/${config.keyspace}/${config.role}/list/${config.userId}`,
-      { params }
+      { params },
     );
 
     if (response.data.status && Array.isArray(response.data.result)) {
       // Mark the first few items as featured (most recent)
       const newsItems = await Promise.all(
-        response.data.result.map(async (item: any) => await transformApiDataToNewsItem(item))
+        response.data.result.map(
+          async (item: any) => await transformApiDataToNewsItem(item),
+        ),
       );
+
       // Mark first 3 items as featured
-      newsItems.slice(0, 3).forEach(item => item.featured = true);
+      newsItems.slice(0, 3).forEach((item) => (item.featured = true));
+
       return newsItems;
     }
 
     return [];
   } catch (error) {
-    console.error('Error fetching news:', error);
+    console.error("Error fetching news:", error);
     if (error instanceof Error) {
       throw new Error(`Failed to fetch news: ${error.message}`);
     }
-    throw new Error('Failed to fetch news data');
+    throw new Error("Failed to fetch news data");
   }
 };
 
@@ -109,15 +119,13 @@ interface ApiNewsDetailResponse {
 }
 
 // Fetch single news item by ID
-export const fetchNewsById = async (
-  id: string
-): Promise<NewsItem | null> => {
+export const fetchNewsById = async (id: string): Promise<NewsItem | null> => {
   try {
     const config = await getApiConfig();
     const apiClient = await createApiClient();
 
     const response = await apiClient.get<ApiNewsDetailResponse>(
-      `/informasi-umum/${config.keyspace}/${config.role}/detail/${config.userId}/${id}`
+      `/informasi-umum/${config.keyspace}/${config.role}/detail/${config.userId}/${id}`,
     );
 
     if (response.data.status && response.data.result) {
@@ -126,12 +134,12 @@ export const fetchNewsById = async (
 
     return null;
   } catch (error) {
-    console.error('Error fetching news by ID:', error);
+    console.error("Error fetching news by ID:", error);
     if (error instanceof Error) {
       throw new Error(`Failed to fetch news item: ${error.message}`);
     }
-    throw new Error('Failed to fetch news item');
+    throw new Error("Failed to fetch news item");
   }
 };
 
-export default createApiClient; 
+export default createApiClient;

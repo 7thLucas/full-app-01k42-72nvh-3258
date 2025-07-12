@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import type { NewsItem } from "@/types";
 
-import type { NewsItem } from '@/types';
-import { fetchNews, fetchNewsById } from '@/services/api';
+import { useState, useEffect } from "react";
+
+import { fetchNews, fetchNewsById } from "@/services/api";
 
 // Hook for fetching news list
 export const useNews = () => {
@@ -14,9 +15,10 @@ export const useNews = () => {
       setLoading(true);
       setError(null);
       const newsData = await fetchNews();
+
       setNews(newsData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch news');
+      setError(err instanceof Error ? err.message : "Failed to fetch news");
     } finally {
       setLoading(false);
     }
@@ -49,9 +51,12 @@ export const useNewsItem = (id: string) => {
       setLoading(true);
       setError(null);
       const item = await fetchNewsById(id);
+
       setNewsItem(item);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch news item');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch news item",
+      );
     } finally {
       setLoading(false);
     }
@@ -73,4 +78,4 @@ export const useNewsItem = (id: string) => {
     error,
     refetch,
   };
-}; 
+};
