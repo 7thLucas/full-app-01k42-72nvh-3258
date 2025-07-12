@@ -1,10 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Submissions from "./pages/Submissions";
-import SubmissionDetail from "./pages/SubmissionDetail";
-import SubmissionUpdate from "./pages/SubmissionUpdate";
 import NotFound from "./pages/NotFound";
+import NewsList from "./pages/NewsList";
+import NewsDetail from "./pages/NewsDetail";
+import InformationList from "./pages/InformationList";
+import InformationDetail from "./pages/InformationDetail";
+import MiniAppDetail from "./pages/MiniAppDetail";
+import QueryParamValidator from "./components/QueryParamValidator";
+import QueryParamDisplay from "./components/QueryParamDisplay";
+
+// Check if we're running locally and set basename accordingly
+const isLocalhost =
+  window.location.origin.includes("localhost") ||
+  window.location.origin.includes("0.0.0.0") ||
+  window.location.origin.includes("127.0.0.1");
+const basename = isLocalhost ? import.meta.env.VITE_BASE_PATH : undefined;
 
 const router = createBrowserRouter(
   [
@@ -13,24 +24,38 @@ const router = createBrowserRouter(
       element: <Home />,
     },
     {
-      path: "/submissions",
-      element: <Submissions />,
+      path: "/news",
+      element: <NewsList />,
     },
     {
-      path: "/submission/:id",
-      element: <SubmissionDetail />,
+      path: "/news/:id",
+      element: <NewsDetail />,
     },
     {
-      path: "/submission/update/:id",
-      element: <SubmissionUpdate />,
+      path: "/information",
+      element: <InformationList />,
+    },
+    {
+      path: "/information/:id",
+      element: <InformationDetail />,
+    },
+    {
+      path: "/miniapps/:id",
+      element: <MiniAppDetail />,
     },
     {
       path: "*",
       element: <NotFound />,
     },
-  ]
+  ],
+  { basename },
 );
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryParamValidator>
+      <RouterProvider router={router} />
+      <QueryParamDisplay />
+    </QueryParamValidator>
+  );
 }
