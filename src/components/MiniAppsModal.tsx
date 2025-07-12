@@ -18,23 +18,15 @@ export default function MiniAppsModal({
   onSelectMiniApp,
 }: MiniAppsModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
 
   if (!isOpen) return null;
-
-  const categories = [
-    "All",
-    ...Array.from(new Set(miniApps.map((app) => app.category))),
-  ];
 
   const filteredMiniApps = miniApps.filter((app) => {
     const matchesSearch = app.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "All" || app.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
   const handleBackdropClick = (e: React.MouseEvent) => {

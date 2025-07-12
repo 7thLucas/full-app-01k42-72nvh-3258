@@ -1,3 +1,5 @@
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE THE LOGIC, EXCEPT THE FALLBACK IMAGE
+
 import { useState } from "react";
 import { Image, AlertCircle, Loader } from "lucide-react";
 

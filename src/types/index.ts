@@ -1,4 +1,5 @@
-// Raw API response interfaces
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
+
 export interface NewsListApiResponse {
   _id: string;
   artikel: string;
@@ -135,25 +136,28 @@ export const transformNewsItem = (item: any, id?: string): NewsItem => {
 
 // Category utility functions
 export const splitCategories = (kategoriesString: string): string[] => {
-  if (!kategoriesString || typeof kategoriesString !== 'string') {
+  if (!kategoriesString || typeof kategoriesString !== "string") {
     return [];
   }
+
   return kategoriesString
-    .split(',')
-    .map(cat => cat.trim())
-    .filter(cat => cat.length > 0);
+    .split(",")
+    .map((cat) => cat.trim())
+    .filter((cat) => cat.length > 0);
 };
 
 export const getDisplayCategories = (
-  kategoriesString: string, 
-  maxCategories: number = 2
+  kategoriesString: string,
+  maxCategories: number = 2,
 ): string[] => {
   const categories = splitCategories(kategoriesString);
+
   return categories.slice(0, maxCategories);
 };
 
 export const getFirstCategory = (kategoriesString: string): string => {
   const categories = splitCategories(kategoriesString);
+
   return categories.length > 0 ? categories[0] : kategoriesString;
 };
 
@@ -163,17 +167,17 @@ export const getCategoryCount = (kategoriesString: string): number => {
 
 export const formatCategoriesForDisplay = (
   kategoriesString: string,
-  maxCategories: number = 2
+  maxCategories: number = 2,
 ): { displayCategories: string[]; hasMore: boolean; totalCount: number } => {
   const allCategories = splitCategories(kategoriesString);
   const displayCategories = allCategories.slice(0, maxCategories);
   const hasMore = allCategories.length > maxCategories;
   const totalCount = allCategories.length;
-  
+
   return {
     displayCategories,
     hasMore,
-    totalCount
+    totalCount,
   };
 };
 
@@ -240,11 +244,16 @@ export interface InformationItem {
 }
 
 // Utility functions to transform Information API responses
-export const transformInformationListItem = (item: InformationListApiResponse): InformationItem => ({
+export const transformInformationListItem = (
+  item: InformationListApiResponse,
+): InformationItem => ({
   id: item.id.toString() || item._id.toString(),
   title: item.title,
   subtitle: item.subtitle,
-  summary: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : '',
+  summary: item.description
+    ? item.description.substring(0, 200) +
+      (item.description.length > 200 ? "..." : "")
+    : "",
   content: item.description,
   description: item.description,
   image: item.image,
@@ -256,7 +265,7 @@ export const transformInformationListItem = (item: InformationListApiResponse): 
   updatedAt: item.updatedAt,
   lastUpdated: item.updatedAt,
   priority: "medium", // Default priority, can be enhanced later
-  tags: item.kategori ? item.kategori.split(',').map(tag => tag.trim()) : [],
+  tags: item.kategori ? item.kategori.split(",").map((tag) => tag.trim()) : [],
   keyspace: item.keyspace,
   subDomain: item.subDomain,
   id_user: item.id_user,
@@ -269,7 +278,10 @@ export const transformInformationDetailItem = (
   id: id || item.id.toString(),
   title: item.title,
   subtitle: item.subtitle,
-  summary: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : '',
+  summary: item.description
+    ? item.description.substring(0, 200) +
+      (item.description.length > 200 ? "..." : "")
+    : "",
   content: item.description,
   description: item.description,
   image: item.image,
@@ -281,7 +293,7 @@ export const transformInformationDetailItem = (
   updatedAt: item.updatedAt,
   lastUpdated: item.updatedAt,
   priority: "medium", // Default priority, can be enhanced later
-  tags: item.kategori ? item.kategori.split(',').map(tag => tag.trim()) : [],
+  tags: item.kategori ? item.kategori.split(",").map((tag) => tag.trim()) : [],
   keyspace: item.keyspace,
   subDomain: item.subDomain,
   id_user: item.id_user,
@@ -317,7 +329,10 @@ export const isInformationDetailApiResponse = (
 };
 
 // Generic transformer for Information that can handle both formats
-export const transformInformationItem = (item: any, id?: string): InformationItem => {
+export const transformInformationItem = (
+  item: any,
+  id?: string,
+): InformationItem => {
   if (isInformationListApiResponse(item)) {
     return transformInformationListItem(item);
   } else if (isInformationDetailApiResponse(item)) {
@@ -457,15 +472,17 @@ export interface MiniApp {
 }
 
 // Utility functions to transform MiniApp API responses
-export const transformMiniAppListItem = (item: MiniAppListApiResponse): MiniApp => ({
+export const transformMiniAppListItem = (
+  item: MiniAppListApiResponse,
+): MiniApp => ({
   id: item.id.toString(),
   name: item.title,
-  description: item.desc || '',
-  icon: 'Square', // Default icon since API returns null
-  url: '', // Will be populated from build log
-  category: item.kategori || 'General',
+  description: item.desc || "",
+  icon: "Square", // Default icon since API returns null
+  url: "", // Will be populated from build log
+  category: item.kategori || "General",
   featured: false, // Will be set based on logic
-  isActive: item.status === 'ON',
+  isActive: item.status === "ON",
   isLoading: true, // Initially loading until we get the URL
   key: item.key,
   keyspace: item.keyspace,

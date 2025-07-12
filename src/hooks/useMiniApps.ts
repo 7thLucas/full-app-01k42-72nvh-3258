@@ -1,3 +1,5 @@
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
+
 import type { MiniApp } from "@/types";
 
 import { useState, useEffect } from "react";

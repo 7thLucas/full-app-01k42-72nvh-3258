@@ -1,3 +1,5 @@
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
+
 import type { InformationItem } from "@/types";
 
 import { useState, useEffect } from "react";
@@ -18,7 +20,9 @@ export const useInformation = () => {
 
       setInformation(informationData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch information");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch information",
+      );
     } finally {
       setLoading(false);
     }
@@ -42,7 +46,8 @@ export const useInformation = () => {
 
 // Hook for fetching a single information item
 export const useInformationItem = (id: string) => {
-  const [informationItem, setInformationItem] = useState<InformationItem | null>(null);
+  const [informationItem, setInformationItem] =
+    useState<InformationItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,4 +83,4 @@ export const useInformationItem = (id: string) => {
     error,
     refetch,
   };
-}; 
+};

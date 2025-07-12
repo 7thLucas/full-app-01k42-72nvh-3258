@@ -1,3 +1,5 @@
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
+
 import type { NewsItem } from "@/types";
 
 import { useState, useEffect } from "react";

@@ -1,3 +1,5 @@
+// THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "@/globals.css";

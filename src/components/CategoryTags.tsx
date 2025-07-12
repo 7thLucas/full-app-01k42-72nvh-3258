@@ -1,4 +1,5 @@
 import { Tag } from "lucide-react";
+
 import { formatCategoriesForDisplay } from "@/types";
 
 interface CategoryTagsProps {
@@ -84,4 +85,4 @@ export default function CategoryTags({
       )}
     </div>
   );
-} 
+}
