@@ -15,11 +15,13 @@ export default function Header() {
 
   const isActive = (href: string) => {
     if (href === "/") return location.pathname === "/";
+
     return location.pathname.startsWith(href);
   };
 
   const scrollToMiniApps = () => {
     const element = document.getElementById("miniapps-section");
+
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
@@ -31,10 +33,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link className="flex items-center space-x-3 group" to="/">
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-soft group-hover:shadow-medium transition-all duration-200">
               <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
-                <div className="w-3 h-3 bg-primary-600 rounded-sm"></div>
+                <div className="w-3 h-3 bg-primary-600 rounded-sm" />
               </div>
             </div>
             <div className="hidden sm:block">
@@ -52,31 +54,26 @@ export default function Header() {
             {navigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
-              
+
               return (
                 <Link
                   key={item.name}
-                  to={item.href}
-                  onClick={item.href === "#miniapps" ? scrollToMiniApps : undefined}
                   className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     active
                       ? "bg-primary-50 text-primary-700 shadow-soft"
                       : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
                   }`}
+                  to={item.href}
+                  onClick={
+                    item.href === "#miniapps" ? scrollToMiniApps : undefined
+                  }
                 >
-                  <Icon size={16} className="mr-2" />
+                  <Icon className="mr-2" size={16} />
                   {item.name}
                 </Link>
               );
             })}
           </nav>
-
-          {/* Search Button */}
-          <div className="hidden md:flex items-center space-x-3">
-            <button className="p-2 text-secondary-400 hover:text-secondary-600 hover:bg-secondary-50 rounded-lg transition-colors">
-              <Search size={20} />
-            </button>
-          </div>
 
           {/* Mobile menu button */}
           <button
@@ -94,10 +91,15 @@ export default function Header() {
               {navigation.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.href);
-                
+
                 return (
                   <Link
                     key={item.name}
+                    className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      active
+                        ? "bg-primary-50 text-primary-700 shadow-soft"
+                        : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
+                    }`}
                     to={item.href}
                     onClick={() => {
                       if (item.href === "#miniapps") {
@@ -106,20 +108,15 @@ export default function Header() {
                         setIsMenuOpen(false);
                       }
                     }}
-                    className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      active
-                        ? "bg-primary-50 text-primary-700 shadow-soft"
-                        : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
-                    }`}
                   >
-                    <Icon size={18} className="mr-3" />
+                    <Icon className="mr-3" size={18} />
                     {item.name}
                   </Link>
                 );
               })}
               <div className="pt-2 border-t border-border/50">
                 <button className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 transition-colors w-full">
-                  <Search size={18} className="mr-3" />
+                  <Search className="mr-3" size={18} />
                   Search
                 </button>
               </div>
@@ -129,4 +126,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}

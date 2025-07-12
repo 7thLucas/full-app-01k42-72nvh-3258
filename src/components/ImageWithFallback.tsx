@@ -35,7 +35,7 @@ export default function ImageWithFallback({
   if (!src || src.trim() === "") {
     return (
       <div
-        className={`bg-secondary-50 border border-secondary-200 flex items-center justify-center ${className}`}
+        className={`bg-secondary-50 flex items-center justify-center ${className}`}
       >
         {showIcon && (
           <div className="text-secondary-400 text-center">
@@ -65,7 +65,7 @@ export default function ImageWithFallback({
   if (hasError) {
     return (
       <div
-        className={`bg-danger-50 border border-danger-200 flex items-center justify-center ${className}`}
+        className={`bg-danger-50 flex items-center justify-center ${className}`}
       >
         {showIcon && (
           <div className="text-danger-400 text-center">

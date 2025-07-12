@@ -1,7 +1,13 @@
 import type { MiniApp } from "@/types";
 
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Calendar, RefreshCw, AlertCircle, TrendingUp, Users, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  RefreshCw,
+  AlertCircle,
+  Zap,
+} from "lucide-react";
 import * as Icons from "lucide-react";
 import { useState } from "react";
 
@@ -18,54 +24,27 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-hero text-white">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}></div>
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-800" />
       </div>
-      
+
       <div className="relative max-w-7xl mx-auto container-padding section-padding">
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20">
-            <Zap size={16} className="mr-2" />
+            <Zap className="mr-2" size={16} />
             Welcome to the Future of Professional Productivity
           </div>
-          
+
           <h1 className="heading-1 mb-6 text-white">
             Your Ultimate
             <span className="block text-primary-200">Professional Hub</span>
           </h1>
-          
+
           <p className="body-large mb-8 text-primary-100 max-w-2xl mx-auto">
-            Stay informed with the latest news, access critical information, and boost your productivity with our suite of powerful mini-applications. Everything you need in one elegant platform.
+            Stay informed with the latest news, access critical information, and
+            boost your productivity with our suite of powerful
+            mini-applications. Everything you need in one elegant platform.
           </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <button className="btn btn-lg bg-white text-primary-700 hover:bg-primary-50 shadow-soft hover:shadow-medium">
-              <TrendingUp size={20} className="mr-2" />
-              Explore Features
-            </button>
-            <button className="btn btn-lg btn-outline border-white/30 text-white hover:bg-white/10">
-              <Users size={20} className="mr-2" />
-              Join Community
-            </button>
-          </div>
-          
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">10K+</div>
-              <div className="text-primary-200 text-sm">Active Users</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">50+</div>
-              <div className="text-primary-200 text-sm">Mini Apps</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-primary-200 text-sm">Uptime</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -89,7 +68,6 @@ function NewsSection() {
         <div className="flex items-center justify-between mb-12">
           <div>
             <h2 className="heading-3 text-secondary-900 mb-2">Latest News</h2>
-            <p className="text-secondary-600">Stay updated with the latest developments and insights</p>
           </div>
           <div className="flex items-center space-x-3">
             {newsError && (
@@ -101,10 +79,7 @@ function NewsSection() {
                 <RefreshCw size={16} />
               </button>
             )}
-            <Link
-              className="btn btn-primary"
-              to="/news"
-            >
+            <Link className="btn btn-primary" to="/news">
               View All News
               <ArrowRight className="ml-2" size={16} />
             </Link>
@@ -115,14 +90,14 @@ function NewsSection() {
           <div className="grid md:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="card animate-pulse">
-                <div className="h-48 bg-secondary-200 rounded-t-xl"></div>
+                <div className="h-48 bg-secondary-200 rounded-t-xl" />
                 <div className="card-content">
-                  <div className="h-4 bg-secondary-200 rounded mb-3"></div>
-                  <div className="h-6 bg-secondary-200 rounded mb-2"></div>
-                  <div className="h-4 bg-secondary-200 rounded mb-4"></div>
+                  <div className="h-4 bg-secondary-200 rounded mb-3" />
+                  <div className="h-6 bg-secondary-200 rounded mb-2" />
+                  <div className="h-4 bg-secondary-200 rounded mb-4" />
                   <div className="flex gap-2">
-                    <div className="h-6 bg-secondary-200 rounded-full w-16"></div>
-                    <div className="h-6 bg-secondary-200 rounded-full w-20"></div>
+                    <div className="h-6 bg-secondary-200 rounded-full w-16" />
+                    <div className="h-6 bg-secondary-200 rounded-full w-20" />
                   </div>
                 </div>
               </div>
@@ -135,10 +110,7 @@ function NewsSection() {
               Failed to load news
             </h3>
             <p className="text-secondary-600 mb-6">{newsError}</p>
-            <button
-              className="btn btn-primary"
-              onClick={refetchNews}
-            >
+            <button className="btn btn-primary" onClick={refetchNews}>
               <RefreshCw className="mr-2" size={16} />
               Try Again
             </button>
@@ -172,7 +144,9 @@ function NewsSection() {
                       {new Date(article.createdAt).toLocaleDateString()}
                     </span>
                     {index === 0 && (
-                      <span className="ml-auto badge badge-primary">Latest</span>
+                      <span className="ml-auto badge badge-primary">
+                        Latest
+                      </span>
                     )}
                   </div>
                   <h3 className="heading-4 text-secondary-900 mb-3 line-clamp-2 group-hover:text-primary-600 transition-colors">
@@ -216,8 +190,9 @@ function InformationSection() {
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="heading-3 text-secondary-900 mb-2">Important Information</h2>
-            <p className="text-secondary-600">Critical updates and essential information you need to know</p>
+            <h2 className="heading-3 text-secondary-900 mb-2">
+              Important Information
+            </h2>
           </div>
           <div className="flex items-center space-x-3">
             {informationError && (
@@ -229,10 +204,7 @@ function InformationSection() {
                 <RefreshCw size={16} />
               </button>
             )}
-            <Link
-              className="btn btn-secondary"
-              to="/information"
-            >
+            <Link className="btn btn-secondary" to="/information">
               View All Information
               <ArrowRight className="ml-2" size={16} />
             </Link>
@@ -243,17 +215,17 @@ function InformationSection() {
           <div className="grid md:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="card animate-pulse">
-                <div className="h-48 bg-secondary-200 rounded-t-xl"></div>
+                <div className="h-48 bg-secondary-200 rounded-t-xl" />
                 <div className="card-content">
                   <div className="flex justify-between mb-4">
-                    <div className="h-6 bg-secondary-200 rounded-full w-16"></div>
-                    <div className="h-4 bg-secondary-200 rounded w-20"></div>
+                    <div className="h-6 bg-secondary-200 rounded-full w-16" />
+                    <div className="h-4 bg-secondary-200 rounded w-20" />
                   </div>
-                  <div className="h-6 bg-secondary-200 rounded mb-2"></div>
-                  <div className="h-4 bg-secondary-200 rounded mb-4"></div>
+                  <div className="h-6 bg-secondary-200 rounded mb-2" />
+                  <div className="h-4 bg-secondary-200 rounded mb-4" />
                   <div className="flex gap-2">
-                    <div className="h-6 bg-secondary-200 rounded-full w-12"></div>
-                    <div className="h-6 bg-secondary-200 rounded-full w-16"></div>
+                    <div className="h-6 bg-secondary-200 rounded-full w-12" />
+                    <div className="h-6 bg-secondary-200 rounded-full w-16" />
                   </div>
                 </div>
               </div>
@@ -266,10 +238,7 @@ function InformationSection() {
               Failed to load information
             </h3>
             <p className="text-secondary-600 mb-6">{informationError}</p>
-            <button
-              className="btn btn-secondary"
-              onClick={refetchInformation}
-            >
+            <button className="btn btn-secondary" onClick={refetchInformation}>
               <RefreshCw className="mr-2" size={16} />
               Try Again
             </button>
@@ -321,10 +290,7 @@ function InformationSection() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {info.tags.slice(0, 3).map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="badge badge-secondary"
-                      >
+                      <span key={tag} className="badge badge-secondary">
                         {tag}
                       </span>
                     ))}
@@ -359,19 +325,18 @@ function MiniAppsSection() {
   };
 
   return (
-    <section id="miniapps-section" className="section-padding">
+    <section className="section-padding" id="miniapps-section">
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between mb-12">
           <div>
             <h2 className="heading-3 text-secondary-900 mb-2">MiniApps</h2>
-            <p className="text-secondary-600">Powerful tools to enhance your productivity and workflow</p>
           </div>
           {miniApps.length > 8 && (
             <button
               className="btn btn-primary"
               onClick={() => setIsModalOpen(true)}
             >
-              View All MiniApps
+              View All
               <ArrowRight className="ml-2" size={16} />
             </button>
           )}
@@ -382,8 +347,8 @@ function MiniAppsSection() {
             {[...Array(8)].map((_, i) => (
               <div key={i} className="card animate-pulse">
                 <div className="card-content text-center">
-                  <div className="w-12 h-12 bg-secondary-200 rounded-lg mx-auto mb-3"></div>
-                  <div className="h-4 bg-secondary-200 rounded"></div>
+                  <div className="w-12 h-12 bg-secondary-200 rounded-lg mx-auto mb-3" />
+                  <div className="h-4 bg-secondary-200 rounded" />
                 </div>
               </div>
             ))}
@@ -395,10 +360,7 @@ function MiniAppsSection() {
               Failed to load MiniApps
             </h3>
             <p className="text-secondary-600 mb-6">{miniAppsError}</p>
-            <button
-              className="btn btn-primary"
-              onClick={refetchMiniApps}
-            >
+            <button className="btn btn-primary" onClick={refetchMiniApps}>
               <RefreshCw className="mr-2" size={16} />
               Try Again
             </button>

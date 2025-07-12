@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -11,10 +12,8 @@ export default function Layout({ children, className = "" }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-secondary-50">
       <Header />
-      <main className={`flex-1 ${className}`}>
-        {children}
-      </main>
+      <main className={`flex-1 ${className}`}>{children}</main>
       <Footer />
     </div>
   );
-} 
+}
