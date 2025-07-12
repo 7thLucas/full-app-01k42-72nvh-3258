@@ -1,116 +1,11 @@
-import type { InformationItem, MiniApp, NewsItem } from '@/types';
-
-export const mockNews: NewsItem[] = [
-  {
-    id: '1',
-    title: 'New Feature Launch: Advanced Analytics Dashboard',
-    summary: 'We are excited to announce the launch of our new advanced analytics dashboard with real-time insights.',
-    content: `We are thrilled to announce the launch of our new Advanced Analytics Dashboard, a comprehensive tool designed to provide real-time insights into your data.
-
-This new dashboard features:
-- Real-time data visualization
-- Customizable charts and graphs
-- Advanced filtering options
-- Export capabilities
-- Mobile-responsive design
-
-The dashboard is now available to all users and can be accessed through the main navigation menu. We believe this will significantly improve your ability to make data-driven decisions.
-
-For more information on how to use the new dashboard, please check out our documentation or contact our support team.`,
-    publishDate: '2024-01-15',
-    author: 'Product Team',
-    category: 'Product Updates',
-    imageUrl: 'https://via.placeholder.com/600x300/3B82F6/FFFFFF?text=Analytics+Dashboard',
-    featured: true,
-  },
-  {
-    id: '2',
-    title: 'System Maintenance Scheduled for January 20th',
-    summary: 'Scheduled maintenance will occur on January 20th from 2:00 AM to 4:00 AM EST to improve system performance.',
-    content: `We will be performing scheduled maintenance on our systems on January 20th, 2024, from 2:00 AM to 4:00 AM EST.
-
-During this maintenance window:
-- All services will be temporarily unavailable
-- No data will be lost
-- System performance will be improved
-- Security updates will be applied
-
-We apologize for any inconvenience this may cause and appreciate your patience as we work to improve our services.
-
-If you have any questions or concerns, please contact our support team at support@example.com.`,
-    publishDate: '2024-01-10',
-    author: 'Operations Team',
-    category: 'System Updates',
-    featured: false,
-  },
-  {
-    id: '3',
-    title: 'Security Enhancement: Two-Factor Authentication',
-    summary: 'Enhanced security measures now include mandatory two-factor authentication for all user accounts.',
-    content: `As part of our ongoing commitment to security, we are implementing two-factor authentication (2FA) for all user accounts.
-
-Starting February 1st, 2024:
-- All users will be required to enable 2FA
-- Multiple authentication methods will be supported
-- Recovery codes will be provided
-- Step-by-step setup guides will be available
-
-This enhancement will significantly improve the security of your account and protect your sensitive data.
-
-Please enable 2FA on your account before the deadline to ensure uninterrupted access to your account.`,
-    publishDate: '2024-01-08',
-    author: 'Security Team',
-    category: 'Security',
-    featured: true,
-  },
-  {
-    id: '4',
-    title: 'New Integration: Slack Notifications',
-    summary: 'Stay updated with real-time notifications directly in your Slack workspace.',
-    content: `We are excited to announce our new Slack integration, allowing you to receive real-time notifications directly in your Slack workspace.
-
-Key features:
-- Instant notifications for important events
-- Customizable notification settings
-- Support for multiple Slack workspaces
-- Easy setup and configuration
-
-To get started, visit the integrations section in your account settings and follow the setup instructions.
-
-This integration will help you stay informed and respond quickly to important updates without leaving your Slack workspace.`,
-    publishDate: '2024-01-05',
-    author: 'Integration Team',
-    category: 'Integrations',
-    featured: false,
-  },
-  {
-    id: '5',
-    title: 'Mobile App Update: Version 2.1 Released',
-    summary: 'Our mobile app has been updated with improved performance and new features.',
-    content: `We are pleased to announce the release of version 2.1 of our mobile app, featuring significant improvements and new functionality.
-
-What's new in version 2.1:
-- Improved app performance and speed
-- New dark mode option
-- Enhanced push notifications
-- Bug fixes and stability improvements
-- Updated user interface
-
-The update is now available on both iOS and Android app stores. We recommend updating to the latest version to take advantage of these improvements.
-
-Thank you for your continued support and feedback, which helps us make our app better for everyone.`,
-    publishDate: '2024-01-03',
-    author: 'Mobile Team',
-    category: 'Mobile',
-    featured: false,
-  },
-];
+import type { InformationItem, MiniApp } from "@/types";
 
 export const mockInformation: InformationItem[] = [
   {
-    id: '1',
-    title: 'Getting Started Guide',
-    summary: 'Complete guide to help you get started with our platform and make the most of its features.',
+    id: "1",
+    title: "Getting Started Guide",
+    summary:
+      "Complete guide to help you get started with our platform and make the most of its features.",
     content: `Welcome to our platform! This comprehensive guide will help you get started and make the most of all available features.
 
 ## Account Setup
@@ -138,15 +33,16 @@ export const mockInformation: InformationItem[] = [
 - Direct support contact
 
 For additional help, please don't hesitate to reach out to our support team.`,
-    category: 'Getting Started',
-    lastUpdated: '2024-01-15',
-    priority: 'high',
-    tags: ['guide', 'setup', 'basics'],
+    category: "Getting Started",
+    lastUpdated: "2024-01-15",
+    priority: "high",
+    tags: ["guide", "setup", "basics"],
   },
   {
-    id: '2',
-    title: 'API Documentation',
-    summary: 'Comprehensive API documentation for developers looking to integrate with our platform.',
+    id: "2",
+    title: "API Documentation",
+    summary:
+      "Comprehensive API documentation for developers looking to integrate with our platform.",
     content: `Our API provides programmatic access to all platform features, allowing you to build custom integrations and applications.
 
 ## Authentication
@@ -175,15 +71,16 @@ We provide SDKs for popular programming languages:
 - Ruby
 
 For complete API documentation, visit our developer portal.`,
-    category: 'Developer',
-    lastUpdated: '2024-01-12',
-    priority: 'medium',
-    tags: ['api', 'developer', 'integration'],
+    category: "Developer",
+    lastUpdated: "2024-01-12",
+    priority: "medium",
+    tags: ["api", "developer", "integration"],
   },
   {
-    id: '3',
-    title: 'Privacy Policy',
-    summary: 'Our commitment to protecting your privacy and how we handle your personal information.',
+    id: "3",
+    title: "Privacy Policy",
+    summary:
+      "Our commitment to protecting your privacy and how we handle your personal information.",
     content: `This Privacy Policy describes how we collect, use, and protect your personal information when you use our services.
 
 ## Information We Collect
@@ -213,15 +110,16 @@ You have the right to:
 - Data portability
 
 For questions about this policy, please contact our privacy team.`,
-    category: 'Legal',
-    lastUpdated: '2024-01-10',
-    priority: 'high',
-    tags: ['privacy', 'legal', 'policy'],
+    category: "Legal",
+    lastUpdated: "2024-01-10",
+    priority: "high",
+    tags: ["privacy", "legal", "policy"],
   },
   {
-    id: '4',
-    title: 'Troubleshooting Common Issues',
-    summary: 'Solutions to frequently encountered problems and how to resolve them quickly.',
+    id: "4",
+    title: "Troubleshooting Common Issues",
+    summary:
+      "Solutions to frequently encountered problems and how to resolve them quickly.",
     content: `This guide covers solutions to the most common issues users encounter and how to resolve them.
 
 ## Login Issues
@@ -257,15 +155,16 @@ For questions about this policy, please contact our privacy team.`,
 4. Reinstall the app if necessary
 
 If you continue to experience issues, please contact our support team with details about the problem.`,
-    category: 'Support',
-    lastUpdated: '2024-01-08',
-    priority: 'medium',
-    tags: ['troubleshooting', 'support', 'help'],
+    category: "Support",
+    lastUpdated: "2024-01-08",
+    priority: "medium",
+    tags: ["troubleshooting", "support", "help"],
   },
   {
-    id: '5',
-    title: 'Terms of Service',
-    summary: 'Terms and conditions governing the use of our platform and services.',
+    id: "5",
+    title: "Terms of Service",
+    summary:
+      "Terms and conditions governing the use of our platform and services.",
     content: `These Terms of Service govern your use of our platform and services. By using our services, you agree to these terms.
 
 ## Acceptance of Terms
@@ -294,132 +193,132 @@ Our liability is limited to the maximum extent permitted by law. We are not liab
 We may update these terms from time to time. We will notify you of significant changes.
 
 For questions about these terms, please contact our legal team.`,
-    category: 'Legal',
-    lastUpdated: '2024-01-05',
-    priority: 'high',
-    tags: ['terms', 'legal', 'conditions'],
+    category: "Legal",
+    lastUpdated: "2024-01-05",
+    priority: "high",
+    tags: ["terms", "legal", "conditions"],
   },
 ];
 
 export const mockMiniApps: MiniApp[] = [
   {
-    id: '1',
-    name: 'Task Manager',
-    description: 'Organize and track your tasks efficiently',
-    icon: 'CheckSquare',
-    url: 'https://tasks.example.com',
-    category: 'Productivity',
+    id: "1",
+    name: "Task Manager",
+    description: "Organize and track your tasks efficiently",
+    icon: "CheckSquare",
+    url: "https://tasks.example.com",
+    category: "Productivity",
     featured: true,
     isActive: true,
   },
   {
-    id: '2',
-    name: 'Calendar',
-    description: 'Schedule and manage your events',
-    icon: 'Calendar',
-    url: 'https://calendar.example.com',
-    category: 'Productivity',
+    id: "2",
+    name: "Calendar",
+    description: "Schedule and manage your events",
+    icon: "Calendar",
+    url: "https://calendar.example.com",
+    category: "Productivity",
     featured: true,
     isActive: true,
   },
   {
-    id: '3',
-    name: 'Notes',
-    description: 'Take and organize your notes',
-    icon: 'FileText',
-    url: 'https://notes.example.com',
-    category: 'Productivity',
+    id: "3",
+    name: "Notes",
+    description: "Take and organize your notes",
+    icon: "FileText",
+    url: "https://notes.example.com",
+    category: "Productivity",
     featured: true,
     isActive: true,
   },
   {
-    id: '4',
-    name: 'Calculator',
-    description: 'Advanced calculator with scientific functions',
-    icon: 'Calculator',
-    url: 'https://calc.example.com',
-    category: 'Utilities',
+    id: "4",
+    name: "Calculator",
+    description: "Advanced calculator with scientific functions",
+    icon: "Calculator",
+    url: "https://calc.example.com",
+    category: "Utilities",
     featured: true,
     isActive: true,
   },
   {
-    id: '5',
-    name: 'Weather',
-    description: 'Get current weather and forecasts',
-    icon: 'Cloud',
-    url: 'https://weather.example.com',
-    category: 'Information',
+    id: "5",
+    name: "Weather",
+    description: "Get current weather and forecasts",
+    icon: "Cloud",
+    url: "https://weather.example.com",
+    category: "Information",
     featured: true,
     isActive: true,
   },
   {
-    id: '6',
-    name: 'Timer',
-    description: 'Pomodoro timer and stopwatch',
-    icon: 'Clock',
-    url: 'https://timer.example.com',
-    category: 'Productivity',
+    id: "6",
+    name: "Timer",
+    description: "Pomodoro timer and stopwatch",
+    icon: "Clock",
+    url: "https://timer.example.com",
+    category: "Productivity",
     featured: true,
     isActive: true,
   },
   {
-    id: '7',
-    name: 'Unit Converter',
-    description: 'Convert between different units',
-    icon: 'RefreshCw',
-    url: 'https://converter.example.com',
-    category: 'Utilities',
+    id: "7",
+    name: "Unit Converter",
+    description: "Convert between different units",
+    icon: "RefreshCw",
+    url: "https://converter.example.com",
+    category: "Utilities",
     featured: true,
     isActive: true,
   },
   {
-    id: '8',
-    name: 'QR Generator',
-    description: 'Generate QR codes for text and URLs',
-    icon: 'QrCode',
-    url: 'https://qr.example.com',
-    category: 'Utilities',
+    id: "8",
+    name: "QR Generator",
+    description: "Generate QR codes for text and URLs",
+    icon: "QrCode",
+    url: "https://qr.example.com",
+    category: "Utilities",
     featured: true,
     isActive: true,
   },
   {
-    id: '9',
-    name: 'Password Generator',
-    description: 'Generate secure passwords',
-    icon: 'Key',
-    url: 'https://password.example.com',
-    category: 'Security',
+    id: "9",
+    name: "Password Generator",
+    description: "Generate secure passwords",
+    icon: "Key",
+    url: "https://password.example.com",
+    category: "Security",
     featured: false,
     isActive: true,
   },
   {
-    id: '10',
-    name: 'Color Picker',
-    description: 'Pick and generate color palettes',
-    icon: 'Palette',
-    url: 'https://colors.example.com',
-    category: 'Design',
+    id: "10",
+    name: "Color Picker",
+    description: "Pick and generate color palettes",
+    icon: "Palette",
+    url: "https://colors.example.com",
+    category: "Design",
     featured: false,
     isActive: true,
   },
   {
-    id: '11',
-    name: 'Text Editor',
-    description: 'Simple text editor with formatting',
-    icon: 'Edit',
-    url: 'https://editor.example.com',
-    category: 'Productivity',
+    id: "11",
+    name: "Text Editor",
+    description: "Simple text editor with formatting",
+    icon: "Edit",
+    url: "https://editor.example.com",
+    category: "Productivity",
     featured: false,
     isActive: true,
   },
   {
-    id: '12',
-    name: 'URL Shortener',
-    description: 'Shorten long URLs',
-    icon: 'Link',
-    url: 'https://short.example.com',
-    category: 'Utilities',
+    id: "12",
+    name: "URL Shortener",
+    description: "Shorten long URLs",
+    icon: "Link",
+    url: "https://short.example.com",
+    category: "Utilities",
     featured: false,
     isActive: true,
   },
-]; 
+];

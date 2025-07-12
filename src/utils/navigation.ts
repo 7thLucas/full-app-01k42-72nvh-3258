@@ -1,10 +1,11 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 /**
  * Get current query parameters as a string
  */
 export const useQueryParams = () => {
   const location = useLocation();
+
   return location.search;
 };
 
@@ -13,6 +14,7 @@ export const useQueryParams = () => {
  */
 export const withQueryParams = (path: string, search?: string) => {
   const queryParams = search || window.location.search;
+
   return queryParams ? `${path}${queryParams}` : path;
 };
 
@@ -21,6 +23,6 @@ export const withQueryParams = (path: string, search?: string) => {
  */
 export const useNavigationWithParams = () => {
   const queryParams = useQueryParams();
-  
+
   return (path: string) => withQueryParams(path, queryParams);
-}; 
+};

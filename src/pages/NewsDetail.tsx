@@ -8,10 +8,11 @@ import {
   RefreshCw,
   AlertCircle,
 } from "lucide-react";
+import { getFirstCategory, splitCategories } from "@/types";
 
 import { useNewsItem, useNews } from "@/hooks/useNews";
-import { formatHtmlContent } from "@/utils/htmlUtils";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import CategoryTags from "@/components/CategoryTags";
 
 export default function NewsDetail() {
   const { id } = useParams<{ id: string }>();
@@ -82,7 +83,15 @@ export default function NewsDetail() {
   }
 
   const relatedNews = allNews
-    .filter((item) => item.id !== news.id && item.category === news.category)
+    .filter((item) => {
+      if (item.id === news.id) return false;
+      
+      // Check if any category matches
+      const newsCategories = splitCategories(news.kategori);
+      const itemCategories = splitCategories(item.kategori);
+      
+      return newsCategories.some(category => itemCategories.includes(category));
+    })
     .slice(0, 3);
 
   const formatDate = (dateString: string) => {
@@ -98,7 +107,7 @@ export default function NewsDetail() {
       try {
         await navigator.share({
           title: news.title,
-          text: news.summary,
+          text: news.subtitle || news.description,
           url: window.location.href,
         });
       } catch (error) {
@@ -143,7 +152,7 @@ export default function NewsDetail() {
               alt={news.title}
               className="w-full h-full object-cover"
               iconSize={64}
-              src={news.imageUrl}
+              src={news.image}
             />
           </div>
 
@@ -151,14 +160,9 @@ export default function NewsDetail() {
             {/* Article Meta */}
             <div className="flex items-center text-sm text-gray-500 mb-6">
               <Calendar size={16} />
-              <span className="ml-2">{formatDate(news.publishDate)}</span>
+              <span className="ml-2">{formatDate(news.createdAt)}</span>
               <User className="ml-6" size={16} />
-              <span className="ml-2">{news.author}</span>
-              {news.featured && (
-                <span className="ml-6 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                  Featured
-                </span>
-              )}
+              <span className="ml-2">{getFirstCategory(news.kategori)}</span>
             </div>
 
             {/* Title */}
@@ -167,28 +171,32 @@ export default function NewsDetail() {
             </h1>
 
             {/* Summary */}
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              {news.summary}
-            </p>
+            {news.subtitle && (
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                {news.subtitle}
+              </p>
+            )}
 
-            {/* Category */}
+            {/* Categories */}
             <div className="mb-8">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                <Tag className="mr-1" size={14} />
-                {news.category}
-              </span>
+              <CategoryTags
+                categories={news.kategori}
+                maxDisplay={10}
+                size="md"
+                variant="blue"
+              />
             </div>
 
             {/* Content */}
             <div className="prose prose-lg max-w-none">
-              {news.content.includes("<") ? (
+              {news.description?.includes("<") ? (
                 <div
-                  dangerouslySetInnerHTML={{ __html: news.content }}
-                  className="text-gray-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: news.description }}
+                  className="text-gray-700 leading-relaxed whitespace-pre-line"
                 />
               ) : (
                 <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                  {formatHtmlContent(news.content)}
+                  {news.description}
                 </div>
               )}
             </div>
@@ -212,20 +220,20 @@ export default function NewsDetail() {
                     alt={relatedItem.title}
                     className="w-full h-48 object-cover"
                     iconSize={24}
-                    src={relatedItem.imageUrl}
+                    src={relatedItem.image}
                   />
                   <div className="p-4">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <Calendar size={12} />
                       <span className="ml-1">
-                        {formatDate(relatedItem.publishDate)}
+                        {formatDate(relatedItem.createdAt)}
                       </span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
                       {relatedItem.title}
                     </h3>
                     <p className="text-sm text-gray-600 line-clamp-3">
-                      {relatedItem.summary}
+                      {relatedItem.subtitle || relatedItem.description}
                     </p>
                   </div>
                 </Link>

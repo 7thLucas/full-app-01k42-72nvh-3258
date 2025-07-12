@@ -13,9 +13,11 @@ import {
 } from "lucide-react";
 import * as Icons from "lucide-react";
 
+import { getFirstCategory } from "@/types";
 import { mockInformation, mockMiniApps } from "@/data/mockData";
 import MiniAppsModal from "@/components/MiniAppsModal";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import CategoryTags from "@/components/CategoryTags";
 import { useNews } from "@/hooks/useNews";
 
 export default function Home() {
@@ -29,7 +31,7 @@ export default function Home() {
   } = useNews();
 
   // Get featured/latest items
-  const latestNews = news.filter((newsItem) => newsItem.featured).slice(0, 3);
+  const latestNews = news.filter((item) => item.featured).slice(0, 3);
   const topInformation = mockInformation
     .filter((info) => info.priority === "high")
     .slice(0, 3);
@@ -144,26 +146,33 @@ export default function Home() {
                     alt={newsItem.title}
                     className="w-full h-48 object-cover"
                     iconSize={32}
-                    src={newsItem.imageUrl}
+                    src={newsItem.image}
                   />
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <Calendar size={14} />
                       <span className="ml-1">
-                        {formatDate(newsItem.publishDate)}
+                        {formatDate(newsItem.createdAt)}
                       </span>
                       <User className="ml-4" size={14} />
-                      <span className="ml-1">{newsItem.author}</span>
+                      <span className="ml-1">
+                        {getFirstCategory(newsItem.kategori)}
+                      </span>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
                       {newsItem.title}
                     </h3>
-                    <p className="text-gray-600 mb-4">{newsItem.summary}</p>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: newsItem.description }}
+                      className="text-gray-600 mb-4 line-clamp-3"
+                    />
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        <Tag className="mr-1" size={12} />
-                        {newsItem.category}
-                      </span>
+                      <CategoryTags
+                        categories={newsItem.kategori}
+                        maxDisplay={2}
+                        size="sm"
+                        variant="blue"
+                      />
                     </div>
                   </div>
                 </Link>

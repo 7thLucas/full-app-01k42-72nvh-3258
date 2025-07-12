@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Image, AlertCircle } from 'lucide-react';
+import { useState } from "react";
+import { Image, AlertCircle } from "lucide-react";
 
 interface ImageWithFallbackProps {
   src?: string;
@@ -13,10 +13,10 @@ interface ImageWithFallbackProps {
 export default function ImageWithFallback({
   src,
   alt,
-  className = '',
+  className = "",
   fallbackSrc,
   showIcon = true,
-  iconSize = 48
+  iconSize = 48,
 }: ImageWithFallbackProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,12 +32,14 @@ export default function ImageWithFallback({
   };
 
   // If no src provided, show fallback immediately
-  if (!src || src.trim() === '') {
+  if (!src || src.trim() === "") {
     return (
-      <div className={`bg-gray-100 flex items-center justify-center ${className}`}>
+      <div
+        className={`bg-gray-100 flex items-center justify-center ${className}`}
+      >
         {showIcon && (
           <div className="text-gray-400 text-center">
-            <Image size={iconSize} className="mx-auto mb-2" />
+            <Image className="mx-auto mb-2" size={iconSize} />
             <p className="text-sm">No image</p>
           </div>
         )}
@@ -46,15 +48,15 @@ export default function ImageWithFallback({
   }
 
   // If primary image failed and we have a fallback, try fallback
-  if (hasError && fallbackSrc && !fallbackSrc.includes('error')) {
+  if (hasError && fallbackSrc && !fallbackSrc.includes("error")) {
     return (
       <ImageWithFallback
-        src={fallbackSrc}
         alt={alt}
         className={className}
-        fallbackSrc={fallbackSrc + '_error'} // Prevent infinite loop
-        showIcon={showIcon}
+        fallbackSrc={fallbackSrc + "_error"} // Prevent infinite loop
         iconSize={iconSize}
+        showIcon={showIcon}
+        src={fallbackSrc}
       />
     );
   }
@@ -62,10 +64,12 @@ export default function ImageWithFallback({
   // If image failed and no fallback, show error state
   if (hasError) {
     return (
-      <div className={`bg-gray-100 flex items-center justify-center ${className}`}>
+      <div
+        className={`bg-gray-100 flex items-center justify-center ${className}`}
+      >
         {showIcon && (
           <div className="text-gray-400 text-center">
-            <AlertCircle size={iconSize} className="mx-auto mb-2" />
+            <AlertCircle className="mx-auto mb-2" size={iconSize} />
             <p className="text-sm">Failed to load</p>
           </div>
         )}
@@ -76,21 +80,23 @@ export default function ImageWithFallback({
   return (
     <>
       {isLoading && (
-        <div className={`bg-gray-200 animate-pulse flex items-center justify-center ${className}`}>
+        <div
+          className={`bg-gray-200 animate-pulse flex items-center justify-center ${className}`}
+        >
           {showIcon && (
             <div className="text-gray-400">
-              <Image size={iconSize} className="animate-pulse" />
+              <Image className="animate-pulse" size={iconSize} />
             </div>
           )}
         </div>
       )}
       <img
-        src={src}
         alt={alt}
-        className={`${className} ${isLoading ? 'hidden' : 'block'}`}
+        className={`${className} ${isLoading ? "hidden" : "block"}`}
+        src={src}
         onError={handleError}
         onLoad={handleLoad}
       />
     </>
   );
-} 
+}

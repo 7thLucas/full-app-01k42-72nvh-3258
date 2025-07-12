@@ -10,8 +10,14 @@ import {
   AlertCircle,
 } from "lucide-react";
 
+import {
+  getFirstCategory,
+  formatCategoriesForDisplay,
+  splitCategories,
+} from "@/types";
 import { useNews } from "@/hooks/useNews";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import CategoryTags from "@/components/CategoryTags";
 
 export default function NewsList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,31 +25,35 @@ export default function NewsList() {
   const [sortBy, setSortBy] = useState("date");
   const { news, loading, error, refetch } = useNews();
 
-  const categories = [
-    "All",
-    ...Array.from(new Set(news.map((newsItem) => newsItem.category))),
-  ];
+  // Get all unique categories from all news items
+  const allCategories = news.flatMap((newsItem) =>
+    splitCategories(newsItem.kategori),
+  );
+  const categories = ["All", ...Array.from(new Set(allCategories))];
 
   const filteredNews = news
     .filter((news) => {
       const matchesSearch =
-        news.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        news.summary.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        news.author.toLowerCase().includes(searchTerm.toLowerCase());
+        news.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        news.subtitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        news.description?.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory =
-        selectedCategory === "All" || news.category === selectedCategory;
+        selectedCategory === "All" ||
+        splitCategories(news.kategori).includes(selectedCategory);
 
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
       if (sortBy === "date") {
         return (
-          new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       } else if (sortBy === "title") {
         return a.title.localeCompare(b.title);
-      } else if (sortBy === "author") {
-        return a.author.localeCompare(b.author);
+      } else if (sortBy === "category") {
+        return getFirstCategory(a.kategori).localeCompare(
+          getFirstCategory(b.kategori),
+        );
       }
 
       return 0;
@@ -115,7 +125,7 @@ export default function NewsList() {
             >
               <option value="date">Sort by Date</option>
               <option value="title">Sort by Title</option>
-              <option value="author">Sort by Author</option>
+              <option value="category">Sort by Category</option>
             </select>
           </div>
         </div>
@@ -164,17 +174,17 @@ export default function NewsList() {
                       alt={news.title}
                       className="w-full h-48 md:h-full object-cover"
                       iconSize={40}
-                      src={news.imageUrl}
+                      src={news.image}
                     />
                   </div>
                   <div className="p-6 md:w-2/3">
                     <div className="flex items-center text-sm text-gray-500 mb-3">
                       <Calendar size={14} />
-                      <span className="ml-1">
-                        {formatDate(news.publishDate)}
-                      </span>
+                      <span className="ml-1">{formatDate(news.createdAt)}</span>
                       <User className="ml-4" size={14} />
-                      <span className="ml-1">{news.author}</span>
+                      <span className="ml-1">
+                        {getFirstCategory(news.kategori)}
+                      </span>
                       {news.featured && (
                         <span className="ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           Featured
@@ -186,14 +196,17 @@ export default function NewsList() {
                         {news.title}
                       </h2>
                     </Link>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {news.summary}
-                    </p>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: news.description }}
+                      className="text-gray-600 mb-4 line-clamp-3"
+                    />
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        <Tag className="mr-1" size={12} />
-                        {news.category}
-                      </span>
+                      <CategoryTags
+                        categories={news.kategori}
+                        maxDisplay={3}
+                        size="sm"
+                        variant="blue"
+                      />
                       <Link
                         className="text-blue-600 hover:text-blue-800 font-medium text-sm"
                         to={`/news/${news.id}`}

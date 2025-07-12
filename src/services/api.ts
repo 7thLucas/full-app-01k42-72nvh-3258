@@ -1,8 +1,12 @@
-import type { NewsItem } from "@/types";
+import type {
+  NewsItem,
+  NewsListApiResponse,
+  NewsDetailApiResponse,
+} from "@/types";
 
 import axios from "axios";
 
-import { createSummary } from "@/utils/htmlUtils";
+import { transformNewsListItem, transformNewsDetailItem } from "@/types";
 import { getApiConfig } from "@/utils/config";
 
 // Create axios instance factory
@@ -24,44 +28,26 @@ interface ApiNewsResponse {
   code: number;
   message: string;
   total: number;
-  result: any[];
+  result: NewsListApiResponse[];
 }
 
-// Transform API data to our NewsItem format
-const transformApiDataToNewsItem = async (apiData: any): Promise<NewsItem> => {
-  // Extract base URL for images if needed
-  let imageUrl: string | undefined;
-
-  if (apiData.image && apiData.image.trim() !== "") {
-    try {
-      const config = await getApiConfig();
-
-      imageUrl = `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-berita/${apiData.image}`;
-    } catch (error) {
-      // If config is not available, use a fallback or undefined
-      console.warn("Failed to construct image URL:", error);
-      imageUrl = undefined;
-    }
+// Helper function to construct full image URL
+const constructImageUrl = async (
+  imagePath: string,
+): Promise<string | undefined> => {
+  if (!imagePath || imagePath.trim() === "") {
+    return undefined;
   }
 
-  // Clean up HTML content for summary
-  const cleanSummary =
-    apiData.subtitle ||
-    (apiData.description ? createSummary(apiData.description, 200) : "") ||
-    apiData.title ||
-    "";
+  try {
+    const config = await getApiConfig();
 
-  return {
-    id: apiData.id?.toString() || apiData._id?.toString() || "",
-    title: apiData.title || "Untitled",
-    summary: cleanSummary,
-    content: apiData.description || "",
-    publishDate: apiData.createdAt || new Date().toISOString(),
-    author: "Admin", // API doesn't seem to have author field
-    category: apiData.kategori || "General",
-    imageUrl: imageUrl,
-    featured: false, // We'll determine this based on recency or other criteria
-  };
+    return `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-berita/${imagePath}`;
+  } catch (error) {
+    console.warn("Failed to construct image URL:", error);
+
+    return undefined;
+  }
 };
 
 // Fetch news list
@@ -82,16 +68,25 @@ export const fetchNews = async (
     };
 
     const response = await apiClient.get<ApiNewsResponse>(
-      `/informasi-umum/${config.keyspace}/${config.role}/list/${config.userId}`,
+      `/berita/${config.keyspace}/${config.role}/list/${config.userId}`,
       { params },
     );
 
     if (response.data.status && Array.isArray(response.data.result)) {
-      // Mark the first few items as featured (most recent)
+      // Process the raw API data
       const newsItems = await Promise.all(
-        response.data.result.map(
-          async (item: any) => await transformApiDataToNewsItem(item),
-        ),
+        response.data.result.map(async (item: NewsListApiResponse) => {
+          // Transform the API response to NewsItem
+          const newsItem = transformNewsListItem(item);
+
+          // Construct full image URL if image exists
+          const imageUrl = await constructImageUrl(item.gambar);
+
+          return {
+            ...newsItem,
+            image: imageUrl,
+          };
+        }),
       );
 
       // Mark first 3 items as featured
@@ -115,7 +110,7 @@ interface ApiNewsDetailResponse {
   status: boolean;
   code: number;
   message: string;
-  result: any;
+  result: NewsDetailApiResponse;
 }
 
 // Fetch single news item by ID
@@ -125,11 +120,22 @@ export const fetchNewsById = async (id: string): Promise<NewsItem | null> => {
     const apiClient = await createApiClient();
 
     const response = await apiClient.get<ApiNewsDetailResponse>(
-      `/informasi-umum/${config.keyspace}/${config.role}/detail/${config.userId}/${id}`,
+      `/berita/${config.keyspace}/${config.role}/detail/${config.userId}/${id}`,
     );
 
     if (response.data.status && response.data.result) {
-      return await transformApiDataToNewsItem(response.data.result);
+      const item = response.data.result;
+
+      // Transform the API response to NewsItem
+      const newsItem = transformNewsDetailItem(item, id);
+
+      // Construct full image URL if image exists
+      const imageUrl = await constructImageUrl(item.gambar);
+
+      return {
+        ...newsItem,
+        image: imageUrl,
+      };
     }
 
     return null;
