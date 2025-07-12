@@ -52,8 +52,10 @@ const constructImageUrl = async (
     return undefined;
   }
 
+  const config = await getApiConfig();
+
   try {
-    return `https://satudesa-service-client.quantumbyte.ai/uploads/app-${type}/${imagePath}`;
+    return `https://${config.keyspace}-service-client.quantumbyte.ai/uploads/app-${type}/${imagePath}`;
   } catch (error) {
     console.warn("Failed to construct image URL:", error);
 
