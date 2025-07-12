@@ -69,25 +69,25 @@ fi
 # Find and replace all occurrences of "####VAR:KEYSPACE####" with the keyspace
 # if os is mac, use sed -i ""
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:KEYSPACE####/${KEYSPACE}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:KEYSPACE####/${KEYSPACE}/g"
 else
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:KEYSPACE####/${KEYSPACE}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:KEYSPACE####/${KEYSPACE}/g"
 fi
 
 # Find and replace all occurrences of "####VAR:ROLE####" with the role
 # if os is mac, use sed -i ""
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:ROLE####/${ROLE}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:ROLE####/${ROLE}/g"
 else
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:ROLE####/${ROLE}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:ROLE####/${ROLE}/g"
 fi
 
 # Find and replace all occurrences of "####VAR:USER_ID####" with the user id
 # if os is mac, use sed -i ""
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:USER_ID####/${USER_ID}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "" "s/####VAR:USER_ID####/${USER_ID}/g"
 else
-    find . -type f \( -name "*.ts" -o -name "*build_run.sh" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.json" -o -name "*.md" -o -name "*.html" -o -name "*.css" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:USER_ID####/${USER_ID}/g"
+    find . -type f \( -name "*.ts" -o -name "config.yml" \) -not -path "./node_modules/*" | xargs sed -i "s/####VAR:USER_ID####/${USER_ID}/g"
 fi
 
 echo "Setup complete!"
