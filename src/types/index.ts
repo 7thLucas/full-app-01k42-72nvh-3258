@@ -177,16 +177,155 @@ export const formatCategoriesForDisplay = (
   };
 };
 
+// Raw API response interfaces for Information
+export interface InformationListApiResponse {
+  _id: number;
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  image: string;
+  kategori: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedBy: null;
+  deletedAt: null;
+  keyspace: string;
+  subDomain: string;
+  id_user: number;
+}
+
+export interface InformationDetailApiResponse {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  image: string;
+  kategori: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null;
+  deletedBy: null;
+  keyspace: string;
+  subDomain: string;
+  id_user: number;
+}
+
+// Unified InformationItem interface for components
 export interface InformationItem {
   id: string;
   title: string;
+  subtitle?: string;
   summary: string;
   content: string;
+  description: string;
+  image?: string;
   category: string;
+  kategori: string;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
   lastUpdated: string;
   priority: "low" | "medium" | "high";
   tags: string[];
+  keyspace: string;
+  subDomain: string;
+  id_user: number;
+  featured?: boolean;
 }
+
+// Utility functions to transform Information API responses
+export const transformInformationListItem = (item: InformationListApiResponse): InformationItem => ({
+  id: item.id.toString() || item._id.toString(),
+  title: item.title,
+  subtitle: item.subtitle,
+  summary: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : '',
+  content: item.description,
+  description: item.description,
+  image: item.image,
+  category: item.kategori,
+  kategori: item.kategori,
+  startDate: item.startDate,
+  endDate: item.endDate,
+  createdAt: item.createdAt,
+  updatedAt: item.updatedAt,
+  lastUpdated: item.updatedAt,
+  priority: "medium", // Default priority, can be enhanced later
+  tags: item.kategori ? item.kategori.split(',').map(tag => tag.trim()) : [],
+  keyspace: item.keyspace,
+  subDomain: item.subDomain,
+  id_user: item.id_user,
+});
+
+export const transformInformationDetailItem = (
+  item: InformationDetailApiResponse,
+  id?: string,
+): InformationItem => ({
+  id: id || item.id.toString(),
+  title: item.title,
+  subtitle: item.subtitle,
+  summary: item.description ? item.description.substring(0, 200) + (item.description.length > 200 ? '...' : '') : '',
+  content: item.description,
+  description: item.description,
+  image: item.image,
+  category: item.kategori,
+  kategori: item.kategori,
+  startDate: item.startDate,
+  endDate: item.endDate,
+  createdAt: item.createdAt,
+  updatedAt: item.updatedAt,
+  lastUpdated: item.updatedAt,
+  priority: "medium", // Default priority, can be enhanced later
+  tags: item.kategori ? item.kategori.split(',').map(tag => tag.trim()) : [],
+  keyspace: item.keyspace,
+  subDomain: item.subDomain,
+  id_user: item.id_user,
+});
+
+// Type guards for Information API responses
+export const isInformationListApiResponse = (
+  item: any,
+): item is InformationListApiResponse => {
+  return (
+    item &&
+    typeof item === "object" &&
+    (item.hasOwnProperty("_id") || item.hasOwnProperty("id")) &&
+    item.hasOwnProperty("title") &&
+    item.hasOwnProperty("description") &&
+    item.hasOwnProperty("kategori")
+  );
+};
+
+export const isInformationDetailApiResponse = (
+  item: any,
+): item is InformationDetailApiResponse => {
+  return (
+    item &&
+    typeof item === "object" &&
+    item.hasOwnProperty("id") &&
+    item.hasOwnProperty("title") &&
+    item.hasOwnProperty("description") &&
+    item.hasOwnProperty("kategori") &&
+    item.hasOwnProperty("id_user") &&
+    typeof item.id_user === "number"
+  );
+};
+
+// Generic transformer for Information that can handle both formats
+export const transformInformationItem = (item: any, id?: string): InformationItem => {
+  if (isInformationListApiResponse(item)) {
+    return transformInformationListItem(item);
+  } else if (isInformationDetailApiResponse(item)) {
+    return transformInformationDetailItem(item, id);
+  } else {
+    throw new Error("Invalid information item format");
+  }
+};
 
 export interface MiniApp {
   id: string;

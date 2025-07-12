@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Calendar,
   User,
-  Tag,
   MoreHorizontal,
   RefreshCw,
   AlertCircle,
@@ -14,11 +13,12 @@ import {
 import * as Icons from "lucide-react";
 
 import { getFirstCategory } from "@/types";
-import { mockInformation, mockMiniApps } from "@/data/mockData";
+import { mockMiniApps } from "@/data/mockData";
 import MiniAppsModal from "@/components/MiniAppsModal";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import CategoryTags from "@/components/CategoryTags";
 import { useNews } from "@/hooks/useNews";
+import { useInformation } from "@/hooks/useInformation";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,11 +30,16 @@ export default function Home() {
     refetch: refetchNews,
   } = useNews();
 
+  const {
+    information,
+    loading: informationLoading,
+    error: informationError,
+    refetch: refetchInformation,
+  } = useInformation();
+
   // Get featured/latest items
   const latestNews = news.filter((item) => item.featured).slice(0, 3);
-  const topInformation = mockInformation
-    .filter((info) => info.priority === "high")
-    .slice(0, 3);
+  const topInformation = information.filter((item) => item.featured).slice(0, 3);
   const featuredMiniApps = mockMiniApps
     .filter((app) => app.featured && app.isActive)
     .slice(0, 8);
@@ -187,53 +192,106 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-gray-900">
               Important Information
             </h2>
-            <Link
-              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              to="/information"
-            >
-              View All Information
-              <ArrowRight className="ml-2" size={16} />
-            </Link>
+            <div className="flex items-center space-x-2">
+              {informationError && (
+                <button
+                  className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
+                  title="Retry loading information"
+                  onClick={refetchInformation}
+                >
+                  <RefreshCw size={16} />
+                </button>
+              )}
+              <Link
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                to="/information"
+              >
+                View All Information
+                <ArrowRight className="ml-2" size={16} />
+              </Link>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {topInformation.map((info) => (
-              <Link
-                key={info.id}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
-                to={`/information/${info.id}`}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      info.priority === "high"
-                        ? "bg-red-100 text-red-800"
-                        : info.priority === "medium"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {info.priority.toUpperCase()}
-                  </span>
-                  <span className="text-sm text-gray-500">{info.category}</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {info.title}
+          {informationLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+                <p className="text-gray-600">Loading information...</p>
+              </div>
+            </div>
+          ) : informationError ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Failed to load information
                 </h3>
-                <p className="text-gray-600 mb-4">{info.summary}</p>
-                <div className="flex flex-wrap gap-1">
-                  {info.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </Link>
-            ))}
-          </div>
+                <p className="text-gray-600 mb-4">{informationError}</p>
+                <button
+                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  onClick={refetchInformation}
+                >
+                  <RefreshCw className="mr-2" size={16} />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          ) : topInformation.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">
+                No featured information available at the moment.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {topInformation.map((info) => (
+                <Link
+                  key={info.id}
+                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                  to={`/information/${info.id}`}
+                >
+                  {info.image && (
+                    <ImageWithFallback
+                      alt={info.title}
+                      className="w-full h-48 object-cover"
+                      iconSize={32}
+                      src={info.image}
+                    />
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          info.priority === "high"
+                            ? "bg-red-100 text-red-800"
+                            : info.priority === "medium"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-green-100 text-green-800"
+                        }`}
+                      >
+                        {info.priority.toUpperCase()}
+                      </span>
+                      <span className="text-sm text-gray-500">{info.category}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                      {info.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">{info.summary}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {info.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* MiniApps Section */}

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Clock, AlertCircle, ArrowLeft } from "lucide-react";
+import { Search, Clock, AlertCircle, ArrowLeft, RefreshCw } from "lucide-react";
 
-import { mockInformation } from "@/data/mockData";
+import { useInformation } from "@/hooks/useInformation";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function InformationList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,13 +11,15 @@ export default function InformationList() {
   const [selectedPriority, setSelectedPriority] = useState("All");
   const [sortBy, setSortBy] = useState("priority");
 
+  const { information, loading, error, refetch } = useInformation();
+
   const categories = [
     "All",
-    ...Array.from(new Set(mockInformation.map((info) => info.category))),
+    ...Array.from(new Set(information.map((info) => info.category))),
   ];
   const priorities = ["All", "high", "medium", "low"];
 
-  const filteredInformation = mockInformation
+  const filteredInformation = information
     .filter((info) => {
       const matchesSearch =
         info.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -96,9 +99,20 @@ export default function InformationList() {
               </Link>
               <h1 className="text-3xl font-bold text-gray-900">Information</h1>
             </div>
-            <div className="text-sm text-gray-500">
-              {filteredInformation.length}{" "}
-              {filteredInformation.length === 1 ? "item" : "items"}
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-500">
+                {filteredInformation.length}{" "}
+                {filteredInformation.length === 1 ? "item" : "items"}
+              </div>
+              {error && (
+                <button
+                  className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
+                  title="Retry loading information"
+                  onClick={refetch}
+                >
+                  <RefreshCw size={16} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -158,7 +172,31 @@ export default function InformationList() {
         </div>
 
         {/* Information List */}
-        {filteredInformation.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+              <p className="text-gray-600">Loading information...</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Failed to load information
+              </h3>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <button
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                onClick={refetch}
+              >
+                <RefreshCw className="mr-2" size={16} />
+                Try Again
+              </button>
+            </div>
+          </div>
+        ) : filteredInformation.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
               No information found matching your criteria.
@@ -169,62 +207,78 @@ export default function InformationList() {
             {filteredInformation.map((info) => (
               <article
                 key={info.id}
-                className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
+                className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(info.priority)}`}
-                    >
-                      {getPriorityIcon(info.priority)}
-                      <span className="ml-1">
-                        {info.priority.toUpperCase()}
-                      </span>
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {info.category}
-                    </span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Clock size={14} />
-                    <span className="ml-1">
-                      Updated {formatDate(info.lastUpdated)}
-                    </span>
-                  </div>
-                </div>
+                <div className="flex">
+                  {info.image && (
+                    <div className="w-48 h-32 flex-shrink-0">
+                      <ImageWithFallback
+                        alt={info.title}
+                        className="w-full h-full object-cover"
+                        iconSize={24}
+                        src={info.image}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(info.priority)}`}
+                        >
+                          {getPriorityIcon(info.priority)}
+                          <span className="ml-1">
+                            {info.priority.toUpperCase()}
+                          </span>
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {info.category}
+                        </span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock size={14} />
+                        <span className="ml-1">
+                          Updated {formatDate(info.lastUpdated)}
+                        </span>
+                      </div>
+                    </div>
 
-                <Link to={`/information/${info.id}`}>
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 hover:text-green-600 transition-colors">
-                    {info.title}
-                  </h2>
-                </Link>
+                    <Link to={`/information/${info.id}`}>
+                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 hover:text-green-600 transition-colors">
+                        {info.title}
+                      </h2>
+                    </Link>
 
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {info.summary}
-                </p>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: info.summary }}
+                      className="text-gray-600 mb-4 line-clamp-3 text-ellipsis"
+                      title={info.summary}
+                    />
 
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-wrap gap-2">
-                    {info.tags.slice(0, 4).map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap gap-2">
+                        {info.tags.slice(0, 4).map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {info.tags.length > 4 && (
+                          <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                            +{info.tags.length - 4} more
+                          </span>
+                        )}
+                      </div>
+                      <Link
+                        className="text-green-600 hover:text-green-800 font-medium text-sm"
+                        to={`/information/${info.id}`}
                       >
-                        {tag}
-                      </span>
-                    ))}
-                    {info.tags.length > 4 && (
-                      <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                        +{info.tags.length - 4} more
-                      </span>
-                    )}
+                        Read More →
+                      </Link>
+                    </div>
                   </div>
-                  <Link
-                    className="text-green-600 hover:text-green-800 font-medium text-sm"
-                    to={`/information/${info.id}`}
-                  >
-                    Read More →
-                  </Link>
                 </div>
               </article>
             ))}

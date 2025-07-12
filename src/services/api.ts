@@ -2,11 +2,19 @@ import type {
   NewsItem,
   NewsListApiResponse,
   NewsDetailApiResponse,
+  InformationItem,
+  InformationListApiResponse,
+  InformationDetailApiResponse,
 } from "@/types";
 
 import axios from "axios";
 
-import { transformNewsListItem, transformNewsDetailItem } from "@/types";
+import { 
+  transformNewsListItem, 
+  transformNewsDetailItem,
+  transformInformationListItem,
+  transformInformationDetailItem 
+} from "@/types";
 import { getApiConfig } from "@/utils/config";
 
 // Create axios instance factory
@@ -145,6 +153,132 @@ export const fetchNewsById = async (id: string): Promise<NewsItem | null> => {
       throw new Error(`Failed to fetch news item: ${error.message}`);
     }
     throw new Error("Failed to fetch news item");
+  }
+};
+
+// API Response interface for Information
+interface ApiInformationResponse {
+  status: boolean;
+  code: number;
+  message: string;
+  total: number;
+  result: InformationListApiResponse[];
+}
+
+// Helper function to construct full image URL for Information
+const constructInformationImageUrl = async (
+  imagePath: string,
+): Promise<string | undefined> => {
+  if (!imagePath || imagePath.trim() === "") {
+    return undefined;
+  }
+
+  try {
+    const config = await getApiConfig();
+
+    return `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-informasi-umum/${imagePath}`;
+  } catch (error) {
+    console.warn("Failed to construct information image URL:", error);
+
+    return undefined;
+  }
+};
+
+// Fetch information list
+export const fetchInformation = async (
+  startRow: number = 0,
+  endRow: number = 100,
+): Promise<InformationItem[]> => {
+  try {
+    const config = await getApiConfig();
+    const apiClient = await createApiClient();
+
+    const params = {
+      data: JSON.stringify({
+        startRow,
+        endRow,
+        sortModel: [{ colId: "createdAt", sort: "desc" }],
+      }),
+    };
+
+    const response = await apiClient.get<ApiInformationResponse>(
+      `/informasi-umum/${config.keyspace}/${config.role}/list/${config.userId}`,
+      { params },
+    );
+
+    if (response.data.status && Array.isArray(response.data.result)) {
+      // Process the raw API data
+      const informationItems = await Promise.all(
+        response.data.result.map(async (item: InformationListApiResponse) => {
+          // Transform the API response to InformationItem
+          const informationItem = transformInformationListItem(item);
+
+          // Construct full image URL if image exists
+          const imageUrl = await constructInformationImageUrl(item.image);
+
+          return {
+            ...informationItem,
+            image: imageUrl,
+          };
+        }),
+      );
+
+      // Mark first 3 items as featured
+      informationItems.slice(0, 3).forEach((item) => (item.featured = true));
+
+      return informationItems;
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Error fetching information:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch information: ${error.message}`);
+    }
+    throw new Error("Failed to fetch information data");
+  }
+};
+
+// API Response interface for single information item
+interface ApiInformationDetailResponse {
+  status: boolean;
+  code: number;
+  message: string;
+  result: InformationDetailApiResponse;
+}
+
+// Fetch single information item by ID
+export const fetchInformationById = async (id: string): Promise<InformationItem | null> => {
+  try {
+    const config = await getApiConfig();
+    const apiClient = await createApiClient();
+
+    const response = await apiClient.get<ApiInformationDetailResponse>(
+      `/informasi-umum/${config.keyspace}/${config.role}/detail/${config.userId}/${id}`,
+    );
+
+    if (response.data.status && response.data.result) {
+      const item = response.data.result;
+
+      // Transform the API response to InformationItem
+      const informationItem = transformInformationDetailItem(item, id);
+
+      // Construct full image URL if image exists
+      const imageUrl = await constructInformationImageUrl(item.image);
+
+      return {
+        ...informationItem,
+        image: imageUrl,
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching information by ID:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch information item: ${error.message}`);
+    }
+    throw new Error("Failed to fetch information item");
   }
 };
 
