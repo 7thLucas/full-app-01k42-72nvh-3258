@@ -25,10 +25,10 @@ export default function InformationDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-          <p className="text-gray-600">Loading information...</p>
+          <p className="text-secondary-600">Loading information...</p>
         </div>
       </div>
     );
@@ -36,23 +36,23 @@ export default function InformationDetail() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <AlertCircle className="mx-auto mb-4 text-primary-500" size={48} />
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Failed to Load Information
           </h1>
-          <p className="text-gray-600 mb-8">{error}</p>
+          <p className="text-secondary-600 mb-8">{error}</p>
           <div className="flex items-center justify-center space-x-4">
             <button
-              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               onClick={refetch}
             >
               <RefreshCw className="mr-2" size={16} />
               Try Again
             </button>
             <Link
-              className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors"
               to="/information"
             >
               <ArrowLeft className="mr-2" size={16} />
@@ -66,16 +66,16 @@ export default function InformationDetail() {
 
   if (!information) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Information Not Found
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-secondary-600 mb-8">
             The information you're looking for doesn't exist.
           </p>
           <Link
-            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
             to="/information"
           >
             <ArrowLeft className="mr-2" size={16} />
@@ -104,13 +104,13 @@ export default function InformationDetail() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-800";
+        return "bg-primary-100 text-primary-800";
       case "medium":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-secondary-100 text-secondary-800";
       case "low":
-        return "bg-green-100 text-green-800";
+        return "bg-secondary-100 text-secondary-700";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-secondary-100 text-secondary-800";
     }
   };
 
@@ -146,20 +146,20 @@ export default function InformationDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-secondary-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <Link
-              className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center text-secondary-600 hover:text-secondary-900 transition-colors"
               to="/information"
             >
               <ArrowLeft className="mr-2" size={20} />
               Back to Information
             </Link>
             <button
-              className="inline-flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center px-3 py-2 text-secondary-600 hover:text-secondary-900 transition-colors"
               onClick={handleShare}
             >
               <Share2 className="mr-2" size={16} />
@@ -195,11 +195,11 @@ export default function InformationDetail() {
                     {information.priority.toUpperCase()} PRIORITY
                   </span>
                 </span>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-secondary-500">
                   {information.category}
                 </span>
               </div>
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm text-secondary-500">
                 <Clock size={16} />
                 <span className="ml-2">
                   Last updated {formatDate(information.lastUpdated)}
@@ -208,30 +208,35 @@ export default function InformationDetail() {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
               {information.title}
             </h1>
 
             {/* Subtitle */}
             {information.subtitle && (
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-secondary-600 mb-8 leading-relaxed">
                 {information.subtitle}
               </p>
             )}
 
             {/* Summary */}
-            <div
-              dangerouslySetInnerHTML={{ __html: information.summary }}
-              className="text-lg text-gray-600 mb-8 leading-relaxed"
-            />
+            <div className="mb-8">
+              <div
+                dangerouslySetInnerHTML={{ __html: information.summary }}
+                className="text-secondary-700 leading-relaxed"
+              />
+            </div>
 
             {/* Tags */}
             <div className="mb-8">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-4">
+                Tags
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {information.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary-100 text-secondary-700"
                   >
                     <Tag className="mr-1" size={12} />
                     {tag}
@@ -241,68 +246,60 @@ export default function InformationDetail() {
             </div>
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none">
-              {information.content?.includes("<") ? (
+            {information.content && (
+              <div className="mb-8">
                 <div
                   dangerouslySetInnerHTML={{ __html: information.content }}
-                  className="text-gray-700 leading-relaxed"
+                  className="prose prose-lg max-w-none text-secondary-700"
                 />
-              ) : (
-                <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                  {information.content}
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </article>
 
         {/* Related Information */}
         {relatedInformation.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-6">
               Related Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedInformation.map((relatedItem) => (
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedInformation.map((info) => (
                 <Link
-                  key={relatedItem.id}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
-                  to={`/information/${relatedItem.id}`}
+                  key={info.id}
+                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  to={`/information/${info.id}`}
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(relatedItem.priority)}`}
-                    >
-                      {getPriorityIcon(relatedItem.priority)}
-                      <span className="ml-1">
-                        {relatedItem.priority.toUpperCase()}
-                      </span>
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {relatedItem.category}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {relatedItem.title}
-                  </h3>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: relatedItem.summary }}
-                    className="text-sm text-gray-600 line-clamp-3 mb-3"
-                  />
-                  <div className="flex flex-wrap gap-1">
-                    {relatedItem.tags.slice(0, 2).map((tag) => (
+                  {info.image && (
+                    <div className="h-32">
+                      <ImageWithFallback
+                        alt={info.title}
+                        className="w-full h-full object-cover"
+                        iconSize={24}
+                        src={info.image}
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-2">
                       <span
-                        key={tag}
-                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(info.priority)}`}
                       >
-                        {tag}
+                        {getPriorityIcon(info.priority)}
+                        <span className="ml-1">
+                          {info.priority.toUpperCase()}
+                        </span>
                       </span>
-                    ))}
-                    {relatedItem.tags.length > 2 && (
-                      <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                        +{relatedItem.tags.length - 2}
+                      <span className="text-xs text-secondary-500">
+                        {info.category}
                       </span>
-                    )}
+                    </div>
+                    <h3 className="font-semibold text-secondary-900 mb-2 line-clamp-2">
+                      {info.title}
+                    </h3>
+                    <p className="text-sm text-secondary-600 line-clamp-3">
+                      {info.summary}
+                    </p>
                   </div>
                 </Link>
               ))}

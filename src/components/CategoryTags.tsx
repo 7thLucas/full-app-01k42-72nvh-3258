@@ -5,7 +5,7 @@ interface CategoryTagsProps {
   categories: string;
   maxDisplay?: number;
   size?: "sm" | "md" | "lg";
-  variant?: "blue" | "gray" | "green" | "purple";
+  variant?: "primary" | "secondary";
   showIcon?: boolean;
   className?: string;
 }
@@ -14,7 +14,7 @@ export default function CategoryTags({
   categories,
   maxDisplay = 2,
   size = "sm",
-  variant = "blue",
+  variant = "primary",
   showIcon = true,
   className = "",
 }: CategoryTagsProps) {
@@ -30,10 +30,8 @@ export default function CategoryTags({
   };
 
   const variantClasses = {
-    blue: "bg-blue-100 text-blue-800",
-    gray: "bg-gray-100 text-gray-800",
-    green: "bg-green-100 text-green-800",
-    purple: "bg-purple-100 text-purple-800",
+    primary: "bg-primary-100 text-primary-800",
+    secondary: "bg-secondary-100 text-secondary-800",
   };
 
   const iconSizes = {
@@ -59,7 +57,7 @@ export default function CategoryTags({
       ))}
       {hasMore && (
         <span
-          className={`inline-flex items-center rounded-full font-medium ${sizeClasses[size]} bg-gray-100 text-gray-600`}
+          className={`inline-flex items-center rounded-full font-medium ${sizeClasses[size]} bg-secondary-100 text-secondary-600`}
         >
           +{totalCount - maxDisplay}
         </span>

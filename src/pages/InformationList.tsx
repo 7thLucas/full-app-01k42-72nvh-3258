@@ -61,13 +61,13 @@ export default function InformationList() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-800";
+        return "bg-primary-100 text-primary-800";
       case "medium":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-secondary-100 text-secondary-800";
       case "low":
-        return "bg-green-100 text-green-800";
+        return "bg-secondary-100 text-secondary-700";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-secondary-100 text-secondary-800";
     }
   };
 
@@ -85,28 +85,28 @@ export default function InformationList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-secondary-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Link
-                className="mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="mr-4 p-2 hover:bg-secondary-100 rounded-full transition-colors"
                 to="/"
               >
                 <ArrowLeft size={20} />
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">Information</h1>
+              <h1 className="text-3xl font-bold text-secondary-900">Information</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-secondary-500">
                 {filteredInformation.length}{" "}
                 {filteredInformation.length === 1 ? "item" : "items"}
               </div>
               {error && (
                 <button
-                  className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
+                  className="inline-flex items-center px-3 py-2 text-primary-600 hover:text-primary-800 transition-colors"
                   title="Retry loading information"
                   onClick={refetch}
                 >
@@ -124,11 +124,11 @@ export default function InformationList() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
                 size={20}
               />
               <input
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="Search information..."
                 type="text"
                 value={searchTerm}
@@ -136,7 +136,7 @@ export default function InformationList() {
               />
             </div>
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -147,7 +147,7 @@ export default function InformationList() {
               ))}
             </select>
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               value={selectedPriority}
               onChange={(e) => setSelectedPriority(e.target.value)}
             >
@@ -160,7 +160,7 @@ export default function InformationList() {
               ))}
             </select>
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -176,19 +176,19 @@ export default function InformationList() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-              <p className="text-gray-600">Loading information...</p>
+              <p className="text-secondary-600">Loading information...</p>
             </div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <AlertCircle className="mx-auto mb-4 text-primary-500" size={48} />
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 Failed to load information
               </h3>
-              <p className="text-gray-600 mb-4">{error}</p>
+              <p className="text-secondary-600 mb-4">{error}</p>
               <button
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                 onClick={refetch}
               >
                 <RefreshCw className="mr-2" size={16} />
@@ -198,7 +198,7 @@ export default function InformationList() {
           </div>
         ) : filteredInformation.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
+            <p className="text-secondary-500 text-lg">
               No information found matching your criteria.
             </p>
           </div>
@@ -231,11 +231,11 @@ export default function InformationList() {
                             {info.priority.toUpperCase()}
                           </span>
                         </span>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-secondary-500">
                           {info.category}
                         </span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-500">
+                      <div className="flex items-center text-sm text-secondary-500">
                         <Clock size={14} />
                         <span className="ml-1">
                           Updated {formatDate(info.lastUpdated)}
@@ -244,14 +244,14 @@ export default function InformationList() {
                     </div>
 
                     <Link to={`/information/${info.id}`}>
-                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 hover:text-green-600 transition-colors">
+                      <h2 className="text-xl md:text-2xl font-bold text-secondary-900 mb-3 hover:text-primary-600 transition-colors">
                         {info.title}
                       </h2>
                     </Link>
 
                     <div
                       dangerouslySetInnerHTML={{ __html: info.summary }}
-                      className="text-gray-600 mb-4 line-clamp-3 text-ellipsis"
+                      className="text-secondary-600 mb-4 line-clamp-3 text-ellipsis"
                       title={info.summary}
                     />
 
@@ -260,19 +260,19 @@ export default function InformationList() {
                         {info.tags.slice(0, 4).map((tag) => (
                           <span
                             key={tag}
-                            className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                            className="inline-block px-2 py-1 bg-secondary-100 text-secondary-700 text-xs rounded-full"
                           >
                             {tag}
                           </span>
                         ))}
                         {info.tags.length > 4 && (
-                          <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                          <span className="inline-block px-2 py-1 bg-secondary-100 text-secondary-700 text-xs rounded-full">
                             +{info.tags.length - 4} more
                           </span>
                         )}
                       </div>
                       <Link
-                        className="text-green-600 hover:text-green-800 font-medium text-sm inline-flex items-center"
+                        className="text-primary-600 hover:text-primary-800 font-medium text-sm inline-flex items-center"
                         to={`/information/${info.id}`}
                       >
                         Read More

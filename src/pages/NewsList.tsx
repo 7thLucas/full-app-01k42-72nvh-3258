@@ -69,21 +69,21 @@ export default function NewsList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-secondary-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Link
-                className="mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="mr-4 p-2 hover:bg-secondary-100 rounded-full transition-colors"
                 to="/"
               >
                 <ArrowLeft size={20} />
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">News</h1>
+              <h1 className="text-3xl font-bold text-secondary-900">News</h1>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-secondary-500">
               {filteredNews.length}{" "}
               {filteredNews.length === 1 ? "article" : "articles"}
             </div>
@@ -97,11 +97,11 @@ export default function NewsList() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
                 size={20}
               />
               <input
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="Search news..."
                 type="text"
                 value={searchTerm}
@@ -109,7 +109,7 @@ export default function NewsList() {
               />
             </div>
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -120,7 +120,7 @@ export default function NewsList() {
               ))}
             </select>
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -136,19 +136,19 @@ export default function NewsList() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-              <p className="text-gray-600">Loading news...</p>
+              <p className="text-secondary-600">Loading news...</p>
             </div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <AlertCircle className="mx-auto mb-4 text-primary-500" size={48} />
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 Failed to load news
               </h3>
-              <p className="text-gray-600 mb-4">{error}</p>
+              <p className="text-secondary-600 mb-4">{error}</p>
               <button
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                 onClick={refetch}
               >
                 <RefreshCw className="mr-2" size={16} />
@@ -158,7 +158,7 @@ export default function NewsList() {
           </div>
         ) : filteredNews.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
+            <p className="text-secondary-500 text-lg">
               No news articles found matching your criteria.
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function NewsList() {
                     />
                   </div>
                   <div className="p-6 md:w-2/3">
-                    <div className="flex items-center text-sm text-gray-500 mb-3">
+                    <div className="flex items-center text-sm text-secondary-500 mb-3">
                       <Calendar size={14} />
                       <span className="ml-1">{formatDate(news.createdAt)}</span>
                       <User className="ml-4" size={14} />
@@ -187,29 +187,29 @@ export default function NewsList() {
                         {getFirstCategory(news.kategori)}
                       </span>
                       {news.featured && (
-                        <span className="ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <span className="ml-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                           Featured
                         </span>
                       )}
                     </div>
                     <Link to={`/news/${news.id}`}>
-                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                      <h2 className="text-xl md:text-2xl font-bold text-secondary-900 mb-3 hover:text-primary-600 transition-colors">
                         {news.title}
                       </h2>
                     </Link>
                     <div
                       dangerouslySetInnerHTML={{ __html: news.description }}
-                      className="text-gray-600 mb-4 line-clamp-3"
+                      className="text-secondary-600 mb-4 line-clamp-3"
                     />
                     <div className="flex items-center justify-between">
                       <CategoryTags
                         categories={news.kategori}
                         maxDisplay={3}
                         size="sm"
-                        variant="blue"
+                        variant="primary"
                       />
                       <Link
-                        className="text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center"
+                        className="text-primary-600 hover:text-primary-800 font-medium text-sm inline-flex items-center"
                         to={`/news/${news.id}`}
                       >
                         Read More
