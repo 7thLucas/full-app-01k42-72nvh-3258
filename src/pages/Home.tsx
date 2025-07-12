@@ -20,6 +20,362 @@ import { useNews } from "@/hooks/useNews";
 import { useInformation } from "@/hooks/useInformation";
 import { useMiniApps } from "@/hooks/useMiniApps";
 
+// Hero Section Component
+function HeroSection() {
+  return (
+    <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            Welcome to Your Hub
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            Stay informed, access tools, and get things done efficiently
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// News Section Component
+function NewsSection({
+  news,
+  newsLoading,
+  newsError,
+  refetchNews,
+  formatDate,
+  getFirstCategory,
+}: {
+  news: any[];
+  newsLoading: boolean;
+  newsError: string | null;
+  refetchNews: () => void;
+  formatDate: (dateString: string) => string;
+  getFirstCategory: (category: string) => string;
+}) {
+  const latestNews = news.filter((item) => item.featured).slice(0, 3);
+
+  return (
+    <section className="mb-16">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-bold text-gray-900">Latest News</h2>
+        <div className="flex items-center space-x-2">
+          {newsError && (
+            <button
+              className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
+              title="Retry loading news"
+              onClick={refetchNews}
+            >
+              <RefreshCw size={16} />
+            </button>
+          )}
+          <Link
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            to="/news"
+          >
+            View All News
+            <ArrowRight className="ml-2" size={16} />
+          </Link>
+        </div>
+      </div>
+
+      {newsLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+            <p className="text-gray-600">Loading latest news...</p>
+          </div>
+        </div>
+      ) : newsError ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Failed to load news
+            </h3>
+            <p className="text-gray-600 mb-4">{newsError}</p>
+            <button
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={refetchNews}
+            >
+              <RefreshCw className="mr-2" size={16} />
+              Try Again
+            </button>
+          </div>
+        </div>
+      ) : latestNews.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">
+            No featured news available at the moment.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {latestNews.map((newsItem) => (
+            <Link
+              key={newsItem.id}
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+              to={`/news/${newsItem.id}`}
+            >
+              <ImageWithFallback
+                alt={newsItem.title}
+                className="w-full h-48 object-cover"
+                iconSize={32}
+                src={newsItem.image}
+              />
+              <div className="p-6">
+                <div className="flex items-center text-sm text-gray-500 mb-2">
+                  <Calendar size={14} />
+                  <span className="ml-1">{formatDate(newsItem.createdAt)}</span>
+                  <User className="ml-4" size={14} />
+                  <span className="ml-1">
+                    {getFirstCategory(newsItem.kategori)}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                  {newsItem.title}
+                </h3>
+                <div
+                  dangerouslySetInnerHTML={{ __html: newsItem.description }}
+                  className="text-gray-600 mb-4 line-clamp-3"
+                />
+                <div className="flex items-center justify-between">
+                  <CategoryTags
+                    categories={newsItem.kategori}
+                    maxDisplay={2}
+                    size="sm"
+                    variant="blue"
+                  />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// Information Section Component
+function InformationSection({
+  information,
+  informationLoading,
+  informationError,
+  refetchInformation,
+}: {
+  information: any[];
+  informationLoading: boolean;
+  informationError: string | null;
+  refetchInformation: () => void;
+}) {
+  const topInformation = information
+    .filter((item) => item.featured)
+    .slice(0, 3);
+
+  return (
+    <section className="mb-16">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-bold text-gray-900">
+          Important Information
+        </h2>
+        <div className="flex items-center space-x-2">
+          {informationError && (
+            <button
+              className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
+              title="Retry loading information"
+              onClick={refetchInformation}
+            >
+              <RefreshCw size={16} />
+            </button>
+          )}
+          <Link
+            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            to="/information"
+          >
+            View All Information
+            <ArrowRight className="ml-2" size={16} />
+          </Link>
+        </div>
+      </div>
+
+      {informationLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+            <p className="text-gray-600">Loading information...</p>
+          </div>
+        </div>
+      ) : informationError ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Failed to load information
+            </h3>
+            <p className="text-gray-600 mb-4">{informationError}</p>
+            <button
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              onClick={refetchInformation}
+            >
+              <RefreshCw className="mr-2" size={16} />
+              Try Again
+            </button>
+          </div>
+        </div>
+      ) : topInformation.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">
+            No featured information available at the moment.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {topInformation.map((info) => (
+            <Link
+              key={info.id}
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+              to={`/information/${info.id}`}
+            >
+              {info.image && (
+                <ImageWithFallback
+                  alt={info.title}
+                  className="w-full h-48 object-cover"
+                  iconSize={32}
+                  src={info.image}
+                />
+              )}
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4 gap-2">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      info.priority === "high"
+                        ? "bg-red-100 text-red-800"
+                        : info.priority === "medium"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
+                    }`}
+                  >
+                    {info.priority.toUpperCase()}
+                  </span>
+                  <span className="text-sm text-gray-500 line-clamp-1 text-end">
+                    {info.category}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                  {info.title}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {info.summary}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {info.tags.slice(0, 3).map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// MiniApps Section Component
+function MiniAppsSection({
+  miniApps,
+  miniAppsLoading,
+  miniAppsError,
+  refetchMiniApps,
+  handleMiniAppSelect,
+  getIcon,
+  setIsModalOpen,
+}: {
+  miniApps: MiniApp[];
+  miniAppsLoading: boolean;
+  miniAppsError: string | null;
+  refetchMiniApps: () => void;
+  handleMiniAppSelect: (miniApp: MiniApp) => void;
+  getIcon: (iconName: string) => JSX.Element;
+  setIsModalOpen: (isOpen: boolean) => void;
+}) {
+  const featuredMiniApps = miniApps.filter((app) => app.isActive).slice(0, 8);
+
+  return (
+    <section className="mb-16">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-bold text-gray-900">MiniApps</h2>
+        <button
+          className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          onClick={() => setIsModalOpen(true)}
+        >
+          View All MiniApps
+          <MoreHorizontal className="ml-2" size={16} />
+        </button>
+      </div>
+
+      {miniAppsLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+            <p className="text-gray-600">Loading MiniApps...</p>
+          </div>
+        </div>
+      ) : miniAppsError ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Failed to load MiniApps
+            </h3>
+            <p className="text-gray-600 mb-4">{miniAppsError}</p>
+            <button
+              className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              onClick={refetchMiniApps}
+            >
+              <RefreshCw className="mr-2" size={16} />
+              Try Again
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+          {featuredMiniApps.map((app) => (
+            <button
+              key={app.id}
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 p-4 text-center group relative h-full"
+              onClick={() => handleMiniAppSelect(app)}
+            >
+              <div className="flex justify-center mb-2">
+                <div className="p-3 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-100 transition-colors">
+                  {getIcon(app.icon)}
+                </div>
+              </div>
+              <h3 className="font-medium text-gray-900 text-sm mb-1 leading-tight h-full">
+                {app.name}
+              </h3>
+              {app.isLoading && (
+                <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
+                  <RefreshCw
+                    className="animate-spin text-purple-600"
+                    size={20}
+                  />
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -43,13 +399,6 @@ export default function Home() {
     error: miniAppsError,
     refetch: refetchMiniApps,
   } = useMiniApps();
-
-  // Get featured/latest items
-  const latestNews = news.filter((item) => item.featured).slice(0, 3);
-  const topInformation = information
-    .filter((item) => item.featured)
-    .slice(0, 3);
-  const featuredMiniApps = miniApps.filter((app) => app.isActive).slice(0, 8);
 
   const handleMiniAppSelect = (miniApp: MiniApp) => {
     navigate(`/miniapps/${miniApp.id}`);
@@ -77,300 +426,34 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Welcome to Your Hub
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Stay informed, access tools, and get things done efficiently
-            </p>
-          </div>
-        </div>
-      </div>
+      <HeroSection />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Latest News Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Latest News</h2>
-            <div className="flex items-center space-x-2">
-              {newsError && (
-                <button
-                  className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
-                  title="Retry loading news"
-                  onClick={refetchNews}
-                >
-                  <RefreshCw size={16} />
-                </button>
-              )}
-              <Link
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                to="/news"
-              >
-                View All News
-                <ArrowRight className="ml-2" size={16} />
-              </Link>
-            </div>
-          </div>
+        <NewsSection
+          formatDate={formatDate}
+          getFirstCategory={getFirstCategory}
+          news={news}
+          newsError={newsError}
+          newsLoading={newsLoading}
+          refetchNews={refetchNews}
+        />
 
-          {newsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-                <p className="text-gray-600">Loading latest news...</p>
-              </div>
-            </div>
-          ) : newsError ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Failed to load news
-                </h3>
-                <p className="text-gray-600 mb-4">{newsError}</p>
-                <button
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  onClick={refetchNews}
-                >
-                  <RefreshCw className="mr-2" size={16} />
-                  Try Again
-                </button>
-              </div>
-            </div>
-          ) : latestNews.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No featured news available at the moment.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {latestNews.map((newsItem) => (
-                <Link
-                  key={newsItem.id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-                  to={`/news/${newsItem.id}`}
-                >
-                  <ImageWithFallback
-                    alt={newsItem.title}
-                    className="w-full h-48 object-cover"
-                    iconSize={32}
-                    src={newsItem.image}
-                  />
-                  <div className="p-6">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                      <Calendar size={14} />
-                      <span className="ml-1">
-                        {formatDate(newsItem.createdAt)}
-                      </span>
-                      <User className="ml-4" size={14} />
-                      <span className="ml-1">
-                        {getFirstCategory(newsItem.kategori)}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-                      {newsItem.title}
-                    </h3>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: newsItem.description }}
-                      className="text-gray-600 mb-4 line-clamp-3"
-                    />
-                    <div className="flex items-center justify-between">
-                      <CategoryTags
-                        categories={newsItem.kategori}
-                        maxDisplay={2}
-                        size="sm"
-                        variant="blue"
-                      />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
+        <InformationSection
+          information={information}
+          informationError={informationError}
+          informationLoading={informationLoading}
+          refetchInformation={refetchInformation}
+        />
 
-        {/* Information Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Important Information
-            </h2>
-            <div className="flex items-center space-x-2">
-              {informationError && (
-                <button
-                  className="inline-flex items-center px-3 py-2 text-red-600 hover:text-red-800 transition-colors"
-                  title="Retry loading information"
-                  onClick={refetchInformation}
-                >
-                  <RefreshCw size={16} />
-                </button>
-              )}
-              <Link
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                to="/information"
-              >
-                View All Information
-                <ArrowRight className="ml-2" size={16} />
-              </Link>
-            </div>
-          </div>
-
-          {informationLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-                <p className="text-gray-600">Loading information...</p>
-              </div>
-            </div>
-          ) : informationError ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Failed to load information
-                </h3>
-                <p className="text-gray-600 mb-4">{informationError}</p>
-                <button
-                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                  onClick={refetchInformation}
-                >
-                  <RefreshCw className="mr-2" size={16} />
-                  Try Again
-                </button>
-              </div>
-            </div>
-          ) : topInformation.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No featured information available at the moment.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {topInformation.map((info) => (
-                <Link
-                  key={info.id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-                  to={`/information/${info.id}`}
-                >
-                  {info.image && (
-                    <ImageWithFallback
-                      alt={info.title}
-                      className="w-full h-48 object-cover"
-                      iconSize={32}
-                      src={info.image}
-                    />
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4 gap-2">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          info.priority === "high"
-                            ? "bg-red-100 text-red-800"
-                            : info.priority === "medium"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-green-100 text-green-800"
-                        }`}
-                      >
-                        {info.priority.toUpperCase()}
-                      </span>
-                      <span className="text-sm text-gray-500 line-clamp-1 text-end">
-                        {info.category}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-                      {info.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {info.summary}
-                    </p>
-                    <div className="flex flex-wrap gap-1">
-                      {info.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* MiniApps Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">MiniApps</h2>
-            <button
-              className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-              onClick={() => setIsModalOpen(true)}
-            >
-              View All MiniApps
-              <MoreHorizontal className="ml-2" size={16} />
-            </button>
-          </div>
-
-          {miniAppsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
-                <p className="text-gray-600">Loading MiniApps...</p>
-              </div>
-            </div>
-          ) : miniAppsError ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-center">
-                <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Failed to load MiniApps
-                </h3>
-                <p className="text-gray-600 mb-4">{miniAppsError}</p>
-                <button
-                  className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                  onClick={refetchMiniApps}
-                >
-                  <RefreshCw className="mr-2" size={16} />
-                  Try Again
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-              {featuredMiniApps.map((app) => (
-                <button
-                  key={app.id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 p-4 text-center group relative h-full"
-                  onClick={() => handleMiniAppSelect(app)}
-                >
-                  <div className="flex justify-center mb-2">
-                    <div className="p-3 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-100 transition-colors">
-                      {getIcon(app.icon)}
-                    </div>
-                  </div>
-                  <h3 className="font-medium text-gray-900 text-sm mb-1 leading-tight h-full">
-                    {app.name}
-                  </h3>
-                  {app.isLoading && (
-                    <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
-                      <RefreshCw
-                        className="animate-spin text-purple-600"
-                        size={20}
-                      />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
+        <MiniAppsSection
+          getIcon={getIcon}
+          handleMiniAppSelect={handleMiniAppSelect}
+          miniApps={miniApps}
+          miniAppsError={miniAppsError}
+          miniAppsLoading={miniAppsLoading}
+          refetchMiniApps={refetchMiniApps}
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
 
       {/* MiniApps Modal */}
