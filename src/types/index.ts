@@ -327,6 +327,119 @@ export const transformInformationItem = (item: any, id?: string): InformationIte
   }
 };
 
+// Raw API response interfaces for MiniApp
+export interface MiniAppListApiResponse {
+  wajib_login: null;
+  mode: string;
+  mobile_mode: string;
+  urutan: number;
+  catatan_dev: string;
+  id: number;
+  id_dev_app: number;
+  identity: string;
+  title: string;
+  desc: string;
+  icon: null;
+  banner: null;
+  kategori: null;
+  status: string;
+  last_release: string;
+  createdAt: string;
+  status_publish: number;
+  versi: number;
+  updatedAt: string;
+  strukturName: null;
+  key: string;
+  subDomain: string;
+  keyspace: string;
+  id_user: number;
+  custom_domain: null;
+  is_layanan_hidden: null;
+  _id: number;
+  user_name: string;
+  user_type: string;
+  user_provinsi: string;
+  user_kota: string;
+}
+
+export interface MiniAppBuildLogApiResponse {
+  status: boolean;
+  code: number;
+  message: string;
+  result: {
+    id: number;
+    id_dev_app: number;
+    id_layanan_microsite: number;
+    id_layanan_microservice: null;
+    id_layanan_native: null;
+    flag_build: number;
+    flag_pull: number;
+    flag_deploy: number;
+    flag_gateway: number;
+    name: string;
+    folder: string;
+    is_already_build: number;
+    is_build_proses: number;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null;
+    deletedBy: null;
+    progress: null;
+    progress_txt: null;
+    keyspace: string;
+    subDomain: string;
+    key: null;
+    detailLog: {
+      _id: string;
+      _layanan_build: any;
+      _layanan_type: string;
+      _microsite: {
+        container: string;
+        repo_private: number;
+        isGeneratedAi: string;
+        subDomain: string;
+        type: number;
+        id_dev_app: number;
+        branch: string;
+        deletedBy: null;
+        domain_id: string;
+        secret_key: string;
+        is_layanan_hidden: null;
+        repo_template: null;
+        id_repo: number;
+        id: number;
+        custom_domain: null;
+        key: string;
+        repo_url: string;
+        updatedBy: number;
+        id_user: number;
+        env: string;
+        url: string;
+        tags: string;
+        keyspace: string;
+        createdBy: number;
+        port: number;
+        domain: string;
+        name: string;
+        namespace: string;
+        desc: null;
+        status: null;
+      };
+      build_image: any;
+      createdAt: string;
+      desc: null;
+      domain: any;
+      gateway_routing: any;
+      id: string;
+      ingress: any;
+      pull_repo: any;
+      state_build: string;
+      title: string;
+    };
+  };
+}
+
 export interface MiniApp {
   id: string;
   name: string;
@@ -336,4 +449,54 @@ export interface MiniApp {
   category: string;
   featured: boolean;
   isActive: boolean;
+  isLoading?: boolean;
+  key: string;
+  keyspace: string;
+  subDomain: string;
+  id_user: number;
 }
+
+// Utility functions to transform MiniApp API responses
+export const transformMiniAppListItem = (item: MiniAppListApiResponse): MiniApp => ({
+  id: item.id.toString(),
+  name: item.title,
+  description: item.desc || '',
+  icon: 'Square', // Default icon since API returns null
+  url: '', // Will be populated from build log
+  category: item.kategori || 'General',
+  featured: false, // Will be set based on logic
+  isActive: item.status === 'ON',
+  isLoading: true, // Initially loading until we get the URL
+  key: item.key,
+  keyspace: item.keyspace,
+  subDomain: item.subDomain,
+  id_user: item.id_user,
+});
+
+// Type guards for MiniApp API responses
+export const isMiniAppListApiResponse = (
+  item: any,
+): item is MiniAppListApiResponse => {
+  return (
+    item &&
+    typeof item === "object" &&
+    item.hasOwnProperty("id") &&
+    item.hasOwnProperty("title") &&
+    item.hasOwnProperty("desc") &&
+    item.hasOwnProperty("mode") &&
+    item.hasOwnProperty("status")
+  );
+};
+
+export const isMiniAppBuildLogApiResponse = (
+  item: any,
+): item is MiniAppBuildLogApiResponse => {
+  return (
+    item &&
+    typeof item === "object" &&
+    item.hasOwnProperty("status") &&
+    item.hasOwnProperty("result") &&
+    item.result &&
+    item.result.hasOwnProperty("detailLog")
+  );
+};

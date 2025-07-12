@@ -6,6 +6,7 @@ import {
   User,
   Tag,
   ArrowLeft,
+  ArrowRight,
   RefreshCw,
   AlertCircle,
 } from "lucide-react";
@@ -208,10 +209,11 @@ export default function NewsList() {
                         variant="blue"
                       />
                       <Link
-                        className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                        className="text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center"
                         to={`/news/${news.id}`}
                       >
-                        Read More →
+                        Read More
+                        <ArrowRight className="ml-1" size={14} />
                       </Link>
                     </div>
                   </div>

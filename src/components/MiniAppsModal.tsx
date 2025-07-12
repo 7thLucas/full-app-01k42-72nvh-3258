@@ -1,7 +1,7 @@
 import type { MiniApp } from "@/types";
 
 import { useState } from "react";
-import { X, Search } from "lucide-react";
+import { X, Search, RefreshCw } from "lucide-react";
 import * as Icons from "lucide-react";
 
 interface MiniAppsModalProps {
@@ -111,23 +111,33 @@ export default function MiniAppsModal({
               {filteredApps.map((app) => (
                 <button
                   key={app.id}
-                  className="p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all duration-200 text-left group"
+                  className="p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all duration-200 text-left flex flex-col justify-between group relative"
                   onClick={() => handleMiniAppClick(app)}
                 >
-                  <div className="flex items-center mb-3">
-                    <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-100 transition-colors">
-                      {getIcon(app.icon)}
+                  <div className="flex flex-col">
+                    <div className="flex items-center mb-3">
+                      <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-100 transition-colors">
+                        {getIcon(app.icon)}
+                      </div>
                     </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      {app.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">
+                      {app.description}
+                    </p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">
-                    {app.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {app.description}
-                  </p>
-                  <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                  <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full w-fit">
                     {app.category}
                   </span>
+                  {app.isLoading && (
+                    <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
+                      <RefreshCw
+                        className="animate-spin text-blue-600"
+                        size={20}
+                      />
+                    </div>
+                  )}
                 </button>
               ))}
             </div>

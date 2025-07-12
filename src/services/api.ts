@@ -5,15 +5,19 @@ import type {
   InformationItem,
   InformationListApiResponse,
   InformationDetailApiResponse,
+  MiniApp,
+  MiniAppListApiResponse,
+  MiniAppBuildLogApiResponse,
 } from "@/types";
 
 import axios from "axios";
 
-import { 
-  transformNewsListItem, 
+import {
+  transformNewsListItem,
   transformNewsDetailItem,
   transformInformationListItem,
-  transformInformationDetailItem 
+  transformInformationDetailItem,
+  transformMiniAppListItem,
 } from "@/types";
 import { getApiConfig } from "@/utils/config";
 
@@ -248,7 +252,9 @@ interface ApiInformationDetailResponse {
 }
 
 // Fetch single information item by ID
-export const fetchInformationById = async (id: string): Promise<InformationItem | null> => {
+export const fetchInformationById = async (
+  id: string,
+): Promise<InformationItem | null> => {
   try {
     const config = await getApiConfig();
     const apiClient = await createApiClient();
@@ -279,6 +285,144 @@ export const fetchInformationById = async (id: string): Promise<InformationItem 
       throw new Error(`Failed to fetch information item: ${error.message}`);
     }
     throw new Error("Failed to fetch information item");
+  }
+};
+
+// API Response interface for MiniApp
+interface ApiMiniAppResponse {
+  status: boolean;
+  code: number;
+  message: string;
+  total: number;
+  result: MiniAppListApiResponse[];
+}
+
+// Fetch MiniApps list
+export const fetchMiniApps = async (
+  startRow: number = 0,
+  endRow: number = 100,
+): Promise<MiniApp[]> => {
+  try {
+    const config = await getApiConfig();
+    const apiClient = await createApiClient();
+
+    const params = JSON.stringify({
+      startRow: startRow,
+      endRow: endRow,
+      sortModel: [{ colId: "createdAt", sort: "desc" }],
+    });
+
+    const response = await apiClient.get<ApiMiniAppResponse>(
+      `/layanan/${config.keyspace}/${config.role}/list/${config.userId}`,
+      { params: { data: params } },
+    );
+
+    if (response.data.status && Array.isArray(response.data.result)) {
+      // Filter only MICROSITE mode apps and transform
+      const miniApps = response.data.result
+        .filter((item: MiniAppListApiResponse) => item.mode === "MICROSITE")
+        .filter((item: MiniAppListApiResponse) => !item.is_layanan_hidden)
+        .filter((item: MiniAppListApiResponse) => item.status_publish === 1)
+        .map((item: MiniAppListApiResponse) => transformMiniAppListItem(item));
+
+      // Mark first 8 items as featured
+      miniApps.slice(0, 8).forEach((item) => (item.featured = true));
+
+      // Now fetch URLs for each MiniApp
+      const miniAppsWithUrls = await Promise.all(
+        miniApps.map(async (miniApp) => {
+          try {
+            const buildLog = await fetchMiniAppBuildLog(miniApp.key);
+
+            if (
+              buildLog &&
+              buildLog.detailLog &&
+              buildLog.detailLog._microsite
+            ) {
+              const url = buildLog.detailLog._microsite.url;
+              const isLoading = buildLog.is_already_build === 0 || !url;
+
+              return {
+                ...miniApp,
+                url: url || "",
+                isLoading,
+              };
+            }
+
+            return {
+              ...miniApp,
+              url: "",
+              isLoading: true,
+            };
+          } catch (error) {
+            console.warn(
+              `Failed to fetch build log for MiniApp ${miniApp.id}:`,
+              error,
+            );
+
+            return {
+              ...miniApp,
+              url: "",
+              isLoading: true,
+            };
+          }
+        }),
+      );
+
+      return miniAppsWithUrls;
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Error fetching MiniApps:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch MiniApps: ${error.message}`);
+    }
+    throw new Error("Failed to fetch MiniApps data");
+  }
+};
+
+// Fetch MiniApp build log to get the URL
+export const fetchMiniAppBuildLog = async (
+  key: string,
+): Promise<MiniAppBuildLogApiResponse["result"] | null> => {
+  try {
+    const config = await getApiConfig();
+    const apiClient = await createApiClient();
+
+    const response = await apiClient.get<MiniAppBuildLogApiResponse>(
+      `/layanan/${config.keyspace}/${config.role}/build-log/${config.userId}/${key}`,
+    );
+
+    if (response.data.status && response.data.result) {
+      return response.data.result;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching MiniApp build log:", error);
+
+    return null;
+  }
+};
+
+// Fetch single MiniApp by ID
+export const fetchMiniAppById = async (id: string): Promise<MiniApp | null> => {
+  try {
+    const miniApps = await fetchMiniApps();
+    const miniApp = miniApps.find((app) => app.id === id);
+
+    if (miniApp) {
+      return miniApp;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching MiniApp by ID:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch MiniApp: ${error.message}`);
+    }
+    throw new Error("Failed to fetch MiniApp");
   }
 };
 

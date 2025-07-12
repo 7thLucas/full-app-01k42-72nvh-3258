@@ -13,12 +13,12 @@ import {
 import * as Icons from "lucide-react";
 
 import { getFirstCategory } from "@/types";
-import { mockMiniApps } from "@/data/mockData";
 import MiniAppsModal from "@/components/MiniAppsModal";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import CategoryTags from "@/components/CategoryTags";
 import { useNews } from "@/hooks/useNews";
 import { useInformation } from "@/hooks/useInformation";
+import { useMiniApps } from "@/hooks/useMiniApps";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,12 +37,19 @@ export default function Home() {
     refetch: refetchInformation,
   } = useInformation();
 
+  const {
+    miniApps,
+    loading: miniAppsLoading,
+    error: miniAppsError,
+    refetch: refetchMiniApps,
+  } = useMiniApps();
+
   // Get featured/latest items
   const latestNews = news.filter((item) => item.featured).slice(0, 3);
-  const topInformation = information.filter((item) => item.featured).slice(0, 3);
-  const featuredMiniApps = mockMiniApps
-    .filter((app) => app.featured && app.isActive)
-    .slice(0, 8);
+  const topInformation = information
+    .filter((item) => item.featured)
+    .slice(0, 3);
+  const featuredMiniApps = miniApps.filter((app) => app.isActive).slice(0, 8);
 
   const handleMiniAppSelect = (miniApp: MiniApp) => {
     navigate(`/miniapps/${miniApp.id}`);
@@ -259,7 +266,7 @@ export default function Home() {
                     />
                   )}
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-4 gap-2">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           info.priority === "high"
@@ -271,12 +278,16 @@ export default function Home() {
                       >
                         {info.priority.toUpperCase()}
                       </span>
-                      <span className="text-sm text-gray-500">{info.category}</span>
+                      <span className="text-sm text-gray-500 line-clamp-1 text-end">
+                        {info.category}
+                      </span>
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
                       {info.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{info.summary}</p>
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {info.summary}
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {info.tags.slice(0, 3).map((tag) => (
                         <span
@@ -307,32 +318,65 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-            {featuredMiniApps.map((app) => (
-              <button
-                key={app.id}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 p-4 text-center group"
-                onClick={() => handleMiniAppSelect(app)}
-              >
-                <div className="flex justify-center mb-3">
-                  <div className="p-3 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-100 transition-colors">
-                    {getIcon(app.icon)}
-                  </div>
-                </div>
-                <h3 className="font-medium text-gray-900 text-sm mb-1">
-                  {app.name}
+          {miniAppsLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+                <p className="text-gray-600">Loading MiniApps...</p>
+              </div>
+            </div>
+          ) : miniAppsError ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Failed to load MiniApps
                 </h3>
-                <p className="text-xs text-gray-600">{app.category}</p>
-              </button>
-            ))}
-          </div>
+                <p className="text-gray-600 mb-4">{miniAppsError}</p>
+                <button
+                  className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  onClick={refetchMiniApps}
+                >
+                  <RefreshCw className="mr-2" size={16} />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+              {featuredMiniApps.map((app) => (
+                <button
+                  key={app.id}
+                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 p-4 text-center group relative h-full"
+                  onClick={() => handleMiniAppSelect(app)}
+                >
+                  <div className="flex justify-center mb-2">
+                    <div className="p-3 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-100 transition-colors">
+                      {getIcon(app.icon)}
+                    </div>
+                  </div>
+                  <h3 className="font-medium text-gray-900 text-sm mb-1 leading-tight h-full">
+                    {app.name}
+                  </h3>
+                  {app.isLoading && (
+                    <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
+                      <RefreshCw
+                        className="animate-spin text-purple-600"
+                        size={20}
+                      />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </section>
       </div>
 
       {/* MiniApps Modal */}
       <MiniAppsModal
         isOpen={isModalOpen}
-        miniApps={mockMiniApps}
+        miniApps={miniApps}
         onClose={() => setIsModalOpen(false)}
         onSelectMiniApp={handleMiniAppSelect}
       />

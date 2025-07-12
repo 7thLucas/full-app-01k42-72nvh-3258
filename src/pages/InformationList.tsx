@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Clock, AlertCircle, ArrowLeft, RefreshCw } from "lucide-react";
+import { Search, Clock, AlertCircle, ArrowLeft, ArrowRight, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 
 import { useInformation } from "@/hooks/useInformation";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -76,9 +76,9 @@ export default function InformationList() {
       case "high":
         return <AlertCircle size={14} />;
       case "medium":
-        return <Clock size={14} />;
+        return <AlertTriangle size={14} />;
       case "low":
-        return <Clock size={14} />;
+        return <CheckCircle size={14} />;
       default:
         return null;
     }
@@ -272,10 +272,11 @@ export default function InformationList() {
                         )}
                       </div>
                       <Link
-                        className="text-green-600 hover:text-green-800 font-medium text-sm"
+                        className="text-green-600 hover:text-green-800 font-medium text-sm inline-flex items-center"
                         to={`/information/${info.id}`}
                       >
-                        Read More →
+                        Read More
+                        <ArrowRight className="ml-1" size={14} />
                       </Link>
                     </div>
                   </div>

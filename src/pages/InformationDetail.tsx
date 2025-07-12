@@ -6,6 +6,8 @@ import {
   Share2,
   Tag,
   RefreshCw,
+  AlertTriangle,
+  CheckCircle,
 } from "lucide-react";
 
 import { useInformationItem, useInformation } from "@/hooks/useInformation";
@@ -117,9 +119,9 @@ export default function InformationDetail() {
       case "high":
         return <AlertCircle size={16} />;
       case "medium":
-        return <Clock size={16} />;
+        return <AlertTriangle size={16} />;
       case "low":
-        return <Clock size={16} />;
+        return <CheckCircle size={16} />;
       default:
         return null;
     }
