@@ -23,21 +23,41 @@ export default function CategoryTags({
     maxDisplay,
   );
 
-  const sizeClasses = {
-    sm: "text-xs px-2.5 py-0.5",
-    md: "text-sm px-3 py-1",
-    lg: "text-base px-4 py-2",
+  const getBadgeVariant = () => {
+    switch (variant) {
+      case "primary":
+        return "badge-primary";
+      case "secondary":
+        return "badge-secondary";
+      default:
+        return "badge-secondary";
+    }
   };
 
-  const variantClasses = {
-    primary: "bg-primary-100 text-primary-800",
-    secondary: "bg-secondary-100 text-secondary-800",
+  const getSizeClasses = () => {
+    switch (size) {
+      case "sm":
+        return "text-xs px-2 py-1";
+      case "md":
+        return "text-sm px-3 py-1.5";
+      case "lg":
+        return "text-base px-4 py-2";
+      default:
+        return "text-xs px-2 py-1";
+    }
   };
 
-  const iconSizes = {
-    sm: 12,
-    md: 14,
-    lg: 16,
+  const getIconSize = () => {
+    switch (size) {
+      case "sm":
+        return 12;
+      case "md":
+        return 14;
+      case "lg":
+        return 16;
+      default:
+        return 12;
+    }
   };
 
   if (displayCategories.length === 0) {
@@ -45,19 +65,19 @@ export default function CategoryTags({
   }
 
   return (
-    <div className={`flex flex-wrap gap-1 ${className}`}>
+    <div className={`flex flex-wrap gap-2 ${className}`}>
       {displayCategories.map((category, index) => (
         <span
           key={index}
-          className={`inline-flex items-center rounded-full font-medium ${sizeClasses[size]} ${variantClasses[variant]}`}
+          className={`badge ${getBadgeVariant()} ${getSizeClasses()} inline-flex items-center font-medium transition-colors hover:scale-105 transform duration-200`}
         >
-          {showIcon && <Tag className="mr-1" size={iconSizes[size]} />}
+          {showIcon && <Tag className="mr-1" size={getIconSize()} />}
           {category}
         </span>
       ))}
       {hasMore && (
         <span
-          className={`inline-flex items-center rounded-full font-medium ${sizeClasses[size]} bg-secondary-100 text-secondary-600`}
+          className={`badge badge-secondary ${getSizeClasses()} inline-flex items-center font-medium opacity-75`}
         >
           +{totalCount - maxDisplay}
         </span>

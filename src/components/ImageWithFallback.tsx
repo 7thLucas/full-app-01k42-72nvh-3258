@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Image, AlertCircle } from "lucide-react";
+import { Image, AlertCircle, Loader } from "lucide-react";
 
 interface ImageWithFallbackProps {
   src?: string;
@@ -35,12 +35,12 @@ export default function ImageWithFallback({
   if (!src || src.trim() === "") {
     return (
       <div
-        className={`bg-gray-100 flex items-center justify-center ${className}`}
+        className={`bg-secondary-50 border border-secondary-200 flex items-center justify-center ${className}`}
       >
         {showIcon && (
-          <div className="text-gray-400 text-center">
+          <div className="text-secondary-400 text-center">
             <Image className="mx-auto mb-2" size={iconSize} />
-            <p className="text-sm">No image</p>
+            <p className="text-xs font-medium">No image available</p>
           </div>
         )}
       </div>
@@ -65,12 +65,14 @@ export default function ImageWithFallback({
   if (hasError) {
     return (
       <div
-        className={`bg-gray-100 flex items-center justify-center ${className}`}
+        className={`bg-danger-50 border border-danger-200 flex items-center justify-center ${className}`}
       >
         {showIcon && (
-          <div className="text-gray-400 text-center">
+          <div className="text-danger-400 text-center">
             <AlertCircle className="mx-auto mb-2" size={iconSize} />
-            <p className="text-sm">Failed to load</p>
+            <p className="text-xs font-medium" data-src={src}>
+              Failed to load image
+            </p>
           </div>
         )}
       </div>
@@ -78,25 +80,29 @@ export default function ImageWithFallback({
   }
 
   return (
-    <>
+    <div className="relative">
       {isLoading && (
         <div
-          className={`bg-gray-200 animate-pulse flex items-center justify-center ${className}`}
+          className={`absolute inset-0 bg-secondary-100 animate-pulse flex items-center justify-center z-10 ${className}`}
         >
           {showIcon && (
-            <div className="text-gray-400">
-              <Image className="animate-pulse" size={iconSize} />
+            <div className="text-secondary-400 text-center">
+              <Loader
+                className="animate-spin mx-auto mb-2"
+                size={iconSize / 2}
+              />
+              <p className="text-xs font-medium">Loading...</p>
             </div>
           )}
         </div>
       )}
       <img
         alt={alt}
-        className={`${className} ${isLoading ? "hidden" : "block"}`}
+        className={`${className} ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
         src={src}
         onError={handleError}
         onLoad={handleLoad}
       />
-    </>
+    </div>
   );
 }

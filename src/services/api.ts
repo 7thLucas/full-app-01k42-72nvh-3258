@@ -46,15 +46,14 @@ interface ApiNewsResponse {
 // Helper function to construct full image URL
 const constructImageUrl = async (
   imagePath: string,
+  type: "berita" | "informasi-umum",
 ): Promise<string | undefined> => {
   if (!imagePath || imagePath.trim() === "") {
     return undefined;
   }
 
   try {
-    const config = await getApiConfig();
-
-    return `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-berita/${imagePath}`;
+    return `https://satudesa-service-client.quantumbyte.ai/uploads/app-${type}/${imagePath}`;
   } catch (error) {
     console.warn("Failed to construct image URL:", error);
 
@@ -92,7 +91,7 @@ export const fetchNews = async (
           const newsItem = transformNewsListItem(item);
 
           // Construct full image URL if image exists
-          const imageUrl = await constructImageUrl(item.gambar);
+          const imageUrl = await constructImageUrl(item.gambar, "berita");
 
           return {
             ...newsItem,
@@ -142,7 +141,7 @@ export const fetchNewsById = async (id: string): Promise<NewsItem | null> => {
       const newsItem = transformNewsDetailItem(item, id);
 
       // Construct full image URL if image exists
-      const imageUrl = await constructImageUrl(item.gambar);
+      const imageUrl = await constructImageUrl(item.gambar, "berita");
 
       return {
         ...newsItem,
@@ -168,25 +167,6 @@ interface ApiInformationResponse {
   total: number;
   result: InformationListApiResponse[];
 }
-
-// Helper function to construct full image URL for Information
-const constructInformationImageUrl = async (
-  imagePath: string,
-): Promise<string | undefined> => {
-  if (!imagePath || imagePath.trim() === "") {
-    return undefined;
-  }
-
-  try {
-    const config = await getApiConfig();
-
-    return `${config.baseUrl}/uploader/${config.keyspace}/${config.role}/document/${config.userId}/app-informasi-umum/${imagePath}`;
-  } catch (error) {
-    console.warn("Failed to construct information image URL:", error);
-
-    return undefined;
-  }
-};
 
 // Fetch information list
 export const fetchInformation = async (
@@ -218,7 +198,10 @@ export const fetchInformation = async (
           const informationItem = transformInformationListItem(item);
 
           // Construct full image URL if image exists
-          const imageUrl = await constructInformationImageUrl(item.image);
+          const imageUrl = await constructImageUrl(
+            item.image,
+            "informasi-umum",
+          );
 
           return {
             ...informationItem,
@@ -270,7 +253,7 @@ export const fetchInformationById = async (
       const informationItem = transformInformationDetailItem(item, id);
 
       // Construct full image URL if image exists
-      const imageUrl = await constructInformationImageUrl(item.image);
+      const imageUrl = await constructImageUrl(item.image, "informasi-umum");
 
       return {
         ...informationItem,
