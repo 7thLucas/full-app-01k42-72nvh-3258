@@ -1,16 +1,22 @@
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Tag, Share2, RefreshCw, AlertCircle } from 'lucide-react';
+import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  Tag,
+  Share2,
+  RefreshCw,
+  AlertCircle,
+} from "lucide-react";
 
-import { useNewsItem, useNews } from '@/hooks/useNews';
-import { formatHtmlContent } from '@/utils/htmlUtils';
-import { useNavigationWithParams } from '@/utils/navigation';
-import ImageWithFallback from '@/components/ImageWithFallback';
+import { useNewsItem, useNews } from "@/hooks/useNews";
+import { formatHtmlContent } from "@/utils/htmlUtils";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function NewsDetail() {
   const { id } = useParams<{ id: string }>();
-  const { newsItem: news, loading, error, refetch } = useNewsItem(id || '');
+  const { newsItem: news, loading, error, refetch } = useNewsItem(id || "");
   const { news: allNews } = useNews();
-  const getPathWithParams = useNavigationWithParams();
 
   if (loading) {
     return (
@@ -28,7 +34,9 @@ export default function NewsDetail() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Failed to Load News</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Failed to Load News
+          </h1>
           <p className="text-gray-600 mb-8">{error}</p>
           <div className="space-x-4">
             <button
@@ -40,7 +48,7 @@ export default function NewsDetail() {
             </button>
             <Link
               className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-              to={getPathWithParams("/news")}
+              to="/news"
             >
               <ArrowLeft className="mr-2" size={16} />
               Back to News
@@ -55,11 +63,15 @@ export default function NewsDetail() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">News Not Found</h1>
-          <p className="text-gray-600 mb-8">The news article you&apos;re looking for doesn&apos;t exist.</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            News Not Found
+          </h1>
+          <p className="text-gray-600 mb-8">
+            The news article you&apos;re looking for doesn&apos;t exist.
+          </p>
           <Link
             className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            to={getPathWithParams("/news")}
+            to="/news"
           >
             <ArrowLeft className="mr-2" size={16} />
             Back to News
@@ -70,14 +82,14 @@ export default function NewsDetail() {
   }
 
   const relatedNews = allNews
-    .filter(item => item.id !== news.id && item.category === news.category)
+    .filter((item) => item.id !== news.id && item.category === news.category)
     .slice(0, 3);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -107,7 +119,7 @@ export default function NewsDetail() {
           <div className="flex items-center justify-between">
             <Link
               className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-              to={getPathWithParams("/news")}
+              to="/news"
             >
               <ArrowLeft className="mr-2" size={20} />
               Back to News
@@ -128,10 +140,10 @@ export default function NewsDetail() {
           {/* Featured Image */}
           <div className="w-full h-64 md:h-96">
             <ImageWithFallback
-              src={news.imageUrl}
               alt={news.title}
               className="w-full h-full object-cover"
               iconSize={64}
+              src={news.imageUrl}
             />
           </div>
 
@@ -169,10 +181,10 @@ export default function NewsDetail() {
 
             {/* Content */}
             <div className="prose prose-lg max-w-none">
-              {news.content.includes('<') ? (
-                <div 
-                  className="text-gray-700 leading-relaxed"
+              {news.content.includes("<") ? (
+                <div
                   dangerouslySetInnerHTML={{ __html: news.content }}
+                  className="text-gray-700 leading-relaxed"
                 />
               ) : (
                 <div className="whitespace-pre-line text-gray-700 leading-relaxed">
@@ -186,24 +198,28 @@ export default function NewsDetail() {
         {/* Related News */}
         {relatedNews.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related News</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Related News
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedNews.map(relatedItem => (
+              {relatedNews.map((relatedItem) => (
                 <Link
                   key={relatedItem.id}
                   className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-                  to={getPathWithParams(`/news/${relatedItem.id}`)}
+                  to={`/news/${relatedItem.id}`}
                 >
                   <ImageWithFallback
-                    src={relatedItem.imageUrl}
                     alt={relatedItem.title}
                     className="w-full h-48 object-cover"
                     iconSize={24}
+                    src={relatedItem.imageUrl}
                   />
                   <div className="p-4">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <Calendar size={12} />
-                      <span className="ml-1">{formatDate(relatedItem.publishDate)}</span>
+                      <span className="ml-1">
+                        {formatDate(relatedItem.publishDate)}
+                      </span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
                       {relatedItem.title}
@@ -220,4 +236,4 @@ export default function NewsDetail() {
       </div>
     </div>
   );
-} 
+}

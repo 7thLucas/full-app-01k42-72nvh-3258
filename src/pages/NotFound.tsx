@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { useNavigationWithParams } from "@/utils/navigation";
 
 export default function NotFound() {
-  const getPathWithParams = useNavigationWithParams();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
@@ -15,7 +13,7 @@ export default function NotFound() {
         </p>
         <Link
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          to={getPathWithParams("/")}
+          to="/"
         >
           Go Home
         </Link>

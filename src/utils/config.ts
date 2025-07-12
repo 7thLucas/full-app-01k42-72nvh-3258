@@ -1,0 +1,56 @@
+import * as yaml from 'js-yaml';
+
+interface ApiConfig {
+  keyspace: string;
+  role: string;
+  userId: string;
+  baseUrl: string;
+  bearerToken: string;
+}
+
+interface Config {
+  api: ApiConfig;
+}
+
+let config: Config | null = null;
+
+export const loadConfig = async (): Promise<Config> => {
+  if (config) {
+    return config;
+  }
+
+  try {
+    const response = await fetch('/config.yml');
+    if (!response.ok) {
+      throw new Error(`Failed to load config: ${response.statusText}`);
+    }
+    
+    const yamlText = await response.text();
+    config = yaml.load(yamlText) as Config;
+    
+    if (!config || !config.api) {
+      throw new Error('Invalid config format');
+    }
+    
+    return config;
+  } catch (error) {
+    console.error('Error loading config:', error);
+    throw new Error('Failed to load application configuration');
+  }
+};
+
+export const getApiConfig = async (): Promise<ApiConfig> => {
+  const config = await loadConfig();
+  return config.api;
+};
+
+// Synchronous version that throws if config is not loaded
+export const getApiConfigSync = (): ApiConfig => {
+  if (!config) {
+    throw new Error('Config not loaded. Call loadConfig() first.');
+  }
+  return config.api;
+};
+
+// Initialize config on module load
+loadConfig().catch(console.error); 

@@ -1,14 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import NewsList from "./pages/NewsList";
-import NewsDetail from "./pages/NewsDetail";
-import InformationList from "./pages/InformationList";
-import InformationDetail from "./pages/InformationDetail";
-import MiniAppDetail from "./pages/MiniAppDetail";
-import QueryParamValidator from "./components/QueryParamValidator";
-import QueryParamDisplay from "./components/QueryParamDisplay";
+import Home from "@/pages/Home";
+import NotFound from "@/pages/NotFound";
+import NewsList from "@/pages/NewsList";
+import NewsDetail from "@/pages/NewsDetail";
+import InformationList from "@/pages/InformationList";
+import InformationDetail from "@/pages/InformationDetail";
+import MiniAppDetail from "@/pages/MiniAppDetail";
 
 // Check if we're running locally and set basename accordingly
 const isLocalhost =
@@ -52,10 +50,5 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
-  return (
-    <QueryParamValidator>
-      <RouterProvider router={router} />
-      <QueryParamDisplay />
-    </QueryParamValidator>
-  );
+  return <RouterProvider router={router} />;
 }

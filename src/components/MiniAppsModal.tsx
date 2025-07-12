@@ -3,7 +3,7 @@ import { X, Search } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
 import type { MiniApp } from '@/types';
-import { useNavigationWithParams } from '@/utils/navigation';
+
 
 interface MiniAppsModalProps {
   isOpen: boolean;
@@ -15,7 +15,7 @@ interface MiniAppsModalProps {
 export default function MiniAppsModal({ isOpen, onClose, miniApps, onSelectMiniApp }: MiniAppsModalProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const getPathWithParams = useNavigationWithParams();
+  
 
   if (!isOpen) return null;
 

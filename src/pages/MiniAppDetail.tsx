@@ -11,14 +11,12 @@ import {
 import * as Icons from "lucide-react";
 
 import { mockMiniApps } from "@/data/mockData";
-import { useNavigationWithParams } from "@/utils/navigation";
 
 export default function MiniAppDetail() {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const getPathWithParams = useNavigationWithParams();
 
   const miniApp = mockMiniApps.find((app) => app.id === id);
 
@@ -44,11 +42,11 @@ export default function MiniAppDetail() {
             MiniApp Not Found
           </h1>
           <p className="text-gray-600 mb-8">
-            The MiniApp you're looking for doesn't exist.
+            The MiniApp you&apos;re looking for doesn&apos;t exist.
           </p>
           <Link
             className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            to={getPathWithParams("/")}
+            to="/"
           >
             <ArrowLeft className="mr-2" size={16} />
             Back to Home
@@ -70,7 +68,7 @@ export default function MiniAppDetail() {
           </p>
           <Link
             className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            to={getPathWithParams("/")}
+            to="/"
           >
             <ArrowLeft className="mr-2" size={16} />
             Back to Home
@@ -138,7 +136,7 @@ export default function MiniAppDetail() {
             <div className="flex items-center">
               <Link
                 className="mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
-                to={getPathWithParams("/")}
+                to="/"
               >
                 <ArrowLeft size={20} />
               </Link>
@@ -271,7 +269,7 @@ export default function MiniAppDetail() {
               <Link
                 key={app.id}
                 className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 text-center"
-                to={getPathWithParams(`/miniapps/${app.id}`)}
+                to={`/miniapps/${app.id}`}
               >
                 <div className="flex justify-center mb-3">
                   <div className="p-3 bg-purple-50 rounded-lg text-purple-600">

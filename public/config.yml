@@ -1,12 +1,6 @@
-# API Configuration
 api:
   keyspace: "satudesa"
   role: "dev"
   userId: "3181"
   baseUrl: "https://client-api.quantumbyte.ai/api/v1"
-  bearerToken: "VstD5Nrcyl777MbuzzxEoYIwK3Zlcj5jkVyS6hdk6EsXkRIiLIJq4EntMrZsGsXmv4HW9RsbuFPVO7Cq8w6XOd6h9owjPfGNZ2HS"
-
-# Application Configuration
-app:
-  title: "QuantumBytes Hub"
-  description: "Stay informed, access tools, and get things done efficiently" 
+  bearerToken: "VstD5Nrcyl777MbuzzxEoYIwK3Zlcj5jkVyS6hdk6EsXkRIiLIJq4EntMrZsGsXmv4HW9RsbuFPVO7Cq8w6XOd6h9owjPfGNZ2HS" 

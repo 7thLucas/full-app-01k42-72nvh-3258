@@ -17,7 +17,6 @@ import { mockInformation, mockMiniApps } from "@/data/mockData";
 import MiniAppsModal from "@/components/MiniAppsModal";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useNews } from "@/hooks/useNews";
-import { useNavigationWithParams } from "@/utils/navigation";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +27,6 @@ export default function Home() {
     error: newsError,
     refetch: refetchNews,
   } = useNews();
-  const getPathWithParams = useNavigationWithParams();
 
   // Get featured/latest items
   const latestNews = news.filter((newsItem) => newsItem.featured).slice(0, 3);
@@ -40,7 +38,7 @@ export default function Home() {
     .slice(0, 8);
 
   const handleMiniAppSelect = (miniApp: MiniApp) => {
-    navigate(getPathWithParams(`/miniapps/${miniApp.id}`));
+    navigate(`/miniapps/${miniApp.id}`);
   };
 
   const getIcon = (iconName: string) => {
@@ -96,7 +94,7 @@ export default function Home() {
               )}
               <Link
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                to={getPathWithParams("/news")}
+                to="/news"
               >
                 View All News
                 <ArrowRight className="ml-2" size={16} />
@@ -140,13 +138,13 @@ export default function Home() {
                 <Link
                   key={newsItem.id}
                   className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-                  to={getPathWithParams(`/news/${newsItem.id}`)}
+                  to={`/news/${newsItem.id}`}
                 >
                   <ImageWithFallback
-                    src={newsItem.imageUrl}
                     alt={newsItem.title}
                     className="w-full h-48 object-cover"
                     iconSize={32}
+                    src={newsItem.imageUrl}
                   />
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
@@ -182,7 +180,7 @@ export default function Home() {
             </h2>
             <Link
               className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              to={getPathWithParams("/information")}
+              to="/information"
             >
               View All Information
               <ArrowRight className="ml-2" size={16} />
@@ -194,7 +192,7 @@ export default function Home() {
               <Link
                 key={info.id}
                 className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
-                to={getPathWithParams(`/information/${info.id}`)}
+                to={`/information/${info.id}`}
               >
                 <div className="flex items-center justify-between mb-4">
                   <span
