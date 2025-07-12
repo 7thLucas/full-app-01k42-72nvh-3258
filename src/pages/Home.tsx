@@ -42,8 +42,8 @@ function HeroSection() {
 
           <p className="body-large mb-8 text-primary-100 max-w-2xl mx-auto">
             Stay informed with the latest news, access critical information, and
-            boost your productivity with our suite of powerful
-            mini-applications. Everything you need in one elegant platform.
+            boost your productivity with our suite of powerful features.
+            Everything you need in one elegant platform.
           </p>
         </div>
       </div>
@@ -325,11 +325,11 @@ function MiniAppsSection() {
   };
 
   return (
-    <section className="section-padding" id="miniapps-section">
+    <section className="section-padding" id="features">
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="heading-3 text-secondary-900 mb-2">MiniApps</h2>
+            <h2 className="heading-3 text-secondary-900 mb-2">Features</h2>
           </div>
           {miniApps.length > 8 && (
             <button
@@ -357,7 +357,7 @@ function MiniAppsSection() {
           <div className="text-center py-12">
             <AlertCircle className="mx-auto mb-4 text-danger-500" size={48} />
             <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-              Failed to load MiniApps
+              Failed to load Features
             </h3>
             <p className="text-secondary-600 mb-6">{miniAppsError}</p>
             <button className="btn btn-primary" onClick={refetchMiniApps}>

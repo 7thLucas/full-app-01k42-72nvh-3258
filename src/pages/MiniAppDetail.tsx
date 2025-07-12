@@ -11,6 +11,8 @@ import {
 import * as Icons from "lucide-react";
 
 import { fetchMiniAppById } from "@/services/api";
+import { getApiConfig } from "@/utils/config";
+import Layout from "@/components/Layout";
 
 export default function MiniAppDetail() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +20,25 @@ export default function MiniAppDetail() {
   const [hasError, setHasError] = useState(false);
   const [miniApp, setMiniApp] = useState<MiniApp | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [config, setConfig] = useState<{
+    keyspace: string;
+    userId: string;
+    role: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const loadConfig = async () => {
+      const config = await getApiConfig();
+
+      setConfig({
+        keyspace: config.keyspace,
+        userId: config.userId,
+        role: config.role,
+      });
+    };
+
+    loadConfig();
+  }, []);
 
   useEffect(() => {
     const loadMiniApp = async () => {
@@ -58,7 +79,7 @@ export default function MiniAppDetail() {
 
   if (fetchError || (!miniApp && !isLoading)) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             MiniApp Not Found
@@ -74,24 +95,35 @@ export default function MiniAppDetail() {
             Back to Home
           </Link>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (!miniApp) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
           <p className="text-gray-600">Loading MiniApp...</p>
         </div>
-      </div>
+      </Layout>
+    );
+  }
+
+  if (!config) {
+    return (
+      <Layout>
+        <div className="text-center">
+          <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
+          <p className="text-gray-600">Loading config...</p>
+        </div>
+      </Layout>
     );
   }
 
   if (!miniApp.isActive) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             MiniApp Unavailable
@@ -107,7 +139,7 @@ export default function MiniAppDetail() {
             Back to Home
           </Link>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -139,36 +171,7 @@ export default function MiniAppDetail() {
   };
 
   return (
-    <div
-      className={`min-h-screen bg-gray-50 fixed inset-0 z-50 bg-white flex flex-col`}
-    >
-      {/* Header */}
-      <div className="bg-white shadow-sm flex-shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Link
-                className="mr-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
-                to="/"
-              >
-                <ArrowLeft size={20} />
-              </Link>
-              <div className="flex items-center">
-                <div className="p-2 bg-purple-50 rounded-lg text-purple-600 mr-3">
-                  {getIcon(miniApp.icon)}
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">
-                    {miniApp.name}
-                  </h1>
-                  <p className="text-sm text-gray-500">{miniApp.category}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <Layout hideFooter className="flex h-screen">
       {/* MiniApp Container */}
       <div className={`bg-white rounded-lg shadow-sm flex-1`}>
         {/* Loading State */}
@@ -226,13 +229,13 @@ export default function MiniAppDetail() {
           <iframe
             className={`w-full h-full border-0 ${isLoading || hasError ? "hidden" : "block"}`}
             id="miniapp-iframe"
-            src={miniApp.url}
+            src={`${miniApp.url}?utm_source=quantumbyte.ai&utm_medium=referral&t=${Date.now().toString()}&userId=${config.userId}&keyspace=${config.keyspace}&role=${config.role}`}
             title={miniApp.name}
             onError={handleIframeError}
             onLoad={handleIframeLoad}
           />
         )}
       </div>
-    </div>
+    </Layout>
   );
 }

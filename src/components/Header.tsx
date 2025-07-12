@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Newspaper, Info, Grid3X3, Search } from "lucide-react";
+import { Menu, X, Home, Newspaper, Info, Grid3X3 } from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +10,7 @@ export default function Header() {
     { name: "Home", href: "/", icon: Home },
     { name: "News", href: "/news", icon: Newspaper },
     { name: "Information", href: "/information", icon: Info },
-    { name: "MiniApps", href: "#miniapps", icon: Grid3X3 },
+    { name: "Features", href: "/#features", icon: Grid3X3 },
   ];
 
   const isActive = (href: string) => {
@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   const scrollToMiniApps = () => {
-    const element = document.getElementById("miniapps-section");
+    const element = document.getElementById("features-section");
 
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -29,7 +29,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-soft">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-soft h-16">
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -65,7 +65,7 @@ export default function Header() {
                   }`}
                   to={item.href}
                   onClick={
-                    item.href === "#miniapps" ? scrollToMiniApps : undefined
+                    item.href === "/#features" ? scrollToMiniApps : undefined
                   }
                 >
                   <Icon className="mr-2" size={16} />
@@ -102,7 +102,7 @@ export default function Header() {
                     }`}
                     to={item.href}
                     onClick={() => {
-                      if (item.href === "#miniapps") {
+                      if (item.href === "/#features") {
                         scrollToMiniApps();
                       } else {
                         setIsMenuOpen(false);
@@ -114,12 +114,6 @@ export default function Header() {
                   </Link>
                 );
               })}
-              <div className="pt-2 border-t border-border/50">
-                <button className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 transition-colors w-full">
-                  <Search className="mr-3" size={18} />
-                  Search
-                </button>
-              </div>
             </nav>
           </div>
         )}

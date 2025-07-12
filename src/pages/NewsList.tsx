@@ -5,7 +5,6 @@ import {
   Calendar,
   User,
   Tag,
-  ArrowLeft,
   ArrowRight,
   RefreshCw,
   AlertCircle,
@@ -90,12 +89,6 @@ export default function NewsList() {
         <div className="max-w-7xl mx-auto container-padding py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Link
-                className="mr-4 p-2 hover:bg-secondary-50 rounded-lg transition-colors"
-                to="/"
-              >
-                <ArrowLeft size={20} />
-              </Link>
               <div>
                 <h1 className="heading-3 text-secondary-900">News</h1>
                 <p className="text-secondary-600 mt-1">
@@ -246,7 +239,7 @@ export default function NewsList() {
           <div className="space-y-6">
             {filteredNews.map((news, index) => (
               <article key={news.id} className="card hover-lift group">
-                <div className="md:flex">
+                <div className="md:flex h-48 md:h-64">
                   <div className="md:w-1/3">
                     <div className="h-48 md:h-full overflow-hidden rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
                       <ImageWithFallback

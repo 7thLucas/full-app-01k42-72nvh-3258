@@ -3,7 +3,6 @@ import {
   ArrowLeft,
   Clock,
   AlertCircle,
-  Share2,
   Tag,
   RefreshCw,
   AlertTriangle,
@@ -12,6 +11,7 @@ import {
 
 import { useInformationItem, useInformation } from "@/hooks/useInformation";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import Layout from "@/components/Layout";
 
 export default function InformationDetail() {
   const { id } = useParams<{ id: string }>();
@@ -25,18 +25,18 @@ export default function InformationDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <RefreshCw className="mx-auto mb-4 animate-spin" size={48} />
           <p className="text-secondary-600">Loading information...</p>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <AlertCircle className="mx-auto mb-4 text-primary-500" size={48} />
           <h1 className="text-4xl font-bold text-secondary-900 mb-4">
@@ -60,19 +60,19 @@ export default function InformationDetail() {
             </Link>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (!information) {
     return (
-      <div className="min-h-screen bg-secondary-50 flex items-center justify-center">
+      <Layout>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Information Not Found
           </h1>
           <p className="text-secondary-600 mb-8">
-            The information you're looking for doesn't exist.
+            The information you&apos;re looking for doesn&apos;t exist.
           </p>
           <Link
             className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
@@ -82,7 +82,7 @@ export default function InformationDetail() {
             Back to Information
           </Link>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -127,29 +127,11 @@ export default function InformationDetail() {
     }
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: information.title,
-          text: information.summary,
-          url: window.location.href,
-        });
-      } catch (error) {
-        // Fallback to clipboard
-        navigator.clipboard.writeText(window.location.href);
-      }
-    } else {
-      // Fallback to clipboard
-      navigator.clipboard.writeText(window.location.href);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-secondary-50">
+    <Layout>
       {/* Header */}
       <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto container-padding py-6">
           <div className="flex items-center justify-between">
             <Link
               className="inline-flex items-center text-secondary-600 hover:text-secondary-900 transition-colors"
@@ -158,13 +140,6 @@ export default function InformationDetail() {
               <ArrowLeft className="mr-2" size={20} />
               Back to Information
             </Link>
-            <button
-              className="inline-flex items-center px-3 py-2 text-secondary-600 hover:text-secondary-900 transition-colors"
-              onClick={handleShare}
-            >
-              <Share2 className="mr-2" size={16} />
-              Share
-            </button>
           </div>
         </div>
       </div>
@@ -172,16 +147,14 @@ export default function InformationDetail() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <article className="bg-white rounded-lg shadow-sm overflow-hidden">
           {/* Featured Image */}
-          {information.image && (
-            <div className="w-full h-64 md:h-96 flex-shrink-0">
-              <ImageWithFallback
-                alt={information.title}
-                className="w-full h-full object-cover"
-                iconSize={64}
-                src={information.image}
-              />
-            </div>
-          )}
+          <div className="w-full h-64 md:h-96 overflow-hidden rounded-t-xl">
+            <ImageWithFallback
+              alt={information.title}
+              className="w-full h-full object-cover"
+              iconSize={64}
+              src={information.image}
+            />
+          </div>
 
           <div className="p-8">
             {/* Article Meta */}
@@ -219,19 +192,8 @@ export default function InformationDetail() {
               </p>
             )}
 
-            {/* Summary */}
-            <div className="mb-8">
-              <div
-                dangerouslySetInnerHTML={{ __html: information.summary }}
-                className="text-secondary-700 leading-relaxed"
-              />
-            </div>
-
             {/* Tags */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-secondary-900 mb-4">
-                Tags
-              </h3>
               <div className="flex flex-wrap gap-2">
                 {information.tags.map((tag) => (
                   <span
@@ -307,6 +269,6 @@ export default function InformationDetail() {
           </div>
         )}
       </div>
-    </div>
+    </Layout>
   );
 }

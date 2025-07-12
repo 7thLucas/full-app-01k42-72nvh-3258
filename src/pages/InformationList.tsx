@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   Search,
   AlertCircle,
-  ArrowLeft,
   ArrowRight,
   RefreshCw,
   AlertTriangle,
@@ -122,12 +121,6 @@ export default function InformationList() {
         <div className="max-w-7xl mx-auto container-padding py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Link
-                className="mr-4 p-2 hover:bg-secondary-50 rounded-lg transition-colors"
-                to="/"
-              >
-                <ArrowLeft size={20} />
-              </Link>
               <div>
                 <h1 className="heading-3 text-secondary-900">Information</h1>
                 <p className="text-secondary-600 mt-1">
@@ -300,9 +293,9 @@ export default function InformationList() {
           <div className="space-y-6">
             {filteredInformation.map((info) => (
               <article key={info.id} className="card hover-lift group">
-                <div className="flex">
-                  {info.image && (
-                    <div className="w-48 h-32 flex-shrink-0 overflow-hidden rounded-l-xl">
+                <div className="md:flex h-48 md:h-64">
+                  <div className="md:w-1/3">
+                    <div className="h-48 md:h-full overflow-hidden rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
                       <ImageWithFallback
                         alt={info.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -310,25 +303,20 @@ export default function InformationList() {
                         src={info.image}
                       />
                     </div>
-                  )}
-                  <div className="flex-1 p-6">
+                  </div>
+                  <div className="p-6 md:w-2/3">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
                         <span
                           className={`badge ${getPriorityBadge(info.priority)}`}
                         >
-                          {getPriorityIcon(info.priority)}
                           <span className="ml-1">
                             {info.priority.toUpperCase()}
                           </span>
                         </span>
-                        <span className="text-sm text-secondary-500 bg-secondary-50 px-2 py-1 rounded-full">
-                          {info.category}
-                        </span>
                         {info.featured && (
                           <span className="badge badge-primary">
-                            <Star className="mr-1" size={12} />
-                            Featured
+                            <Star size={14} />
                           </span>
                         )}
                       </div>

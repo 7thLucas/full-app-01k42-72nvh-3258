@@ -1,13 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Twitter,
-  Linkedin,
-  Github,
-  Heart,
-} from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -16,15 +8,9 @@ export default function Footer() {
     resources: [
       { name: "News", href: "/news" },
       { name: "Information", href: "/information" },
-      { name: "MiniApps", href: "#miniapps" },
+      { name: "Features", href: "/#features" },
     ],
   };
-
-  const socialLinks = [
-    { name: "Twitter", href: "https://twitter.com", icon: Twitter },
-    { name: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
-    { name: "GitHub", href: "https://github.com", icon: Github },
-  ];
 
   return (
     <footer className="bg-secondary-900 text-secondary-300">
@@ -51,7 +37,7 @@ export default function Footer() {
               </Link>
               <p className="text-secondary-400 mb-6 leading-relaxed">
                 Your comprehensive hub for news, information, and powerful
-                mini-applications.
+                features.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center text-sm">
@@ -103,30 +89,6 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="flex items-center text-sm text-secondary-400">
               <span>© {currentYear} QuantumByte. All rights reserved.</span>
-              <span className="mx-2">•</span>
-              <span className="flex items-center">
-                Made with <Heart className="mx-1 text-red-400" size={14} /> for
-                professionals
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-
-                return (
-                  <a
-                    key={social.name}
-                    aria-label={social.name}
-                    className="text-secondary-400 hover:text-primary-400 transition-colors"
-                    href={social.href}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <Icon size={20} />
-                  </a>
-                );
-              })}
             </div>
           </div>
         </div>

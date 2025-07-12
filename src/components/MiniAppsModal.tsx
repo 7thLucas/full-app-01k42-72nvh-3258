@@ -55,7 +55,7 @@ export default function MiniAppsModal({
         {/* Header */}
         <div className="flex items-center justify-between p-6">
           <h2 className="text-2xl font-bold text-secondary-900">
-            All MiniApps
+            All Features
           </h2>
           <button
             className="p-2 hover:bg-secondary-100 rounded-full transition-colors"
@@ -75,7 +75,7 @@ export default function MiniAppsModal({
               />
               <input
                 className="w-full pl-10 pr-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Search MiniApps..."
+                placeholder="Search Features..."
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -89,7 +89,7 @@ export default function MiniAppsModal({
           {filteredMiniApps.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-secondary-500 text-lg">
-                No MiniApps found matching your criteria.
+                No Features found matching your criteria.
               </p>
             </div>
           ) : (
