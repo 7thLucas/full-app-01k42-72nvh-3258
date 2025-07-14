@@ -1,6 +1,6 @@
 // THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
 
-import type { AssistantItem } from "@/types";
+import type { AssistantItem, ChatMessage, ChatSession } from "@/types";
 
 import axios from "axios";
 
@@ -80,6 +80,56 @@ export const fetchAssistantById = async (
       throw new Error(`Failed to fetch news item: ${error.message}`);
     }
     throw new Error("Failed to fetch news item");
+  }
+};
+
+// Get or create a chat session for an assistant and user
+export const getOrCreateChatSession = async (
+  assistantId: string,
+  userId: string,
+): Promise<ChatSession> => {
+  try {
+    const apiClient = await createApiClient();
+
+    const response = await apiClient.get(
+      `/sessions/${assistantId}/sessions/${userId}`,
+    );
+
+    if (!response.data) {
+      throw new Error("Failed to get or create chat session");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error getting or creating chat session:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to get or create chat session: ${error.message}`);
+    }
+    throw new Error("Failed to get or create chat session");
+  }
+};
+
+// Add to deck.api.ts
+export const sendChatMessage = async (
+  sessionId: string,
+  message: string,
+): Promise<{
+  message: ChatMessage;
+  session: { id: string; messageCount: number };
+}> => {
+  try {
+    const apiClient = await createApiClient();
+    const response = await apiClient.post(`/sessions/${sessionId}/messages`, {
+      message: message,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error sending message:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to send message: ${error.message}`);
+    }
+    throw new Error("Failed to send message");
   }
 };
 

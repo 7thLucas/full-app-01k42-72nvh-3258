@@ -1,10 +1,15 @@
 // THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
 
-import type { AssistantItem } from "@/types";
+import type { AssistantItem, ChatSession } from "@/types";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-import { fetchAssistants, fetchAssistantById } from "@/services/deck.api";
+import {
+  fetchAssistants,
+  fetchAssistantById,
+  getOrCreateChatSession,
+  sendChatMessage,
+} from "@/services/deck.api";
 
 export const useAssistants = () => {
   const [assistants, setAssistants] = useState<AssistantItem[]>([]);
@@ -80,5 +85,91 @@ export const useAssistantItem = (id: string) => {
     loading,
     error,
     refetch,
+  };
+};
+
+// Hook for managing chat sessions
+export const useChatSession = (assistantId?: string, userId?: string) => {
+  const [session, setSession] = useState<ChatSession | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSending, setIsSending] = useState<boolean>(false);
+
+  const initializeSession = useCallback(async () => {
+    if (!assistantId || !userId) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const chatSession = await getOrCreateChatSession(assistantId, userId);
+
+      setSession(chatSession);
+    } catch (err) {
+      console.error("Error initializing chat session:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to initialize chat session",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [assistantId, userId]);
+
+  // Initialize session when assistantId or userId changes
+  useEffect(() => {
+    initializeSession();
+  }, [initializeSession]);
+
+  // Function to refresh the current session
+  const refreshSession = async () => {
+    if (!assistantId || !userId) return;
+
+    try {
+      setLoading(true);
+      const chatSession = await getOrCreateChatSession(assistantId, userId);
+
+      setSession(chatSession);
+    } catch (err) {
+      console.error("Error refreshing chat session:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to refresh chat session",
+      );
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendMessage = async (message: string) => {
+    if (!session || !message.trim()) return;
+
+    try {
+      setIsSending(true);
+      const response = await sendChatMessage(session._id, message);
+
+      // Update the session with the new messages
+      if (response?.session) {
+        await refreshSession();
+      }
+
+      return response;
+    } catch (err) {
+      console.error("Error sending message:", err);
+      setError(err instanceof Error ? err.message : "Failed to send message");
+      throw err;
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return {
+    session,
+    loading,
+    error,
+    refreshSession,
+    initializeSession,
+    sendMessage,
+    isSending,
   };
 };

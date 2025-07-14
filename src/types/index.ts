@@ -67,6 +67,23 @@ export interface AssistantItem {
   updated_at: string;
 }
 
+export interface ChatMessage {
+  id: string;
+  role: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ChatSession {
+  _id: string;
+  assistant_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  messages: ChatMessage[];
+}
+
 // Utility functions to transform API responses
 export const transformNewsListItem = (item: NewsListApiResponse): NewsItem => ({
   id: item.id || item._id,
