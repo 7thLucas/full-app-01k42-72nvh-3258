@@ -30,6 +30,8 @@ export const fetchAssistants = async (): Promise<ApiAssistantsResponse> => {
     const response = await apiClient.get<ApiAssistantsResponse>(`/assistants`, {
       params: {
         userId: config.userId,
+        keyspace: config.keyspace,
+        role: config.role,
       },
     });
 
@@ -48,7 +50,7 @@ interface ApiAssistantDetailResponse extends AssistantItem {}
 
 // Fetch single news item by ID
 export const fetchAssistantById = async (
-  id: string
+  id: string,
 ): Promise<AssistantItem | null> => {
   try {
     const config = await getApiConfig();
@@ -59,8 +61,10 @@ export const fetchAssistantById = async (
       {
         params: {
           userId: config.userId,
+          keyspace: config.keyspace,
+          role: config.role,
         },
-      }
+      },
     );
 
     if (!response.data) {
