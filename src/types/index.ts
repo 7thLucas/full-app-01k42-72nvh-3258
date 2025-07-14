@@ -55,6 +55,18 @@ export interface NewsItem {
   featured?: boolean;
 }
 
+export interface AssistantItem {
+  _id: string;
+  user_id: string;
+  name: string;
+  description?: string;
+  mission?: string;
+  instructions?: string;
+  style?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // Utility functions to transform API responses
 export const transformNewsListItem = (item: NewsListApiResponse): NewsItem => ({
   id: item.id || item._id,
