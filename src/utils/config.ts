@@ -14,43 +14,19 @@ interface Config {
   api: ApiConfig;
 }
 
-let config: Config | null = null;
+let config: Config = {
+  api: {
+    keyspace: "####VAR:KEYSPACE####",
+    role: "####VAR:ROLE####",
+    userId: "####VAR:USER_ID####",
+    baseUrl: "https://client-api.quantumbyte.ai/api/v1",
+    bearerToken:
+      "VstD5Nrcyl777MbuzzxEoYIwK3Zlcj5jkVyS6hdk6EsXkRIiLIJq4EntMrZsGsXmv4HW9RsbuFPVO7Cq8w6XOd6h9owjPfGNZ2HS",
+  },
+};
 
 export const loadConfig = async (): Promise<Config> => {
-  if (config) {
-    return config;
-  }
-
-  try {
-    // Browser environment - use fetch with relative URL
-    let configPath = "/config.yml";
-
-    if (
-      window.location.origin.includes("localhost") ||
-      window.location.origin.includes("0.0.0.0") ||
-      window.location.origin.includes("127.0.0.1")
-    ) {
-      configPath = import.meta.env.VITE_BASE_PATH + "/config.yml";
-    }
-    const response = await fetch(configPath);
-
-    if (!response.ok) {
-      throw new Error(`Failed to load config: ${response.statusText}`);
-    }
-
-    const yamlText = await response.text();
-
-    config = yaml.load(yamlText) as Config;
-
-    if (!config || !config.api) {
-      throw new Error("Invalid config format");
-    }
-
-    return config;
-  } catch (error) {
-    console.error("Error loading config:", error);
-    throw new Error("Failed to load application configuration");
-  }
+  return config;
 };
 
 export const getApiConfig = async (): Promise<ApiConfig> => {
