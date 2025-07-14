@@ -52,7 +52,7 @@ fi
 
 # Create .env file with the UUID only if it doesn't exist
 if [ ! -f ".env" ]; then
-    echo "VITE_BASE_PATH=/${NEW_UUID}" > .env
+    echo "VITE_BASE_PATH=/${NEW_UUID}/" > .env
 fi
 
 # Write UUID to qbid.txt

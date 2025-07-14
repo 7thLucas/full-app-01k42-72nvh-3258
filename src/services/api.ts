@@ -309,7 +309,16 @@ export const fetchMiniApps = async (
       const miniApps = response.data.result
         .filter((item: MiniAppListApiResponse) => item.mode === "MICROSITE")
         .filter((item: MiniAppListApiResponse) => !item.is_layanan_hidden)
+        .filter(
+          (item: MiniAppListApiResponse) =>
+            !item.title.toLowerCase().includes("homepage"),
+        )
         .filter((item: MiniAppListApiResponse) => item.status_publish === 1)
+        .filter(
+          (item: MiniAppListApiResponse) =>
+            item.id_user.toString() === config.userId.toString() ||
+            item.id_user.toString() === "1",
+        )
         .map((item: MiniAppListApiResponse) => transformMiniAppListItem(item));
 
       // Mark first 8 items as featured
