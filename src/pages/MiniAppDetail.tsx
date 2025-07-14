@@ -1,7 +1,7 @@
 import type { MiniApp } from "@/types";
 
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ExternalLink,
@@ -20,6 +20,9 @@ export default function MiniAppDetail() {
   const [hasError, setHasError] = useState(false);
   const [miniApp, setMiniApp] = useState<MiniApp | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token") || "wSOUiuEE0P";
+
   const [config, setConfig] = useState<{
     keyspace: string;
     userId: string;
@@ -229,7 +232,7 @@ export default function MiniAppDetail() {
           <iframe
             className={`w-full h-full border-0 ${isLoading || hasError ? "hidden" : "block"}`}
             id="miniapp-iframe"
-            src={`${miniApp.url}?utm_source=quantumbyte.ai&utm_medium=referral&t=${Date.now().toString()}&userId=${config.userId}&keyspace=${config.keyspace}&role=${config.role}`}
+            src={`${miniApp.url}?utm_source=quantumbyte.ai&utm_medium=referral&t=${Date.now().toString()}&userId=${config.userId}&keyspace=${config.keyspace}&role=${config.role}&token=${token}`}
             title={miniApp.name}
             onError={handleIframeError}
             onLoad={handleIframeLoad}

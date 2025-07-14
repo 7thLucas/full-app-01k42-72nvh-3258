@@ -1,7 +1,5 @@
 // THIS FILE IS STATIC, THEREFORE NEVER CHANGE IT
 
-import * as yaml from "js-yaml";
-
 interface ApiConfig {
   keyspace: string;
   role: string;
