@@ -11,11 +11,13 @@ interface Config {
   api: ApiConfig;
 }
 
+import { config as configFromConfig } from "./config";
+
 let config: Config = {
   api: {
-    keyspace: "satudesa",
-    role: "dev",
-    userId: "3181",
+    keyspace: configFromConfig.api.keyspace,
+    role: configFromConfig.api.role,
+    userId: configFromConfig.api.userId,
     baseUrl: "https://api.qb-deck.quantumbyte.ai",
   },
 };

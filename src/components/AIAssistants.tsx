@@ -59,6 +59,10 @@ export default function AIAssistants() {
     };
   }, []);
 
+  if (!assistants || assistants.length === 0) {
+    return <></>;
+  }
+
   return (
     <div ref={popoverRef} className="fixed bottom-6 right-6 z-50">
       {selectedAssistant ? (

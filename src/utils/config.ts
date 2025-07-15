@@ -12,7 +12,7 @@ interface Config {
   api: ApiConfig;
 }
 
-let config: Config = {
+export let config: Config = {
   api: {
     keyspace: "####VAR:KEYSPACE####",
     role: "####VAR:ROLE####",
