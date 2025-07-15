@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, ChevronLeft, Send, Loader2 } from "lucide-react";
 import { ulid } from "ulid";
+import ReactMarkdown from "react-markdown";
 
 import { useAssistants, useChatSession } from "@/hooks/useAssistants";
 import { AssistantItem } from "@/types";
@@ -120,7 +121,7 @@ export default function AIAssistants() {
                           : "bg-gray-100 text-gray-800 rounded-bl-none"
                       }`}
                     >
-                      {msg.content}
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                   </div>
                 ))
