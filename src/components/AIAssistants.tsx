@@ -66,9 +66,9 @@ export default function AIAssistants() {
 
   return (
     <div ref={popoverRef} className="fixed bottom-6 right-6 z-50">
-      {selectedAssistant ? (
+      {selectedAssistant && (
         <div
-          className="absolute bottom-20 right-0 w-96 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col"
+          className="absolute bottom-20 right-0 w-[90vw] max-w-96 bg-white rounded-lg shadow-xl overflow-hidden flex flex-col"
           style={{ height: "70vh", maxHeight: "600px" }}
         >
           <div className="p-4 bg-primary-600 text-white flex items-center">
@@ -168,51 +168,50 @@ export default function AIAssistants() {
             </form>
           </div>
         </div>
-      ) : null}
+      )}
+
+      {showAssistants && (
+        <div className="absolute bottom-16 right-0 w-[90vw] max-w-96 h-[80vh] max-h-96 bg-white rounded-lg shadow-lg overflow-hidden mb-2">
+          <div className="p-2 bg-gray-50 border-b border-gray-200">
+            <h3 className="font-medium text-gray-900">Select an Assistant</h3>
+          </div>
+          <div className="overflow-y-auto">
+            {loading && (
+              <p className="p-3 text-sm text-gray-500">Loading assistants...</p>
+            )}
+            {error && (
+              <p className="p-3 text-sm text-red-500">
+                Error loading assistants: {error}
+              </p>
+            )}
+            {assistants &&
+              assistants.map((assistant: any) => (
+                <div
+                  key={assistant._id}
+                  className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleAssistantClick(assistant)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleAssistantClick(assistant);
+                    }
+                  }}
+                >
+                  <div className="font-medium text-gray-900">
+                    {assistant.name}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {assistant.description}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
 
       {/* Assistant Selector */}
       <div className="relative">
-        {showAssistants && (
-          <div className="absolute bottom-16 right-0 w-64 bg-white rounded-lg shadow-lg overflow-hidden mb-2">
-            <div className="p-2 bg-gray-50 border-b border-gray-200">
-              <h3 className="font-medium text-gray-900">Select an Assistant</h3>
-            </div>
-            <div className="max-h-60 overflow-y-auto">
-              {loading && (
-                <p className="p-3 text-sm text-gray-500">
-                  Loading assistants...
-                </p>
-              )}
-              {error && (
-                <p className="p-3 text-sm text-red-500">
-                  Error loading assistants: {error}
-                </p>
-              )}
-              {assistants &&
-                assistants.map((assistant: any) => (
-                  <div
-                    key={assistant._id}
-                    className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => handleAssistantClick(assistant)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleAssistantClick(assistant);
-                      }
-                    }}
-                  >
-                    <div className="font-medium text-gray-900">
-                      {assistant.name}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {assistant.description}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        )}
         <button
           aria-label="Chat with AI Assistant"
           className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-primary-600 hover:bg-primary-700 transition-colors"
