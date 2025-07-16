@@ -29,21 +29,22 @@ export default function MiniAppsModal({
     return matchesSearch;
   });
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   return (
-    <div
-      aria-labelledby="miniapps-modal-title"
-      aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      role="dialog"
-      onClick={handleBackdropClick}
-    >
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      {/* Backdrop button for closing */}
+      <button
+        aria-label="Close modal"
+        className="absolute inset-0 w-full h-full bg-transparent"
+        tabIndex={-1}
+        onClick={onClose}
+      />
+
+      <div
+        aria-labelledby="miniapps-modal-title"
+        aria-modal="true"
+        className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden relative z-10"
+        role="dialog"
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-6">
           <h2 className="text-2xl font-bold text-secondary-900">

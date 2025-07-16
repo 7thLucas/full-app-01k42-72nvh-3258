@@ -12,7 +12,7 @@ import type {
   MiniAppBuildLogApiResponse,
 } from "@/types";
 
-import axios from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import {
   transformNewsListItem,
@@ -22,18 +22,69 @@ import {
   transformMiniAppListItem,
 } from "@/types";
 import { getApiConfig } from "@/utils/config";
+import { getStoredToken } from "@/services/auth";
 
-// Create axios instance factory
-const createApiClient = async () => {
+// Create API client with automatic token handling
+export const createApiClient = async (): Promise<AxiosInstance> => {
   const config = await getApiConfig();
 
-  return axios.create({
+  const client = axios.create({
     baseURL: config.baseUrl,
     headers: {
       Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
     },
   });
+
+  // Add request interceptor to include JWT token
+  client.interceptors.request.use(
+    async (config) => {
+      const apiConfig = await getApiConfig();
+      const token = getStoredToken(
+        apiConfig.keyspace,
+        apiConfig.role,
+        apiConfig.userId,
+      );
+
+      if (token && config.headers) {
+        config.headers["jwt-token"] = token;
+      }
+
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
+
+  // Add response interceptor for automatic token refresh (same as auth service)
+  client.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        // Emit logout event to trigger context logout
+        window.dispatchEvent(new CustomEvent("auth:logout"));
+
+        return Promise.reject(error);
+      }
+
+      return Promise.reject(error);
+    },
+  );
+
+  return client;
+};
+
+// Convenience function to make authenticated API calls
+export const apiRequest = async <T = any>(
+  config: AxiosRequestConfig,
+): Promise<T> => {
+  const client = await createApiClient();
+  const response = await client(config);
+
+  return response.data;
 };
 
 // API Response interface
@@ -421,5 +472,3 @@ export const fetchMiniAppById = async (id: string): Promise<MiniApp | null> => {
     throw new Error("Failed to fetch MiniApp");
   }
 };
-
-export default createApiClient;

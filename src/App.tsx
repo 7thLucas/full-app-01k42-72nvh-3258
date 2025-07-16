@@ -7,7 +7,10 @@ import NewsDetail from "@/pages/NewsDetail";
 import InformationList from "@/pages/InformationList";
 import InformationDetail from "@/pages/InformationDetail";
 import MiniAppDetail from "@/pages/MiniAppDetail";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 import RouteError from "@/components/RouteError";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Check if we're running locally and set basename accordingly
 const isLocalhost =
@@ -21,6 +24,16 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Home />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
       errorElement: <RouteError />,
     },
     {
@@ -58,5 +71,9 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }

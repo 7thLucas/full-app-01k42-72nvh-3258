@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Home, FileX, ArrowLeft } from "lucide-react";
+
 import Layout from "@/components/Layout";
 
 export default function NotFound() {
@@ -16,15 +17,13 @@ export default function NotFound() {
               Page Not Found
             </h2>
             <p className="body-medium text-secondary-600 mb-8">
-              The page you're looking for doesn't exist or has been moved to a new location.
+              The page you&apos;re looking for doesn&apos;t exist or has been
+              moved to a new location.
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              className="btn btn-primary btn-lg"
-              to="/"
-            >
+            <Link className="btn btn-primary btn-lg" to="/">
               <Home className="mr-2" size={20} />
               Go Home
             </Link>

@@ -12,6 +12,7 @@ import * as Icons from "lucide-react";
 
 import { fetchMiniAppById } from "@/services/api";
 import { getApiConfig } from "@/utils/config";
+import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 
 export default function MiniAppDetail() {
@@ -21,7 +22,10 @@ export default function MiniAppDetail() {
   const [miniApp, setMiniApp] = useState<MiniApp | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token") || "wSOUiuEE0P";
+  const { token } = useAuth();
+
+  // Get token from auth context or search params as fallback
+  const appToken = token || searchParams.get("token") || "wSOUiuEE0P";
 
   const [config, setConfig] = useState<{
     keyspace: string;
@@ -232,7 +236,7 @@ export default function MiniAppDetail() {
           <iframe
             className={`w-full h-full border-0 ${isLoading || hasError ? "hidden" : "block"}`}
             id="miniapp-iframe"
-            src={`${miniApp.url}?utm_source=quantumbyte.ai&utm_medium=referral&t=${Date.now().toString()}&userId=${config.userId}&keyspace=${config.keyspace}&role=${config.role}&token=${token}`}
+            src={`${miniApp.url}?utm_source=quantumbyte.ai&utm_medium=referral&t=${Date.now().toString()}&userId=${config.userId}&keyspace=${config.keyspace}&role=${config.role}&token=${appToken}`}
             title={miniApp.name}
             onError={handleIframeError}
             onLoad={handleIframeLoad}

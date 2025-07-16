@@ -29,15 +29,15 @@ export default function RouteError() {
               <AlertTriangle className="text-danger-500" size={48} />
             )}
           </div>
-          
+
           <h1 className="text-6xl font-bold text-secondary-900 mb-4">
             {errorStatus}
           </h1>
-          
+
           <h2 className="text-2xl font-semibold text-secondary-700 mb-4">
             {is404 ? "Page Not Found" : errorStatusText}
           </h2>
-          
+
           <p className="text-secondary-600 mb-8 leading-relaxed">
             {is404
               ? "The page you're looking for doesn't exist or has been moved to a new location."
@@ -45,26 +45,28 @@ export default function RouteError() {
           </p>
         </div>
 
-        {process.env.NODE_ENV === "development" && !is404 && error instanceof Error && (
-          <details className="mb-8 text-left bg-white rounded-lg p-4 shadow-sm">
-            <summary className="cursor-pointer text-sm font-medium text-secondary-700 mb-2">
-              Error Details (Development)
-            </summary>
-            <div className="bg-secondary-50 rounded p-3 text-xs text-secondary-800 overflow-auto max-h-32">
-              <div className="font-medium mb-1">Error:</div>
-              <div className="mb-2">{error.message}</div>
-              {error.stack && (
-                <>
-                  <div className="font-medium mb-1">Stack:</div>
-                  <pre className="whitespace-pre-wrap text-xs">
-                    {error.stack}
-                  </pre>
-                </>
-              )}
-            </div>
-          </details>
-        )}
-        
+        {process.env.NODE_ENV === "development" &&
+          !is404 &&
+          error instanceof Error && (
+            <details className="mb-8 text-left bg-white rounded-lg p-4 shadow-sm">
+              <summary className="cursor-pointer text-sm font-medium text-secondary-700 mb-2">
+                Error Details (Development)
+              </summary>
+              <div className="bg-secondary-50 rounded p-3 text-xs text-secondary-800 overflow-auto max-h-32">
+                <div className="font-medium mb-1">Error:</div>
+                <div className="mb-2">{error.message}</div>
+                {error.stack && (
+                  <>
+                    <div className="font-medium mb-1">Stack:</div>
+                    <pre className="whitespace-pre-wrap text-xs">
+                      {error.stack}
+                    </pre>
+                  </>
+                )}
+              </div>
+            </details>
+          )}
+
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
@@ -73,7 +75,7 @@ export default function RouteError() {
             <Home className="mr-2" size={20} />
             Go Home
           </Link>
-          
+
           <button
             className="inline-flex items-center px-6 py-3 border border-secondary-300 text-secondary-700 rounded-lg hover:bg-secondary-50 transition-colors font-medium"
             onClick={() => window.history.back()}
@@ -81,7 +83,7 @@ export default function RouteError() {
             <ArrowLeft className="mr-2" size={20} />
             Go Back
           </button>
-          
+
           {!is404 && (
             <button
               className="inline-flex items-center px-6 py-3 border border-secondary-300 text-secondary-700 rounded-lg hover:bg-secondary-50 transition-colors font-medium"
@@ -95,4 +97,4 @@ export default function RouteError() {
       </div>
     </div>
   );
-} 
+}
