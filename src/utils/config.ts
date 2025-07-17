@@ -14,9 +14,9 @@ interface Config {
 
 export let config: Config = {
   api: {
-    keyspace: "satudesa",
-    role: "dev",
-    userId: "3181",
+    keyspace: "####VAR:KEYSPACE####",
+    role: "####VAR:ROLE####",
+    userId: "####VAR:USER_ID####",
     baseUrl: "https://client-api.quantumbyte.ai/api/v1",
     bearerToken:
       "VstD5Nrcyl777MbuzzxEoYIwK3Zlcj5jkVyS6hdk6EsXkRIiLIJq4EntMrZsGsXmv4HW9RsbuFPVO7Cq8w6XOd6h9owjPfGNZ2HS",
