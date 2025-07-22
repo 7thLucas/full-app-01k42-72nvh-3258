@@ -5,6 +5,7 @@ import type { AssistantItem, ChatMessage, ChatSession } from "@/types";
 import axios from "axios";
 
 import { getApiConfig } from "@/utils/deck.config";
+import { encodeParamsAES256 } from "@/utils/aes256";
 
 // Create axios instance factory
 const createApiClient = async () => {
@@ -13,7 +14,13 @@ const createApiClient = async () => {
   return axios.create({
     baseURL: config.baseUrl,
     headers: {
+      Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
+      "key-token": encodeParamsAES256(
+        config.keyspace,
+        config.role,
+        config.userId,
+      ),
     },
   });
 };
@@ -88,21 +95,17 @@ export const getOrCreateChatSession = async (
   assistantId: string,
   userId: string,
 ): Promise<ChatSession> => {
-  const config = await getApiConfig();
-
   try {
     const apiClient = await createApiClient();
 
-    // TODO: proper way to get userId, keyspace, and role of the visitor
-    // uses userId of the visitor
+    /**
+     * DEVELOPER NOTE, IGNORE THIS
+     * TODO: properly put userId, keyspace, and role of the visitor
+     * Not putting userId, keyspace, and role of the visitor here
+     * because it will trigger credit check and deduction
+     */
     const response = await apiClient.get(
       `/sessions/${assistantId}/sessions/${userId}`,
-      {
-        params: {
-          keyspace: config.keyspace,
-          role: "client",
-        },
-      },
     );
 
     if (!response.data) {

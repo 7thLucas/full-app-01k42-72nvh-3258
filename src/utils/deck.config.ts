@@ -4,6 +4,7 @@ interface ApiConfig {
   keyspace: string;
   role: string;
   userId: string;
+  bearerToken: string;
   baseUrl: string;
 }
 
@@ -18,6 +19,7 @@ let config: Config = {
     keyspace: configFromConfig.api.keyspace,
     role: configFromConfig.api.role,
     userId: configFromConfig.api.userId,
+    bearerToken: configFromConfig.api.bearerToken,
     baseUrl: "https://api.qb-deck.quantumbyte.ai",
   },
 };
