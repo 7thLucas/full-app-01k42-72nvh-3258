@@ -23,6 +23,7 @@ import {
 } from "@/types";
 import { getApiConfig } from "@/utils/config";
 import { getStoredToken } from "@/services/auth";
+import { encodeParamsAES256 } from "@/utils/aes256";
 
 // Create API client with automatic token handling
 export const createApiClient = async (): Promise<AxiosInstance> => {
@@ -33,6 +34,11 @@ export const createApiClient = async (): Promise<AxiosInstance> => {
     headers: {
       Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
+      "key-token": encodeParamsAES256(
+        config.keyspace,
+        config.role,
+        config.userId,
+      ),
     },
   });
 

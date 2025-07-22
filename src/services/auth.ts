@@ -13,6 +13,7 @@ import type {
 import axios from "axios";
 
 import { getApiConfig } from "@/utils/config";
+import { encodeParamsAES256 } from "@/utils/aes256";
 
 // Global flag to prevent multiple refresh attempts
 let isRefreshing = false;
@@ -42,6 +43,11 @@ const createBasicAuthClient = async () => {
     headers: {
       Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
+      "key-token": encodeParamsAES256(
+        config.keyspace,
+        config.role,
+        config.userId,
+      ),
     },
   });
 };
@@ -63,6 +69,11 @@ export const refreshTokenApi = async (
           Authorization: `Bearer ${config.bearerToken}`,
           "Content-Type": "application/json",
           "jwt-token": userToken,
+          "key-token": encodeParamsAES256(
+            config.keyspace,
+            config.role,
+            config.userId,
+          ),
         },
       },
     );
@@ -98,6 +109,11 @@ const createAuthClient = async () => {
     headers: {
       Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
+      "key-token": encodeParamsAES256(
+        config.keyspace,
+        config.role,
+        config.userId,
+      ),
     },
   });
 
@@ -359,6 +375,12 @@ export const logoutApi = async (userToken: string): Promise<void> => {
           Authorization: `Bearer ${config.bearerToken}`,
           "Content-Type": "application/json",
           "jwt-token": userToken,
+          // TODO: potentially duplicate when createAuthClient
+          "key-token": encodeParamsAES256(
+            config.keyspace,
+            config.role,
+            config.userId,
+          ),
         },
       },
     );

@@ -9,6 +9,7 @@ import type {
 import axios from "axios";
 
 import { getApiConfig } from "@/utils/config";
+import { encodeParamsAES256 } from "@/utils/aes256";
 
 // Create axios instance for location API
 const createLocationClient = async () => {
@@ -19,6 +20,11 @@ const createLocationClient = async () => {
     headers: {
       Authorization: `Bearer ${config.bearerToken}`,
       "Content-Type": "application/json",
+      "key-token": encodeParamsAES256(
+        config.keyspace,
+        config.role,
+        config.userId,
+      ),
     },
   });
 };
