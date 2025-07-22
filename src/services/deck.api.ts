@@ -88,11 +88,21 @@ export const getOrCreateChatSession = async (
   assistantId: string,
   userId: string,
 ): Promise<ChatSession> => {
+  const config = await getApiConfig();
+
   try {
     const apiClient = await createApiClient();
 
+    // TODO: proper way to get userId, keyspace, and role of the visitor
+    // uses userId of the visitor
     const response = await apiClient.get(
       `/sessions/${assistantId}/sessions/${userId}`,
+      {
+        params: {
+          keyspace: config.keyspace,
+          role: "client",
+        },
+      },
     );
 
     if (!response.data) {
