@@ -30,6 +30,7 @@ export default function AIAssistants() {
     error: sessionError,
     sendMessage,
     isSending,
+    messageError,
   } = useChatSession(selectedAssistant?._id, userId);
 
   // Auto-scroll to bottom of messages
@@ -129,6 +130,11 @@ export default function AIAssistants() {
                 <div className="text-center text-sm text-gray-500 py-8">
                   Start chatting with {selectedAssistant.name}
                 </div>
+              )}
+              {messageError && (
+                <p className="text-center text-sm text-red-500">
+                  Error sending message: {messageError}
+                </p>
               )}
               <div ref={messagesEndRef} />
             </div>

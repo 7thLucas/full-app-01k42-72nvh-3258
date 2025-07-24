@@ -139,6 +139,25 @@ export const sendChatMessage = async (
     return response.data;
   } catch (error) {
     console.error("Error sending message:", error);
+    // Handle axios errors with response data
+    if (axios.isAxiosError(error) && error.response) {
+      const status = error.response.status;
+      const errorDetail =
+        error.response.data?.detail || error.response.data?.message;
+
+      if (status === 402) {
+        // Insufficient credit error
+        throw new Error(
+          errorDetail || "Insufficient credit. Please top up for credits",
+        );
+      } else if (errorDetail) {
+        // Other backend errors with custom messages
+        throw new Error(`Failed to send message: ${errorDetail}`);
+      } else {
+        // Fallback for responses without detail
+        throw new Error(`Failed to send message: ${error.response.statusText}`);
+      }
+    }
     if (error instanceof Error) {
       throw new Error(`Failed to send message: ${error.message}`);
     }

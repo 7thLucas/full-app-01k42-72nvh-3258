@@ -93,6 +93,7 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
   const [session, setSession] = useState<ChatSession | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [messageError, setMessageError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState<boolean>(false);
 
   const initializeSession = useCallback(async () => {
@@ -101,6 +102,7 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
     try {
       setLoading(true);
       setError(null);
+      setMessageError(null);
       const chatSession = await getOrCreateChatSession(assistantId, userId);
 
       setSession(chatSession);
@@ -127,6 +129,7 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
 
     try {
       setLoading(true);
+      setMessageError(null);
       const chatSession = await getOrCreateChatSession(assistantId, userId);
 
       setSession(chatSession);
@@ -146,6 +149,7 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
 
     try {
       setIsSending(true);
+      setMessageError(null);
       const response = await sendChatMessage(session._id, message);
 
       // Update the session with the new messages
@@ -156,7 +160,9 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
       return response;
     } catch (err) {
       console.error("Error sending message:", err);
-      setError(err instanceof Error ? err.message : "Failed to send message");
+      setMessageError(
+        err instanceof Error ? err.message : "Failed to send message",
+      );
       throw err;
     } finally {
       setIsSending(false);
@@ -171,5 +177,6 @@ export const useChatSession = (assistantId?: string, userId?: string) => {
     initializeSession,
     sendMessage,
     isSending,
+    messageError,
   };
 };
