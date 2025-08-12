@@ -8,7 +8,6 @@ import {
   RefreshCw,
   AlertTriangle,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 
 import { fetchMiniAppById } from "@/services/api";
 import { getApiConfig } from "@/utils/config";
@@ -149,18 +148,6 @@ export default function MiniAppDetail() {
       </Layout>
     );
   }
-
-  const getIcon = (iconName: string) => {
-    const IconComponent = Icons[
-      iconName as keyof typeof Icons
-    ] as React.ComponentType<{ size?: number }>;
-
-    return IconComponent ? (
-      <IconComponent size={24} />
-    ) : (
-      <Icons.Square size={24} />
-    );
-  };
 
   const handleIframeLoad = () => {
     setIsLoading(false);

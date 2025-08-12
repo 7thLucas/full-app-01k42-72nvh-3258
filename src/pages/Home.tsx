@@ -8,7 +8,6 @@ import {
   AlertCircle,
   Zap,
 } from "lucide-react";
-import * as Icons from "lucide-react";
 import { useState } from "react";
 
 import Layout from "@/components/Layout";
@@ -18,6 +17,7 @@ import { useNews } from "@/hooks/useNews";
 import { useInformation } from "@/hooks/useInformation";
 import { useMiniApps } from "@/hooks/useMiniApps";
 import MiniAppsModal from "@/components/MiniAppsModal";
+import { SafeDynamicIcon } from "@/components/SafeDynamicIcon";
 
 // Enhanced Hero Section Component
 function HeroSection() {
@@ -368,10 +368,6 @@ function MiniAppsSection() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             {topMiniApps.map((miniApp) => {
-              const IconComponent = Icons[
-                miniApp.icon as keyof typeof Icons
-              ] as React.ComponentType<{ size?: number }>;
-
               return (
                 <button
                   key={miniApp.id}
@@ -379,11 +375,7 @@ function MiniAppsSection() {
                   onClick={() => handleMiniAppSelect(miniApp)}
                 >
                   <div className="p-3 bg-primary-50 rounded-lg text-primary-600 group-hover:bg-primary-100 transition-colors mb-3 w-fit mx-auto">
-                    {IconComponent ? (
-                      <IconComponent size={24} />
-                    ) : (
-                      <Icons.Square size={24} />
-                    )}
+                    <SafeDynamicIcon name={miniApp.icon} size={24} />
                   </div>
                   <h3 className="font-medium text-secondary-900 text-sm leading-tight">
                     {miniApp.name}

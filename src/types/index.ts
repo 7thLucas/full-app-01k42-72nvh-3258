@@ -383,7 +383,7 @@ export interface MiniAppListApiResponse {
   identity: string;
   title: string;
   desc: string;
-  icon: null;
+  icon: string;
   banner: null;
   kategori: null;
   status: string;
@@ -507,7 +507,7 @@ export const transformMiniAppListItem = (
   id: item.id.toString(),
   name: item.title,
   description: item.desc || "",
-  icon: "Square", // Default icon since API returns null
+  icon: "", // Default icon since API returns null
   url: "", // Will be populated from build log
   category: item.kategori || "General",
   featured: false, // Will be set based on logic

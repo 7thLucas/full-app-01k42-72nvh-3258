@@ -2,7 +2,7 @@ import type { MiniApp } from "@/types";
 
 import { useState } from "react";
 import { X, Search, RefreshCw } from "lucide-react";
-import * as Icons from "lucide-react";
+import { SafeDynamicIcon } from "./SafeDynamicIcon";
 
 interface MiniAppsModalProps {
   isOpen: boolean;
@@ -88,10 +88,6 @@ export default function MiniAppsModal({
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {filteredMiniApps.map((miniApp) => {
-                const IconComponent = Icons[
-                  miniApp.icon as keyof typeof Icons
-                ] as React.ComponentType<{ size?: number }>;
-
                 return (
                   <button
                     key={miniApp.id}
@@ -100,11 +96,7 @@ export default function MiniAppsModal({
                   >
                     <div className="flex flex-col">
                       <div className="p-2 bg-primary-50 rounded-lg text-primary-600 group-hover:bg-primary-100 transition-colors mb-2 w-fit">
-                        {IconComponent ? (
-                          <IconComponent size={24} />
-                        ) : (
-                          <Icons.Square size={24} />
-                        )}
+                        <SafeDynamicIcon name={miniApp.icon} size={24} />
                       </div>
                       <h3 className="font-semibold text-secondary-900 mb-2 leading-tight">
                         {miniApp.name}
