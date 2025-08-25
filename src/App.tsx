@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "@/pages/Home";
-import NotFound from "@/pages/NotFound";
+import Homepage from "@/modules/homepage/page";
+import NotFoundPage from "@/modules/notfound/page";
 import RouteError from "@/components/RouteError";
 
 // Check if we're running locally and set basename accordingly
@@ -15,12 +15,12 @@ const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <Home />,
+      element: <Homepage />,
       errorElement: <RouteError />,
     },
     {
       path: "*",
-      element: <NotFound />,
+      element: <NotFoundPage />,
       errorElement: <RouteError />,
     },
   ],
