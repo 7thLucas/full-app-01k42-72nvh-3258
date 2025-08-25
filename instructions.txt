@@ -7,43 +7,14 @@ First, read the documentation in the `docs/` folder:
 - `docs/module-rules.md` - Quick reference for module creation
 - `docs/llm-readme.md` - Special instructions for LLMs (this file)
 
-## JSON SPEC FORMAT
-
-When given a page specification, it will follow this format:
-
-```json
-{
-  "name": "[MODULE_NAME]",
-  "description": "[DESCRIPTION]",
-  "keyword": "[KEYWORD]",
-  "icon": "[ICON_NAME]",
-  "colors": {
-    "primary": "#[HEX_COLOR]",
-    "secondary": "#[HEX_COLOR]"
-  },
-  "purpose_entry_points": "[PURPOSE]",
-  "user_stories_covered": [
-    "[USER_STORY_1]",
-    "[USER_STORY_2]"
-  ],
-  "ui_elements_states": "[UI_ELEMENTS]",
-  "copy_tone": "[COPY_TONE]",
-  "form_fields": [
-    {
-      "label": "[FIELD_LABEL]",
-      "placeholder": "[FIELD_PLACEHOLDER]",
-      "name": "[FIELD_NAME]",
-      "type": "[FIELD_TYPE]",
-      "description": "[FIELD_DESCRIPTION]",
-      "required": true/false
-    }
-  ]
-}
-```
-
 ## QUICK REFERENCE
 
 1. **Read the docs first** - All architecture and structure rules are documented
 2. **Follow the module structure** - Create files in `src/modules/[kebab-case-module-name]/`
 3. **Handle colors properly** - If specified, update `tailwind.config.js` with new palettes
 4. **See llm-readme.md** - For specific implementation rules and deliverable format
+5. **DO NOT** - run the server. Your definition of done is changes are implemented, documented, and "bun run build" return success
+6. **MAKE SURE** - If you create new module, make sure it's accessible via homepage
+
+## User's Request
+
