@@ -4,12 +4,10 @@ import { Mail, Phone, MapPin } from "lucide-react";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const footerLinks = {
-    resources: [
-      { name: "News", href: "/news" },
-      { name: "Information", href: "/information" },
-      { name: "Features", href: "/#features" },
-    ],
+  const footerLinks: {
+    resources: { name: string; href: string }[];
+  } = {
+    resources: [],
   };
 
   return (

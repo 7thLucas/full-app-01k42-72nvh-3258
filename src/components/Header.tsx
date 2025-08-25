@@ -4,26 +4,14 @@ import {
   Menu,
   X,
   Home,
-  Newspaper,
-  Info,
-  Grid3X3,
-  LogIn,
-  LogOut,
-  User,
 } from "lucide-react";
-
-import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated, user, logout } = useAuth();
 
-  const navigation = [
+  const navigation: { name: string; href: string; icon: React.ElementType }[] = [
     { name: "Home", href: "/", icon: Home },
-    { name: "News", href: "/news", icon: Newspaper },
-    { name: "Information", href: "/information", icon: Info },
-    { name: "Features", href: "/#features", icon: Grid3X3 },
   ];
 
   const isActive = (href: string) => {
@@ -72,11 +60,10 @@ export default function Header() {
                 return (
                   <Link
                     key={item.name}
-                    className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      active
+                    className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${active
                         ? "bg-primary-50 text-primary-700 shadow-soft"
                         : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
-                    }`}
+                      }`}
                     to={item.href}
                     onClick={
                       item.href === "/#features" ? scrollToMiniApps : undefined
@@ -88,35 +75,6 @@ export default function Header() {
                 );
               })}
             </nav>
-          </div>
-
-          {/* Auth Section */}
-          <div className="hidden md:flex items-center space-x-2 ml-4">
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2 px-3 py-2 bg-secondary-50 rounded-lg">
-                  <User className="text-secondary-600" size={16} />
-                  <span className="text-sm text-secondary-700 font-medium">
-                    {user?.name || "User"}
-                  </span>
-                </div>
-                <button
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-colors"
-                  onClick={logout}
-                >
-                  <LogOut className="mr-2" size={16} />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link
-                className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
-                to="/login"
-              >
-                <LogIn className="mr-2" size={16} />
-                Login
-              </Link>
-            )}
           </div>
 
           {/* Mobile menu button */}
@@ -139,11 +97,10 @@ export default function Header() {
                 return (
                   <Link
                     key={item.name}
-                    className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      active
+                    className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${active
                         ? "bg-primary-50 text-primary-700 shadow-soft"
                         : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
-                    }`}
+                      }`}
                     to={item.href}
                     onClick={() => {
                       if (item.href === "/#features") {
@@ -159,39 +116,6 @@ export default function Header() {
                 );
               })}
             </nav>
-
-            {/* Mobile Auth Section */}
-            <div className="pt-4 border-t border-border/50">
-              {isAuthenticated ? (
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2 px-4 py-3 bg-secondary-50 rounded-lg">
-                    <User className="text-secondary-600" size={18} />
-                    <span className="text-sm text-secondary-700 font-medium">
-                      {user?.name || "User"}
-                    </span>
-                  </div>
-                  <button
-                    className="w-full flex items-center justify-center px-4 py-3 text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-colors"
-                    onClick={() => {
-                      logout();
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    <LogOut className="mr-3" size={18} />
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  className="w-full flex items-center justify-center px-4 py-3 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
-                  to="/login"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <LogIn className="mr-3" size={18} />
-                  Login
-                </Link>
-              )}
-            </div>
           </div>
         )}
       </div>
