@@ -1,0 +1,425 @@
+
+pwd: /home/nathanael/quantumbytes-ai-codegen/repos/full-app-01K424NQH0MWJ9PNPS1YG72NVH-3258
+
+
+ls: total 260
+drwxr-xr-x 7 nathanael nathanael   4096 Sep  1 16:49 .
+drwxr-xr-x 4 nathanael nathanael   4096 Sep  1 16:49 ..
+-rw-r--r-- 1 nathanael nathanael     58 Sep  1 16:49 .env
+-rw-r--r-- 1 nathanael nathanael     15 Sep  1 16:49 .env.example
+drwxr-xr-x 8 nathanael nathanael   4096 Sep  1 16:49 .git
+-rw-r--r-- 1 nathanael nathanael    321 Sep  1 16:49 .gitignore
+-rw-r--r-- 1 nathanael nathanael    115 Sep  1 16:49 .gooseignore
+-rw-r--r-- 1 nathanael nathanael     17 Sep  1 16:49 .npmrc
+-rw-r--r-- 1 nathanael nathanael   2047 Sep  1 16:49 README.md
+drwxr-xr-x 2 nathanael nathanael   4096 Sep  1 16:49 bin
+-rw-r--r-- 1 nathanael nathanael 136646 Sep  1 16:49 bun.lock
+-rwxr-xr-x 1 nathanael nathanael   1280 Sep  1 16:49 dev_setup.sh
+drwxr-xr-x 2 nathanael nathanael   4096 Sep  1 16:49 docs
+-rw-r--r-- 1 nathanael nathanael   4166 Sep  1 16:49 eslint.config.mjs
+-rw-r--r-- 1 nathanael nathanael  15086 Sep  1 16:49 favicon.ico
+-rw-r--r-- 1 nathanael nathanael    804 Sep  1 16:49 index.html
+-rw-r--r-- 1 nathanael nathanael   1112 Sep  1 16:49 instructions.txt
+-rw-r--r-- 1 nathanael nathanael   1775 Sep  1 16:49 package.json
+-rw-r--r-- 1 nathanael nathanael     90 Sep  1 16:49 postcss.config.js
+drwxr-xr-x 2 nathanael nathanael   4096 Sep  1 16:49 public
+-rw-r--r-- 1 nathanael nathanael     41 Sep  1 16:49 qbid.txt
+drwxr-xr-x 4 nathanael nathanael   4096 Sep  1 16:49 src
+-rw-r--r-- 1 nathanael nathanael   4364 Sep  1 16:49 tailwind.config.js
+-rw-r--r-- 1 nathanael nathanael    654 Sep  1 16:49 tsconfig.json
+-rw-r--r-- 1 nathanael nathanael    233 Sep  1 16:49 tsconfig.node.json
+-rw-r--r-- 1 nathanael nathanael     69 Sep  1 16:49 vercel.json
+-rw-r--r-- 1 nathanael nathanael   2131 Sep  1 16:49 vite.config.ts
+
+
+ls ./src: total 32
+drwxr-xr-x 4 nathanael nathanael 4096 Sep  1 16:49 .
+drwxr-xr-x 7 nathanael nathanael 4096 Sep  1 16:49 ..
+-rw-r--r-- 1 nathanael nathanael  867 Sep  1 16:49 App.tsx
+drwxr-xr-x 2 nathanael nathanael 4096 Sep  1 16:49 components
+-rw-r--r-- 1 nathanael nathanael  652 Sep  1 16:49 globals.css
+-rw-r--r-- 1 nathanael nathanael  395 Sep  1 16:49 main.tsx
+drwxr-xr-x 4 nathanael nathanael 4096 Sep  1 16:49 modules
+-rw-r--r-- 1 nathanael nathanael   38 Sep  1 16:49 vite-env.d.ts
+
+
+cat package.json: {
+  "name": "vite-template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "lint": "eslint --fix",
+    "lint:check": "eslint --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-aria/visually-hidden": "3.8.23",
+    "@react-types/shared": "3.29.1",
+    "axios": "^1.10.0",
+    "clsx": "2.1.1",
+    "crypto-js": "^4.2.0",
+    "framer-motion": "11.15.0",
+    "js-yaml": "^4.1.0",
+    "lucide-react": "^0.513.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.6.3",
+    "sweetalert2": "^11.22.0",
+    "swr": "^2.3.4",
+    "tailwind-variants": "0.3.0",
+    "tailwindcss": "3.4.16",
+    "ulid": "^3.0.1"
+  },
+  "devDependencies": {
+    "@eslint/compat": "1.2.8",
+    "@eslint/eslintrc": "3.3.1",
+    "@eslint/js": "9.25.1",
+    "@types/crypto-js": "^4.2.2",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "20.5.7",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@typescript-eslint/eslint-plugin": "8.31.1",
+    "@typescript-eslint/parser": "8.31.1",
+    "@vitejs/plugin-react": "4.4.1",
+    "autoprefixer": "10.4.21",
+    "eslint": "9.25.1",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "eslint-plugin-unused-imports": "4.1.4",
+    "globals": "16.0.0",
+    "postcss": "8.5.3",
+    "prettier": "3.5.3",
+    "typescript": "5.6.3",
+    "vite": "5.2.0",
+    "vite-tsconfig-paths": "4.3.2"
+  }
+}
+
+
+cat tailwind.config.js: /** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      colors: {
+        // Professional color system
+        background: '#ffffff',
+        foreground: '#0f172a',
+        muted: {
+          DEFAULT: '#f1f5f9',
+          foreground: '#64748b',
+        },
+        accent: {
+          DEFAULT: '#f1f5f9',
+          foreground: '#0f172a',
+        },
+        border: '#e2e8f0',
+        input: '#e2e8f0',
+        ring: '#3b82f6',
+        
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+        },
+        secondary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
+        warning: {
+          50: '#fefce8',
+          100: '#fef9c3',
+          200: '#fef08a',
+          300: '#fde047',
+          400: '#facc15',
+          500: '#eab308',
+          600: '#ca8a04',
+          700: '#a16207',
+          800: '#854d0e',
+          900: '#713f12',
+          950: '#422006',
+        },
+        danger: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
+          950: '#450a0a',
+        },
+        info: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+          950: '#082f49',
+        },
+        light: {
+          50: '#ffffff',
+          100: '#fefefe',
+          200: '#fafafa',
+          300: '#f5f5f5',
+          400: '#f0f0f0',
+          500: '#e5e5e5',
+          600: '#d4d4d4',
+          700: '#a3a3a3',
+          800: '#737373',
+          900: '#525252',
+          950: '#404040',
+        },
+        dark: {
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a',
+        },
+      },
+      borderRadius: {
+        lg: '0.5rem',
+        md: '0.375rem',
+        sm: '0.25rem',
+      },
+      boxShadow: {
+        'soft': '0 2px 8px 0 rgba(0, 0, 0, 0.06)',
+        'medium': '0 4px 12px 0 rgba(0, 0, 0, 0.08)',
+        'strong': '0 8px 24px 0 rgba(0, 0, 0, 0.12)',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#334155',
+            lineHeight: '1.75',
+          },
+        },
+      },
+    },
+  },
+  darkMode: "class",
+  plugins: [],
+}
+
+
+cat src/App.tsx: import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import Homepage from "@/modules/homepage/page";
+import NotFoundPage from "@/modules/notfound/page";
+import RouteError from "@/components/RouteError";
+
+// Check if we're running locally and set basename accordingly
+const isLocalhost =
+  window.location.origin.includes("localhost") ||
+  window.location.origin.includes("0.0.0.0") ||
+  window.location.origin.includes("127.0.0.1");
+const basename = isLocalhost ? import.meta.env.VITE_BASE_PATH : undefined;
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Homepage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "*",
+      element: <NotFoundPage />,
+      errorElement: <RouteError />,
+    },
+  ],
+  { basename },
+);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+
+
+# LLM Instructions for Module Creation
+
+## GETTING STARTED
+
+First, read the documentation in the `docs/` folder:
+- `docs/module-structure.md` - Complete module architecture guide
+- `docs/module-rules.md` - Quick reference for module creation
+- `docs/llm-readme.md` - Special instructions for LLMs (this file)
+
+## QUICK REFERENCE
+
+1. **Read the docs first** - All architecture and structure rules are documented
+2. **Follow the module structure** - Create files in `src/modules/[kebab-case-module-name]/`
+3. **Handle colors properly** - If specified, update `tailwind.config.js` with new palettes
+4. **See llm-readme.md** - For specific implementation rules and deliverable format
+5. **DO NOT** - run the server. Your definition of done is changes are implemented, documented, and "bun run build" return success
+6. **MAKE SURE** - If you create new module, make sure it's accessible via homepage and registered in routes
+7. **COMPLETENESS** - Make sure the generated app is completed, in demo version, from end-to-end. Meaning all pages and functionality should either be implemented / mocked.
+
+## User's Request
+
+# Restaurant Inventory Management Mobile App
+
+## App Overview
+Mobile application for restaurant managers to track ingredient usage and manage restocking to prevent shortages and overstocking.
+
+## Core Features
+
+### Dashboard
+- Real-time inventory status overview
+- Low stock alerts with red indicators
+- Overstock warnings with orange indicators
+- Daily usage summary charts
+- Quick action buttons for urgent restocking
+
+### Inventory Management
+- Complete ingredient database with categories (proteins, vegetables, spices, etc.)
+- Current stock levels with unit measurements (kg, pieces, liters)
+- Minimum stock thresholds per ingredient
+- Maximum stock capacity limits
+- Expiry date tracking with color-coded alerts
+- Barcode scanning for quick item identification
+
+### Usage Tracking
+- Manual usage input by kitchen staff
+- Recipe-based automatic deduction when dishes are prepared
+- Daily/weekly/monthly usage reports
+- Usage trend analysis and predictions
+- Waste tracking and reporting
+
+### Restock Management
+- Automated restock suggestions based on usage patterns
+- Supplier contact information and ordering history
+- Purchase order creation and tracking
+- Delivery scheduling and confirmation
+- Cost tracking per ingredient and total inventory value
+
+### Reports & Analytics
+- Stock movement reports (in/out/waste)
+- Cost analysis and budget tracking
+- Usage efficiency metrics
+- Supplier performance evaluation
+- Export reports as PDF/Excel
+
+### Settings
+- User profile management for multiple staff members
+- Restaurant branch selection (multi-location support)
+- Notification preferences for alerts
+- Unit measurement customization
+- Language selection (Indonesian/English)
+
+## Technical Requirements
+- Offline capability for basic inventory viewing
+- Data synchronization when online
+- Camera integration for barcode scanning
+- Push notifications for critical alerts
+- Secure user authentication with role-based access
+- Cloud backup and data recovery
+
+## User Interface
+- Mobile-first responsive design
+- Indonesian language support
+- Intuitive navigation with bottom tab bar
+- Quick search and filter functionality
+- Touch-friendly input forms with number pads
+- Visual indicators for stock status (green/yellow/red)
+
+## Data Structure
+- Ingredients: name, category, unit, current_stock, min_threshold, max_capacity, cost_per_unit, supplier_info, expiry_date
+- Usage_logs: ingredient_id, quantity_used, timestamp, user_id, reason
+- Restock_orders: order_id, supplier, items, quantities, order_date, delivery_date, status, total_cost
+- Users: name, role, permissions, restaurant_branch
+
+## Success Metrics
+- Reduction in ingredient waste by 20%
+- Decrease in stockout incidents by 80%
+- Improvement in inventory turnover rate
+- Time saved on manual inventory checks by 60%

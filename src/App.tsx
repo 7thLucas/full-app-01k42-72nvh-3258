@@ -1,6 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Homepage from "@/modules/homepage/page";
+import DashboardPage from "@/modules/dashboard/page";
+import InventoryPage from "@/modules/inventory/page";
+import UsagePage from "@/modules/usage/page";
 import NotFoundPage from "@/modules/notfound/page";
 import RouteError from "@/components/RouteError";
 
@@ -16,6 +19,21 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Homepage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/dashboard",
+      element: <DashboardPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/inventory",
+      element: <InventoryPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/usage",
+      element: <UsagePage />,
       errorElement: <RouteError />,
     },
     {

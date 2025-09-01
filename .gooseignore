@@ -1,0 +1,12 @@
+
+dist/
+node_modules/
+.env*
+.git/
+.gitignore
+instruction.txt
+run.sh
+dev_setup.sh
+page_spec.txt
+qbid.txt
+build_run.sh
