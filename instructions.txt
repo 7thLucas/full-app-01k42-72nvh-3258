@@ -14,7 +14,7 @@ First, read the documentation in the `docs/` folder:
 3. **Handle colors properly** - If specified, update `tailwind.config.js` with new palettes
 4. **See llm-readme.md** - For specific implementation rules and deliverable format
 5. **DO NOT** - run the server. Your definition of done is changes are implemented, documented, and "bun run build" return success
-6. **MAKE SURE** - If you create new module, make sure it's accessible via homepage
+6. **MAKE SURE** - If you create new module, make sure it's accessible via homepage and registered in routes
+7. **COMPLETENESS** - Make sure the generated app is completed, in demo version, from end-to-end. Meaning all pages and functionality should either be implemented / mocked.
 
 ## User's Request
-
