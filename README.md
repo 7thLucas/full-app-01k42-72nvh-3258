@@ -10,7 +10,6 @@ src/
 ├── modules/           # Module-specific code (see below)
 │   ├── homepage/      # Homepage module
 │   ├── notfound/      # 404 page module
-│   └── .template/     # Template for new modules
 App.tsx               # Main app and routing
 main.tsx              # Entry point
 ```
@@ -36,8 +35,6 @@ src/modules/module-name/
 ├── doc/                # Optional - module-specific documentation
 └── index.ts            # Optional - module exports
 ```
-
-For new modules, you can use the template in `src/modules/.template/` as a starting point by copying it to create your new module.
 
 ### Detailed Documentation
 

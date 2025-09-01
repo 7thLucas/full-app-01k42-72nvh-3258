@@ -29,10 +29,3 @@ module-name/
 For detailed documentation, see:
 - [Module Structure Documentation](../../docs/module-structure.md)
 - [Module Rules Quick Reference](../../docs/module-rules.md)
-
-## Template
-
-Use the `.template` directory as a starting point for new modules by copying it:
-```bash
-cp -r .template new-module-name
-```
