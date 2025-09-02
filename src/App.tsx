@@ -7,6 +7,15 @@ import UsagePage from "@/modules/usage/page";
 import NotFoundPage from "@/modules/notfound/page";
 import RouteError from "@/components/RouteError";
 
+// StokCerdas Module Pages
+import StokCerdasPage from "@/modules/stok-cerdas/page";
+import StokCerdasDashboardPage from "@/modules/stok-cerdas/dashboard/page";
+import StokCerdasInventoryListPage from "@/modules/stok-cerdas/inventory-list/page";
+import StokCerdasIngredientDetailPage from "@/modules/stok-cerdas/ingredient-detail/page";
+import StokCerdasAddUsagePage from "@/modules/stok-cerdas/add-usage/page";
+import StokCerdasBarcodeScannerPage from "@/modules/stok-cerdas/barcode-scanner/page";
+import StokCerdasRestockOrdersPage from "@/modules/stok-cerdas/restock-orders/page";
+
 // Check if we're running locally and set basename accordingly
 const isLocalhost =
   window.location.origin.includes("localhost") ||
@@ -34,6 +43,42 @@ const router = createBrowserRouter(
     {
       path: "/usage",
       element: <UsagePage />,
+      errorElement: <RouteError />,
+    },
+    // StokCerdas Routes
+    {
+      path: "/stok-cerdas",
+      element: <StokCerdasPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/dashboard",
+      element: <StokCerdasDashboardPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/inventory-list",
+      element: <StokCerdasInventoryListPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/ingredient-detail",
+      element: <StokCerdasIngredientDetailPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/add-usage",
+      element: <StokCerdasAddUsagePage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/barcode-scanner",
+      element: <StokCerdasBarcodeScannerPage />,
+      errorElement: <RouteError />,
+    },
+    {
+      path: "/stok-cerdas/restock-orders",
+      element: <StokCerdasRestockOrdersPage />,
       errorElement: <RouteError />,
     },
     {
